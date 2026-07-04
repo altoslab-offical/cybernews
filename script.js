@@ -69,6 +69,8 @@ const translations = [
   ["AI Policy", "AI 政策"],
   ["A world of tech in your inbox", "全球科技新聞寄到你的信箱"],
   ["CYBERNEWS Briefing", "CYBERNEWS 簡報"],
+  ["內容載入中", "Loading content"],
+  ["正在載入文章資料與分類版位。", "Loading stories and section layouts."],
   ["每日最新消息與每週專欄，把全球科技新聞整理成中文可讀脈絡。", "Daily updates and weekly columns that turn global tech news into readable context."],
   ["Advertisement", "廣告"],
   ["Responsive display placement", "響應式廣告版位"],
