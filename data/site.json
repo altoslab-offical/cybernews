@@ -4,6 +4,7 @@
   "default_language": "zh-Hant",
   "description": "AI 與金融新聞中文摘要、來源連結與 metadata。",
   "og_image": "assets/og-cybernews.jpg",
+  "build_date": "2026-07-04T00:00:00.000Z",
   "ga_measurement_id": "G-SX01NLQZ7F",
   "gtm_id": "GTM-WD45TXLT"
 }

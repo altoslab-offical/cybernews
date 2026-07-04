@@ -12,7 +12,7 @@ const defaultLanguage = siteConfig.default_language || "zh-Hant";
 const shareImagePath = siteConfig.og_image || "assets/og-cybernews.jpg";
 const gaId = process.env.GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || siteConfig.ga_measurement_id || "";
 const gtmId = process.env.GTM_ID || process.env.NEXT_PUBLIC_GTM_ID || siteConfig.gtm_id || "";
-const buildDate = new Date().toISOString();
+let buildDate = "";
 const assetVersion = "20260704-design-preview-v6";
 
 const verticalLabels = {
@@ -118,6 +118,26 @@ const sourceUrl = (item) => {
   return isPlaceholderSourceUrl(value) ? "" : value;
 };
 const byPublishedDesc = (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+const toValidIsoDate = (value) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+};
+const resolveBuildDate = (items) => {
+  const explicitBuildDate = toValidIsoDate(process.env.BUILD_DATE);
+
+  if (explicitBuildDate) {
+    return explicitBuildDate;
+  }
+
+  const latestItemDate = items
+    .flatMap((item) => [item.fetched_at, item.published_at])
+    .map(toValidIsoDate)
+    .filter(Boolean)
+    .sort()
+    .at(-1);
+
+  return latestItemDate || toValidIsoDate(siteConfig.build_date || siteConfig.lastmod) || "2026-07-04T00:00:00.000Z";
+};
 
 const getReadingMinutes = (item) => {
   const text = [item.summary_zh, ...(item.body_zh || [])].filter(Boolean).join("");
@@ -719,6 +739,7 @@ ${latest
 
 const main = () => {
   const items = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+  buildDate = resolveBuildDate(items);
   cleanArticlePages(items);
   writeArticlePages(items);
   writeSitemap(items);
