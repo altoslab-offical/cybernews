@@ -22,7 +22,7 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="./design-tokens.css?v=20260704-text-green" />
-    <link rel="stylesheet" href="./styles.css?v=20260704-newsletter-no-mark" />
+    <link rel="stylesheet" href="./styles.css?v=20260704-newsletter-page-hero3" />
     <!-- site-meta:start -->
     <link rel="canonical" href="https://altoslab-offical.github.io/cybernews/" />
     <meta property="og:type" content="website" />
@@ -129,6 +129,7 @@
         <a href="./ai.html" data-mobile-tab="ai">AI</a>
         <a href="./finance.html" data-mobile-tab="finance">金融</a>
         <a href="./topics.html" data-mobile-tab="topics">專題</a>
+        <a href="./latest.html?type=column" data-mobile-tab="column">專欄</a>
         <a href="./latest.html?type=research" data-mobile-tab="research">調研</a>
         <a href="./newsletter.html" data-mobile-tab="newsletter">電子報</a>
       </nav>
@@ -162,46 +163,26 @@
               <a class="rail-more" href="./latest.html">查看更多</a>
             </div>
             <div class="home-latest-feed">
-              <article class="pick-item">
-                <h3>歐盟啟動新一輪 AI 基礎模型稽核</h3>
-                <p>21 分鐘前 / 監管與政策</p>
-              </article>
-              <article class="pick-item">
-                <h3>Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注</h3>
-                <p>32 分鐘前 / NVDA</p>
-              </article>
-              <article class="pick-item">
-                <h3>Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點</h3>
-                <p>1 小時前 / BTC</p>
-              </article>
-              <article class="pick-item">
-                <h3>Microsoft 與 OpenAI 雲端合約談判進入新階段</h3>
-                <p>2 小時前 / MSFT</p>
-              </article>
+              <div class="channel-empty">
+                <h2>正式內容資料尚未接入</h2>
+                <p>這個版位會在文章 API 提供正式資料後自動顯示內容；目前不顯示測試文章。</p>
+              </div>
             </div>
           </section>
 
           <article class="lead-card" id="news">
-            <div
-              class="lead-image"
-              role="img"
-              aria-label="Data center servers and global technology infrastructure"
-            ></div>
-            <div class="story-meta">今日主線 / AI</div>
-            <h1>AI 基礎建設競賽，正在把科技權力推向更多非西方市場</h1>
-            <p>
-              從印度資料中心到中東主權雲，科技公司正在把算力、資料、能源與監管視為同一場全球競賽。
-            </p>
-            <div class="byline">來源：CYBERNEWS Desk</div>
+            <div class="channel-empty">
+              <h1>正式內容資料尚未接入</h1>
+              <p>這個版位會在文章 API 提供正式資料後自動顯示內容；目前不顯示測試文章。</p>
+            </div>
           </article>
 
           <aside class="side-stack" aria-label="Secondary stories">
             <article class="side-feature">
-              <div class="side-image side-image-dispatch"></div>
-              <div class="story-meta">金融 / 新聞 / NVDA</div>
-              <h2>Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注</h2>
-              <p>市場焦點轉向先進封裝、HBM、伺服器機櫃與能源配置，但這不是買賣建議。</p>
-              <div class="byline">來源：Market Tech Brief</div>
+              <div class="channel-empty">
+                <h2>正式內容資料尚未接入</h2>
+                <p>API 提供正式文章後，這裡會顯示次要重點新聞。</p>
+              </div>
             </article>
             <article class="signup-card">
               <span>Newsletter</span>
@@ -210,29 +191,9 @@
             </article>
           </aside>
 
-          <article class="grid-story grid-story-small" id="ev">
-            <div class="grid-image sector-platforms"></div>
-            <div class="story-meta">AI 新聞 / 新聞 / MSFT</div>
-            <h2>Microsoft 與 OpenAI 雲端合約談判進入新階段</h2>
-            <p>談判重點包括模型部署、雲端成本、企業客戶收入分成與未來算力採購。</p>
-            <div class="byline">來源：Enterprise AI Brief</div>
-          </article>
-          <article class="grid-story grid-story-small">
-            <div class="grid-image sector-policy"></div>
-            <div class="story-meta">監管與政策</div>
-            <h2>歐盟啟動新一輪 AI 基礎模型稽核</h2>
-            <p>大型模型供應商被要求補交訓練資料、風險測試與部署流程說明。</p>
-            <div class="byline">來源：Policy Watch</div>
-          </article>
-          <article class="grid-story grid-story-wide">
-            <div class="grid-image sector-labor"></div>
-            <div class="story-meta">金融 / 新聞 / ETF</div>
-            <h2>Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點</h2>
-            <p>
-              資產管理公司與上市公司持倉變化受到追蹤，但本文只整理新聞脈絡，不做價格方向判斷。
-            </p>
-            <div class="byline">來源：Crypto Market Brief</div>
-          </article>
+          <article class="grid-story grid-story-small" id="ev" hidden></article>
+          <article class="grid-story grid-story-small" hidden></article>
+          <article class="grid-story grid-story-wide" hidden></article>
         </section>
 
         <section class="ad-placement" aria-label="Advertisement">
@@ -256,66 +217,10 @@
           </div>
           <div class="column-carousel">
             <div class="column-track" tabindex="0" aria-label="In-depth column cards">
-              <article class="column-card is-column-match" data-column-filter-values="all ai research">
-                <a href="./research/ai-infrastructure-non-western-markets/">
-                  <div class="column-card-image column-image-one"></div>
-                  <div class="column-card-caption">
-                    <h3>資料邊境</h3>
-                    <p>全球資料中心與能源壓力如何變成同一個問題。</p>
-                    <span>INFRA</span>
-                  </div>
-                </a>
-              </article>
-              <article class="column-card is-column-match" data-column-filter-values="all ai research">
-                <a href="./topic-ai-regulation.html">
-                  <div class="column-card-image column-image-two"></div>
-                  <div class="column-card-caption">
-                    <h3>AI 監管進展</h3>
-                    <p>歐盟、美國與亞洲政策如何改變模型發布節奏。</p>
-                    <span>AI POLICY</span>
-                  </div>
-                </a>
-              </article>
-              <article class="column-card column-card-featured is-column-match" data-column-filter-values="all ai research">
-                <a href="./topic-nvidia-supply-chain.html">
-                  <div class="column-card-image column-image-three"></div>
-                  <div class="column-card-caption">
-                    <h3>Nvidia 供應鏈</h3>
-                    <p>從 HBM 到先進封裝，追蹤 AI 伺服器瓶頸。</p>
-                    <span>NVDA</span>
-                  </div>
-                </a>
-              </article>
-              <article class="column-card is-column-match" data-column-filter-values="all finance column">
-                <a href="./articles/finance-brief-big-tech-capex/">
-                  <div class="column-card-image column-image-four"></div>
-                  <div class="column-card-caption">
-                    <h3>科技巨頭財報</h3>
-                    <p>AI 成本、雲端營收與裝置週期如何被市場閱讀。</p>
-                    <span>EARNINGS</span>
-                  </div>
-                </a>
-              </article>
-              <article class="column-card is-column-match" data-column-filter-values="all finance research">
-                <a href="./research/bitcoin-etf-institutional-research/">
-                  <div class="column-card-image column-image-five"></div>
-                  <div class="column-card-caption">
-                    <h3>Bitcoin ETF</h3>
-                    <p>追蹤 ETF 資金流、上市公司持倉與監管變化。</p>
-                    <span>BTC</span>
-                  </div>
-                </a>
-              </article>
-              <article class="column-card is-column-match" data-column-filter-values="all finance column">
-                <a href="./articles/stablecoin-bill-compliance/">
-                  <div class="column-card-image column-image-six"></div>
-                  <div class="column-card-caption">
-                    <h3>穩定幣監管</h3>
-                    <p>支付公司、交易所與發行人面對新的合規成本。</p>
-                    <span>STABLECOINS</span>
-                  </div>
-                </a>
-              </article>
+              <div class="channel-empty">
+                <h2>正式內容資料尚未接入</h2>
+                <p>專欄與調研會在文章 API 提供正式資料後自動顯示；目前不顯示測試文章。</p>
+              </div>
             </div>
             <div class="column-controls" aria-label="Column carousel controls">
               <button class="column-control" type="button" data-column-scroll="-1" aria-label="Previous columns">
@@ -330,48 +235,10 @@
 
         <section class="regions-section" id="channels">
           <div class="region-story-list">
-            <section class="region-story-row" id="ai">
-              <a class="region-row-heading" href="#ai">AI 新聞 <span aria-hidden="true">&gt;</span></a>
-              <div class="region-article-grid">
-                <article class="region-article">
-                  <div class="region-article-image region-policy-two"></div>
-                  <h3>歐盟啟動新一輪 AI 基礎模型稽核</h3>
-                  <p>監管與政策 / Policy Watch</p>
-                </article>
-                <article class="region-article">
-                  <div class="region-article-image region-ai-one"></div>
-                  <h3>中國大學調整語言科系，把更多資源轉向 AI 與資料科學</h3>
-                  <p>AI 應用與人才 / Rest of World</p>
-                </article>
-                <article class="region-article">
-                  <div class="region-article-image region-india-two"></div>
-                  <h3>AI 基礎建設競賽，正在把科技權力推向更多非西方市場</h3>
-                  <p>算力與晶片 / CYBERNEWS Desk</p>
-                </article>
-              </div>
-            </section>
-
-            <section class="region-story-row" id="finance">
-              <a class="region-row-heading" href="./finance.html">金融 <span aria-hidden="true">&gt;</span></a>
-              <div class="region-article-grid">
-                <article class="region-article">
-                  <div class="region-article-image region-chip-one"></div>
-                  <h3>Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注</h3>
-                  <p>NVDA / Market Tech Brief</p>
-                </article>
-                <article class="region-article">
-                  <div class="region-article-image sector-platforms"></div>
-                  <h3>Microsoft 與 OpenAI 雲端合約談判進入新階段</h3>
-                  <p>MSFT / Enterprise AI Brief</p>
-                </article>
-                <article class="region-article">
-                  <div class="region-article-image tech-one"></div>
-                  <h3>Apple 的 AI 裝置週期，讓供應鏈重新估算 iPhone 需求</h3>
-                  <p>AAPL / Tech Giants Desk</p>
-                </article>
-              </div>
-            </section>
-
+            <div class="channel-empty">
+              <h2>正式內容資料尚未接入</h2>
+              <p>AI、金融、專欄與調研分區會由文章 API 提供正式資料後自動顯示。</p>
+            </div>
           </div>
         </section>
 
@@ -409,6 +276,6 @@
         <p class="footer-copy">© 2026 CYBERNEWS</p>
       </footer>
     </div>
-    <script src="./script.js?v=20260704-newsletter-sample"></script>
+    <script src="./script.js?v=20260704-newsletter-page-hero3"></script>
   </body>
 </html>

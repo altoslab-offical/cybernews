@@ -104,8 +104,8 @@ GET  /v1/articles/:id
 ```json
 {
   "source_name": "Rest of World",
-  "source_url": "https://example.com/original-story",
-  "canonical_url": "https://example.com/original-story",
+  "source_url": "https://restofworld.org/category/artificial-intelligence/",
+  "canonical_url": "https://restofworld.org/category/artificial-intelligence/",
   "title_original": "Original English headline",
   "published_at": "2026-07-04T09:00:00+08:00",
   "fetched_at": "2026-07-04T09:20:00+08:00",
@@ -416,7 +416,7 @@ Request：
 {
   "draft": "<ArticleItem>",
   "existing_ids": ["ai-weekly-agent-market-map"],
-  "existing_urls": ["https://example.com/original"]
+  "existing_urls": ["https://restofworld.org/category/artificial-intelligence/"]
 }
 ```
 
@@ -430,7 +430,7 @@ Response：
     "image_url is empty; add an image before publishing if this is a lead story."
   ],
   "computed": {
-    "route": "articles/example-generated-id/",
+    "route": "articles/generated-article-id/",
     "public_url_kind": "article",
     "topic_matches": ["ai-regulation"],
     "reading_minutes_estimate": 1
@@ -478,14 +478,14 @@ Response：
 ```json
 {
   "status": "approved",
-  "article_id": "example-generated-id",
+  "article_id": "generated-article-id",
   "written_to": "data/news.json",
   "commands": [
     "npm run validate",
     "npm run build:static"
   ],
   "generated_paths": [
-    "articles/example-generated-id/index.html",
+    "articles/generated-article-id/index.html",
     "sitemap.xml",
     "rss.xml"
   ]
@@ -677,4 +677,3 @@ npm run build:static
 3. 人工審核後把 draft append 到 `data/news.json`，再跑 `npm run build:static`。
 
 等這條路穩定後，再把 `POST /v1/article-drafts`、`POST /v1/article-drafts/validate`、`POST /v1/articles/approve` 實作成真正後端 API。
-

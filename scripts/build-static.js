@@ -292,6 +292,7 @@ const headerMarkup = () => `
         <a href="../../ai.html" data-mobile-tab="ai">AI</a>
         <a href="../../finance.html" data-mobile-tab="finance">金融</a>
         <a href="../../topics.html" data-mobile-tab="topics">專題</a>
+        <a href="../../latest.html?type=column" data-mobile-tab="column">專欄</a>
         <a href="../../latest.html?type=research" data-mobile-tab="research">調研</a>
         <a href="../../newsletter.html" data-mobile-tab="newsletter">電子報</a>
       </nav>
@@ -415,7 +416,7 @@ const articleHtml = (items, item) => {
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Roboto+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../design-tokens.css?v=20260704-text-green" />
-    <link rel="stylesheet" href="../../styles.css?v=20260704-newsletter-no-mark" />
+    <link rel="stylesheet" href="../../styles.css?v=20260704-newsletter-page-hero3" />
     ${analyticsHead()}
   </head>
   <body data-title-zh="${escapeHtml(title)}" data-title-en="${escapeHtml(item.title_original)} - ${escapeHtml(siteName)}" data-page="${item.content_type === "research" ? "research" : "article"}" data-vertical="${escapeHtml(item.vertical)}" data-content-type="${escapeHtml(item.content_type)}">
@@ -529,7 +530,7 @@ ${relatedMarkup(items, item)}
 
 ${footerMarkup()}
     </div>
-    <script src="../../script.js?v=20260704-newsletter-sample"></script>
+    <script src="../../script.js?v=20260704-newsletter-page-hero3"></script>
   </body>
 </html>`;
 };
@@ -537,6 +538,26 @@ ${footerMarkup()}
 const writeFile = (filePath, content) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content);
+};
+
+const cleanArticlePages = (items) => {
+  const expectedPaths = new Set(items.map(publicPathForItem));
+
+  for (const section of ["articles", "research"]) {
+    const sectionPath = path.join(rootDir, section);
+
+    if (!fs.existsSync(sectionPath)) {
+      continue;
+    }
+
+    for (const entry of fs.readdirSync(sectionPath, { withFileTypes: true })) {
+      const publicPath = `${section}/${entry.name}/`;
+
+      if (entry.isDirectory() && !expectedPaths.has(publicPath)) {
+        fs.rmSync(path.join(sectionPath, entry.name), { recursive: true, force: true });
+      }
+    }
+  }
 };
 
 const writeArticlePages = (items) => {
@@ -676,6 +697,7 @@ ${latest
 
 const main = () => {
   const items = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+  cleanArticlePages(items);
   writeArticlePages(items);
   writeSitemap(items);
   writeRobots();

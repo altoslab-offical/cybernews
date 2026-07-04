@@ -97,7 +97,7 @@ Hermes 端同步規格：
 
 ## 目前已知待辦
 
-1. `data/news.json` 裡仍有多篇 `example.com` 來源佔位；上 production 前必須用 `STRICT_SOURCES=1 npm run validate` 擋下。
+1. `data/news.json` 目前刻意維持空陣列，不保留 seed 假資料；正式文章必須由文章 API 草稿、驗證、審核後 append。
 2. `data/site.json` 目前使用 GitHub Pages 預覽網域；正式 AWS CloudFront URL 建成後要換成正式網域並重跑 build。
 3. Newsletter 表單還沒有接真實 email 服務。
 4. 新 GA4 property / 新 GTM container 建好後，要把 ID 寫入 `data/site.json` 再重跑 build。
@@ -107,7 +107,7 @@ Hermes 端同步規格：
 ## 建議開發順序
 
 1. 先接正式網域與部署，更新 `data/site.json`。
-2. 補真實來源 URL，讓 `npm run validate` 不再只有 example.com warning。
+2. 接文章 API 的 draft / validate / approve 流程，並讓正式文章 append 到 `data/news.json`。
 3. 接 newsletter 服務，例如 Buttondown、MailerLite 或自建 API。
 4. 建立全新的 GA4 property 與 GTM container，將 ID 寫入 `data/site.json`。
 5. 把專題頁改成讀 `data/topics.json` 與 `data/news.json` 自動渲染。
@@ -122,4 +122,4 @@ npm run validate
 git diff --check
 ```
 
-目前驗證會通過，但會顯示既有 `example.com` 來源 warning。
+目前驗證會通過，`data/news.json` 為 0 篇正式文章。

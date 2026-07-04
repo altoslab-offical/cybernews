@@ -46,8 +46,6 @@ const translations = [
   ["Latest Stories", "最新消息"],
   ["Explore latest stories", "探索最新消息"],
   ["Global AI", "全球 AI"],
-  ["AI 基礎建設競賽，正在把科技權力推向更多非西方市場", "AI infrastructure race is pushing tech power into more non-Western markets"],
-  ["從印度資料中心到中東主權雲，科技公司開始把算力、資料、能源與監管視為同一場全球競賽。", "From Indian data centers to sovereign cloud in the Middle East, tech companies are treating compute, data, energy, and regulation as one global contest."],
   ["By CYBERNEWS Desk", "CYBERNEWS 編輯部"],
   ["Global Dispatch", "全球現場"],
   ["中東主權基金正在改寫 AI 雲端部署規則", "Middle Eastern sovereign funds are rewriting the rules for AI cloud deployment"],
@@ -86,7 +84,6 @@ const translations = [
   ["By Platform Watch", "平台觀察"],
   ["By Creator Economy", "創作者經濟"],
   ["The AI Race", "AI 競賽"],
-  ["中國大學調整語言科系，把更多資源轉向 AI 與資料科學", "Chinese universities are cutting language programs to move resources toward AI and data science"],
   ["美國企業開始選用中國開源模型來降低推理成本", "U.S. companies are using Chinese open-source models to lower inference costs"],
   ["Spotify 的非英語 AI 策略，正在改變全球音訊平台競爭", "Spotify's non-English AI strategy is changing competition among global audio platforms"],
   ["By Education Desk", "教育編輯部"],
@@ -191,22 +188,14 @@ const translations = [
   ["選單", "Menu"],
   ["歷史內容", "Archive"],
   ["查看全部歷史內容", "View full Archive"],
-  ["歐盟啟動新一輪 AI 基礎模型稽核", "EU opens a new audit round for foundation models"],
   ["21 分鐘前 / 監管與政策", "21 minutes ago / Regulation and policy"],
-  ["Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注", "Nvidia lifts data center demand outlook as AI server supply chain stays tight"],
   ["32 分鐘前 / NVDA", "32 minutes ago / NVDA"],
-  ["Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點", "Bitcoin ETF inflows rebound as institutional allocation returns to focus"],
   ["1 小時前 / BTC", "1 hour ago / BTC"],
-  ["Microsoft 與 OpenAI 雲端合約談判進入新階段", "Microsoft and OpenAI enter a new phase of cloud contract talks"],
   ["2 小時前 / MSFT", "2 hours ago / MSFT"],
-  ["穩定幣監管草案推進，交易所與支付公司調整合規流程", "Stablecoin bill advances as exchanges and payment firms adjust compliance flows"],
   ["3 小時前 / 金融 / 加密與穩定幣", "3 hours ago / Finance / Crypto and stablecoins"],
-  ["Solana DeFi 活動回升，錢包與支付應用成為新觀察點", "Solana DeFi activity rebounds as wallets and payment apps draw attention"],
   ["4 小時前 / SOL", "4 hours ago / SOL"],
-  ["中國大學調整語言科系，把更多資源轉向 AI 與資料科學", "Chinese universities are cutting language programs to move resources toward AI and data science"],
   ["6 月 22 日 / 教育", "Jun. 22 / Education"],
   ["今日主線 / AI", "Top Story / AI"],
-  ["從印度資料中心到中東主權雲，科技公司正在把算力、資料、能源與監管視為同一場全球競賽。", "From Indian data centers to sovereign cloud in the Middle East, tech companies are treating compute, data, energy, and regulation as one global contest."],
   ["來源：CYBERNEWS Desk", "Source: CYBERNEWS Desk"],
   ["金融 / 新聞 / NVDA", "Finance / News / NVDA"],
   ["市場焦點轉向先進封裝、HBM、伺服器機櫃與能源配置，但這不是買賣建議。", "Market focus is shifting to advanced packaging, HBM, server racks, and energy allocation, but this is not trading advice."],
@@ -254,10 +243,6 @@ const translations = [
   ["BTC / Crypto Market Brief", "BTC / Crypto Market Brief"],
   ["USDC / Crypto Policy Watch", "USDC / Crypto Policy Watch"],
   ["SOL / Onchain Apps Desk", "SOL / Onchain Apps Desk"],
-  ["中國大學調整語言科系，把更多資源轉向 AI 與資料科學", "Chinese universities are cutting language majors to make way for AI and data science"],
-  ["AI 基礎建設競賽，正在把科技權力推向更多非西方市場", "AI infrastructure race is pushing tech power into more non-Western markets"],
-  ["Apple 的 AI 裝置週期，讓供應鏈重新估算 iPhone 需求", "Apple's AI device cycle forces suppliers to revisit iPhone demand"],
-  ["穩定幣監管草案推進，交易所與支付公司開始調整合規流程", "Stablecoin bill advances as exchanges and payment firms adjust compliance flows"],
   ["AI 與金融新聞寄到你的信箱", "AI and finance news in your inbox"],
   ["每日精選 5 到 8 則重要新聞摘要，保留來源、主頻道、內容型態、代號與原文連結。", "A daily selection of 5 to 8 important summaries with sources, verticals, content types, symbols, and original links."],
   ["每天整理 AI 與金融新聞摘要。", "Daily AI and finance news summaries."],
@@ -314,6 +299,15 @@ const translations = [
   ["內容型態", "Content Types"],
   ["金融子分類", "Finance Subcategories"],
   ["快速入口", "Quick Links"],
+  ["專欄 - CYBERNEWS", "Columns - CYBERNEWS"],
+  ["調研 - CYBERNEWS", "Research - CYBERNEWS"],
+  ["專欄", "Columns"],
+  ["調研", "Research"],
+  ["收錄 CYBERNEWS 的觀點專欄、週報與市場脈絡整理，協助讀者理解 AI 與金融訊號背後的判斷框架。", "CYBERNEWS columns, weekly notes, and market context for understanding the reasoning behind AI and finance signals."],
+  ["整理較長篇的調研摘要、資料線索與可回溯來源，讓正式研究內容接入後能被讀者快速追蹤。", "Longer research briefs, data trails, and traceable sources so readers can follow production research once it is connected."],
+  ["正式內容資料尚未接入", "Production content is not connected yet"],
+  ["這個版位會在文章 API 提供正式資料後自動顯示內容；目前不顯示測試文章。", "This surface will populate automatically when the article API provides production data. Test stories are not shown."],
+  ["待接入", "Pending API"],
   ["沒有符合條件的內容", "No matching content"],
   ["請換一個內容型態，或稍後再查看更多內容。", "Try another content type, or check back later for more coverage."],
   ["以上就是目前符合條件的全部內容。", "That's all the matching content for now."],
@@ -436,6 +430,49 @@ const contentTypeLabels = {
 const verticalLabels = {
   ai: "AI 新聞",
   finance: "金融",
+};
+
+const emptyContentCopy = {
+  zh: {
+    title: "正式內容資料尚未接入",
+    description: "這個版位會在文章 API 提供正式資料後自動顯示內容；目前不顯示測試文章。",
+    meta: "待接入",
+  },
+  en: {
+    title: "Production content is not connected yet",
+    description: "This surface will populate automatically when the article API provides production data. Test stories are not shown.",
+    meta: "Pending API",
+  },
+};
+
+const latestPageProfiles = {
+  all: {
+    kicker: { zh: "CYBERNEWS Latest", en: "CYBERNEWS Latest" },
+    title: { zh: "最新消息", en: "Latest" },
+    description: {
+      zh: "跨 AI 新聞與金融兩大主頻道整理最新摘要。每則保留來源、內容型態、時間與可追溯原文，不做投資建議。",
+      en: "Latest AI and finance summaries with source links, content type, timestamps, and traceable originals. No investment advice.",
+    },
+    titleTag: { zh: "最新消息 - CYBERNEWS", en: "Latest - CYBERNEWS" },
+  },
+  column: {
+    kicker: { zh: "CYBERNEWS Columns", en: "CYBERNEWS Columns" },
+    title: { zh: "專欄", en: "Columns" },
+    description: {
+      zh: "收錄 CYBERNEWS 的觀點專欄、週報與市場脈絡整理，協助讀者理解 AI 與金融訊號背後的判斷框架。",
+      en: "CYBERNEWS columns, weekly notes, and market context for understanding the reasoning behind AI and finance signals.",
+    },
+    titleTag: { zh: "專欄 - CYBERNEWS", en: "Columns - CYBERNEWS" },
+  },
+  research: {
+    kicker: { zh: "CYBERNEWS Research", en: "CYBERNEWS Research" },
+    title: { zh: "調研", en: "Research" },
+    description: {
+      zh: "整理較長篇的調研摘要、資料線索與可回溯來源，讓正式研究內容接入後能被讀者快速追蹤。",
+      en: "Longer research briefs, data trails, and traceable sources so readers can follow production research once it is connected.",
+    },
+    titleTag: { zh: "調研 - CYBERNEWS", en: "Research - CYBERNEWS" },
+  },
 };
 
 const archiveSummaryLabels = {
@@ -565,6 +602,17 @@ const feedItemMarkup = (item) => {
   `;
 };
 
+const emptyContentMarkup = (headingTag = "h2") => {
+  const copy = emptyContentCopy[getActiveLanguage()];
+
+  return `
+    <div class="channel-empty">
+      <${headingTag}>${escapeHtml(copy.title)}</${headingTag}>
+      <p>${escapeHtml(copy.description)}</p>
+    </div>
+  `;
+};
+
 const renderDirectoryCards = (items, selector) => {
   const container = document.querySelector(selector);
 
@@ -583,16 +631,7 @@ const renderDirectoryFeed = (items, selector = ".directory-feed") => {
   }
 
   if (!items.length) {
-    container.innerHTML = `
-      <article class="directory-feed-item">
-        <div class="directory-feed-meta">Empty</div>
-        <div>
-          <h2>沒有符合條件的內容</h2>
-          <p>請換一個內容型態，或稍後再查看更多內容。</p>
-        </div>
-        <div class="directory-feed-tags"></div>
-      </article>
-    `;
+    container.innerHTML = emptyContentMarkup();
     return;
   }
 
@@ -602,7 +641,20 @@ const renderDirectoryFeed = (items, selector = ".directory-feed") => {
 const renderHomeRail = (items) => {
   const rail = document.querySelector("#breaking");
 
-  if (!rail || !items.length) {
+  if (!rail) {
+    return;
+  }
+
+  if (!items.length) {
+    rail.innerHTML = `
+      <div class="rail-tab">
+        <span>最新消息</span>
+        <a class="rail-more" href="./latest.html">查看更多</a>
+      </div>
+      <div class="home-latest-feed">
+        ${emptyContentMarkup()}
+      </div>
+    `;
     return;
   }
 
@@ -630,7 +682,12 @@ const renderHomeRail = (items) => {
 const renderLeadStory = (item) => {
   const lead = document.querySelector(".lead-card");
 
-  if (!lead || !item) {
+  if (!lead) {
+    return;
+  }
+
+  if (!item) {
+    lead.innerHTML = emptyContentMarkup("h1");
     return;
   }
 
@@ -647,10 +704,16 @@ const renderLeadStory = (item) => {
 };
 
 const renderHeroStory = (element, item) => {
-  if (!element || !item) {
+  if (!element) {
     return;
   }
 
+  if (!item) {
+    element.hidden = true;
+    return;
+  }
+
+  element.hidden = false;
   element.innerHTML = `
     <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
       <div class="${element.classList.contains("side-feature") ? "side-image" : "grid-image"}"${getImageStyle(item)}></div>
@@ -697,12 +760,16 @@ const renderHomeRows = (items) => {
   const columnItems = items.filter((item) => item.content_type === "column");
   const researchItems = items.filter((item) => item.content_type === "research");
 
-  list.innerHTML = [
-    homeRowMarkup("AI 新聞", "./ai.html", aiItems),
-    homeRowMarkup("金融", "./finance.html", financeItems),
-    homeRowMarkup("專欄", "./latest.html?type=column", columnItems),
-    homeRowMarkup("調研", "./latest.html?type=research", researchItems),
-  ].join("");
+  const rows = [
+    ["AI 新聞", "./ai.html", aiItems],
+    ["金融", "./finance.html", financeItems],
+    ["專欄", "./latest.html?type=column", columnItems],
+    ["調研", "./latest.html?type=research", researchItems],
+  ].filter(([, , rowItems]) => rowItems.length);
+
+  list.innerHTML = rows.length
+    ? rows.map(([title, href, rowItems]) => homeRowMarkup(title, href, rowItems)).join("")
+    : emptyContentMarkup();
 };
 
 const renderColumnStrip = (items) => {
@@ -722,7 +789,12 @@ const renderColumnStrip = (items) => {
     }
   });
 
-  if (!track || !featuredItems.length) {
+  if (!track) {
+    return;
+  }
+
+  if (!featuredItems.length) {
+    track.innerHTML = emptyContentMarkup();
     return;
   }
 
@@ -778,6 +850,43 @@ const getCurrentPage = () => {
   return filename.replace(".html", "") || "index";
 };
 
+const getActiveLanguage = () => (document.documentElement.lang === "en" ? "en" : "zh");
+
+const getLatestProfile = () => {
+  const type = new URLSearchParams(window.location.search).get("type");
+  return latestPageProfiles[type] || latestPageProfiles.all;
+};
+
+const applyLatestProfile = (lang = getActiveLanguage()) => {
+  if (getCurrentPage() !== "latest") {
+    return;
+  }
+
+  const profile = getLatestProfile();
+  const kicker = document.querySelector(".channel-hero .directory-kicker");
+  const title = document.querySelector("#latest-title");
+  const description = document.querySelector(".channel-hero-grid > p");
+
+  if (kicker) {
+    kicker.textContent = profile.kicker[lang];
+  }
+
+  if (title) {
+    title.textContent = profile.title[lang];
+  }
+
+  if (description) {
+    description.textContent = profile.description[lang];
+  }
+
+  if (document.body) {
+    document.body.dataset.titleZh = profile.titleTag.zh;
+    document.body.dataset.titleEn = profile.titleTag.en;
+  }
+
+  document.title = profile.titleTag[lang];
+};
+
 const isChannelFiltered = () => {
   const params = new URLSearchParams(window.location.search);
   const typeFilter = params.get("type");
@@ -829,7 +938,7 @@ const getPageItems = (items, page) => {
   });
 };
 
-const renderChannelLead = (items) => {
+const renderChannelLead = (items, hasAnyItems = true) => {
   const container = document.querySelector("[data-channel-lead]");
 
   if (!container) {
@@ -837,12 +946,14 @@ const renderChannelLead = (items) => {
   }
 
   if (!items.length) {
-    container.innerHTML = `
-      <div class="channel-empty">
-        <h2>沒有符合條件的內容</h2>
-        <p>請換一個子分類或內容型態，或稍後再查看更多內容。</p>
-      </div>
-    `;
+    container.innerHTML = hasAnyItems
+      ? `
+        <div class="channel-empty">
+          <h2>沒有符合條件的內容</h2>
+          <p>請換一個子分類或內容型態，或稍後再查看更多內容。</p>
+        </div>
+      `
+      : emptyContentMarkup();
     return true;
   }
 
@@ -949,12 +1060,20 @@ const renderDirectoryPage = (items) => {
   const pageItems = getPageItems(items, page);
 
   syncDirectoryChips();
+  applyLatestProfile();
 
-  if (renderChannelLead(pageItems)) {
+  if (renderChannelLead(pageItems, items.length > 0)) {
     const rowsShown = !isChannelFiltered() && renderChannelRows(getChannelItems(items, page), page);
     const moreSection = document.querySelector("[data-channel-more]");
     const feed = document.querySelector(".directory-feed");
     const feedItems = pageItems.slice(4);
+
+    if (!items.length) {
+      if (moreSection) {
+        moreSection.hidden = true;
+      }
+      return;
+    }
 
     if (moreSection) {
       moreSection.hidden = Boolean(rowsShown);
@@ -963,7 +1082,9 @@ const renderDirectoryPage = (items) => {
     if (feed && !rowsShown) {
       feed.innerHTML = feedItems.length
         ? feedItems.map(channelLedgerMarkup).join("")
-        : `<p class="directory-feed-note">以上就是目前符合條件的全部內容。</p>`;
+        : items.length
+          ? `<p class="directory-feed-note">以上就是目前符合條件的全部內容。</p>`
+          : emptyContentMarkup();
     }
     return;
   }
@@ -1392,7 +1513,7 @@ const renderNewsletterPage = (items) => {
             <div class="directory-feed-tags">
               <span>${escapeHtml(item.subcategory)}</span>
               <span>${escapeHtml(symbolLabel)}</span>
-              ${sourceUrl ? `<a class="directory-mini-tag newsletter-source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">原文 ↗</a>` : `<span class="directory-mini-tag">來源待補</span>`}
+              ${sourceUrl ? `<a class="directory-mini-tag newsletter-source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">原文 ↗</a>` : ""}
             </div>
           </article>
         `;
@@ -1712,6 +1833,7 @@ function translateAnnotatedContent(lang) {
 
 function translatePage(lang) {
   document.documentElement.lang = lang === "zh" ? "zh-Hant" : "en";
+  applyLatestProfile(lang);
 
   const titleKey = lang === "zh" ? "titleZh" : "titleEn";
   const annotatedTitle = document.body?.dataset[titleKey];
@@ -1931,6 +2053,10 @@ const getActiveMobileTab = () => {
 
   if (params.get("type") === "research" || contentType === "research" || page === "research") {
     return "research";
+  }
+
+  if (params.get("type") === "column" || contentType === "column") {
+    return "column";
   }
 
   if (page === "topics" || filename === "topics.html" || filename.startsWith("topic-")) {

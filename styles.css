@@ -810,6 +810,7 @@ main {
   text-transform: uppercase;
 }
 
+.newsletter-copy h1,
 .newsletter-copy h2,
 .strip-title h2 {
   margin: 0;
@@ -1516,11 +1517,13 @@ main {
   padding: 8px 0 4px;
 }
 
+.channel-empty h1,
 .channel-empty h2 {
   margin: 0 0 8px;
   font-family: var(--font-display);
   font-size: 22px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .channel-empty p {
@@ -2083,6 +2086,15 @@ body[data-page="archive"] .channel-hero-grid > p {
   padding-bottom: 64px;
 }
 
+body[data-page="newsletter"] .newsletter-band {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+body[data-page="newsletter"] .newsletter-copy h1 {
+  max-width: 760px;
+}
+
 .newsletter-hero .channel-hero-grid {
   padding: 28px 0 24px;
 }
@@ -2188,6 +2200,12 @@ body[data-page="archive"] .channel-hero-grid > p {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.5;
+}
+
+.newsletter-band .newsletter-thanks {
+  border-top-color: rgb(255 255 255 / 0.28);
+  border-bottom-color: rgb(255 255 255 / 0.28);
+  color: var(--kicker);
 }
 
 .newsletter-facts {
@@ -7459,6 +7477,44 @@ body[data-page="index"] .newsletter-band button {
 
 body[data-page="index"] .newsletter-band + .site-footer {
   margin-top: 0;
+}
+
+body[data-page="newsletter"] .newsletter-band {
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    var(--blue);
+  background-size: 44px 44px, 44px 44px, auto;
+  color: white;
+}
+
+body[data-page="newsletter"] .newsletter-band::before {
+  display: block;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+
+body[data-page="newsletter"] .newsletter-copy span {
+  color: var(--kicker);
+}
+
+body[data-page="newsletter"] .newsletter-copy h1 {
+  color: white;
+}
+
+body[data-page="newsletter"] .newsletter-copy p {
+  color: rgb(255 255 255 / 0.8);
+}
+
+body[data-page="newsletter"] .newsletter-band input {
+  border-color: rgb(255 255 255 / 0.22);
+  background: white;
+  color: var(--ink);
+}
+
+body[data-page="newsletter"] .newsletter-band button {
+  background: var(--pink);
+  color: var(--ink);
 }
 
 @media (max-width: 1050px) {

@@ -60,7 +60,7 @@ npm run validate
 npm run build:static
 ```
 
-`source_url` 或 `canonical_url` 若仍是 `example.com`，一般驗證會顯示 warning，但不會中斷本地 build。正式發布前必須使用 strict gate：
+目前 `data/news.json` 可以是空陣列；正式文章由外部文章 API 產生並通過審核後再 append。正式發布前必須使用 strict gate，避免佔位來源或不完整欄位進站：
 
 ```bash
 STRICT_SOURCES=1 npm run validate
@@ -88,4 +88,4 @@ http://127.0.0.1:5173/
 - Archive 是否重新接回主導航。
 - 專題頁是否統一改成 `topic.html?slug=` 或靜態生成。
 - Newsletter 目前只有前端確認互動，尚未接 email provider 或後端 API。
-- 交接包內多篇來源仍是 `example.com`，上 production 前必須替換為真實來源或明確轉為原創調研來源。
+- 正式文章內容尚未接 API；目前站內不保留 seed 假資料。
