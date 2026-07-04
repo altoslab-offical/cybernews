@@ -1790,12 +1790,19 @@ const initializeNewsData = async () => {
       return response.json();
     };
 
-    let items = await loadNewsItems(getNewsDataFilename());
+    let items;
 
-    if (!isDesignPreviewMode() && Array.isArray(items) && items.length === 0) {
-      const fixtureItems = await loadNewsItems("design-preview-news.json");
+    if (isDesignPreviewMode()) {
+      items = await loadNewsItems("design-preview-news.json");
+    } else {
+      const [productionItems, fixtureItems] = await Promise.all([
+        loadNewsItems("news.json"),
+        loadNewsItems("design-preview-news.json").catch(() => []),
+      ]);
 
-      if (Array.isArray(fixtureItems) && fixtureItems.length) {
+      items = productionItems;
+
+      if (Array.isArray(productionItems) && productionItems.length === 0 && Array.isArray(fixtureItems) && fixtureItems.length) {
         activeNewsDataMode = "design-fallback";
         items = fixtureItems;
         applyDesignPreviewMeta();
