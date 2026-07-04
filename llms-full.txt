@@ -8,15 +8,13 @@ CYBERNEWS is a static Traditional Chinese AI and technology-finance news index. 
 
 ## Canonical resources
 
-- Website: https://altoslab-offical.github.io/cybernews/
+- Website: https://d2iwyj37fdufgt.cloudfront.net/
 
-- Latest: https://altoslab-offical.github.io/cybernews/latest.html
+- Latest: https://d2iwyj37fdufgt.cloudfront.net/latest.html
 
-- Archive: https://altoslab-offical.github.io/cybernews/archive.html
+- Archive: https://d2iwyj37fdufgt.cloudfront.net/archive.html
 
-- RSS: https://altoslab-offical.github.io/cybernews/rss.xml
-
-- Article generation API contract: https://altoslab-offical.github.io/cybernews/ARTICLE_GENERATION_API.md
+- RSS: https://d2iwyj37fdufgt.cloudfront.net/rss.xml
 
 
 

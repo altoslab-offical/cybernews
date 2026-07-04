@@ -39,22 +39,25 @@ push to `main`.
 
 ## New GA / GTM
 
-Create new resources for this product:
+Created for this product under `altoslab.offical@gmail.com`:
 
 - GA4 property: `CYBERNEWS`
-- Web data stream URL: the final AWS or GitHub Pages URL
-- GTM web container: `CYBERNEWS`
+- Web data stream URL: `https://d2iwyj37fdufgt.cloudfront.net`
+- GA4 measurement ID: `G-SX01NLQZ7F`
+- GTM web container: `CYBERNEWS / d2iwyj37fdufgt.cloudfront.net`
+- GTM container ID: `GTM-WD45TXLT`
 
-After the new IDs exist, write them to `data/site.json`:
+These IDs are stored in `data/site.json`:
 
 ```json
 {
-  "ga_measurement_id": "G-XXXXXXXXXX",
-  "gtm_id": "GTM-XXXXXXX"
+  "base_url": "https://d2iwyj37fdufgt.cloudfront.net",
+  "ga_measurement_id": "G-SX01NLQZ7F",
+  "gtm_id": "GTM-WD45TXLT"
 }
 ```
 
-Then rebuild:
+After any change, rebuild:
 
 ```bash
 npm run build:static
@@ -66,12 +69,13 @@ are non-empty.
 
 ## New AWS Static Production
 
-Preferred production shape:
+Current production shape:
 
 ```txt
-S3 bucket (private static assets)
-CloudFront distribution
-Origin Access Control
+S3 bucket: cybernews-prod-487316829524-apne1
+CloudFront distribution: E24YMBD3AFUUIG
+CloudFront URL: https://d2iwyj37fdufgt.cloudfront.net/
+Origin Access Control: EPJBRKB1ONUXA
 Default root object: index.html
 Custom error response: 404.html for 403/404
 ```
@@ -79,7 +83,7 @@ Custom error response: 404.html for 403/404
 Build with the final production URL before upload:
 
 ```bash
-SITE_URL="https://<new-cloudfront-or-custom-domain>" npm run build:static
+SITE_URL="https://d2iwyj37fdufgt.cloudfront.net" npm run build:static
 npm run validate:site
 aws s3 sync . "s3://<new-cybernews-bucket>" \
   --delete \

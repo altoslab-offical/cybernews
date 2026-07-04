@@ -15,6 +15,10 @@ AI NEWS CENTER 是純靜態 AI 與科技財經新聞網站。前端直接讀 `da
 - `scripts/apply-site-metadata.js` 會替頂層頁注入 canonical、OG/Twitter、JSON-LD 與可選 GA/GTM snippet。
 - `scripts/validate-site.js` 會檢查 HTML metadata 與本地連結。
 - 這是全新產品；不要沿用 ALTOS LAB 官方站既有 AWS runtime、GA property 或 GTM container。
+- 正式靜態環境已部署到全新的 AWS S3 + CloudFront：
+  `https://d2iwyj37fdufgt.cloudfront.net/`。
+- GA4 / GTM 已使用 `altoslab.offical@gmail.com` 建立全新 CYBERNEWS 資源：
+  GA4 `G-SX01NLQZ7F`、GTM `GTM-WD45TXLT`。
 
 ## 本地啟動
 
@@ -45,7 +49,7 @@ http://127.0.0.1:5173/
 - `design-tokens.css`：品牌色、字級、間距等設計 token。
 - `data/news.json`：所有文章資料。
 - `data/topics.json`：專題匹配規則。
-- `data/site.json`：站名、base URL、RSS 描述。
+- `data/site.json`：站名、base URL、RSS 描述、GA4 / GTM IDs。
 - `scripts/validate-news.js`：文章資料驗證。
 - `scripts/build-static.js`：產生 `articles/`、`research/`、`sitemap.xml`、`robots.txt`、`rss.xml`、`llms.txt`、`llms-full.txt`。
 - `scripts/apply-site-metadata.js`：頂層頁 SEO/GEO/analytics metadata 注入。
@@ -98,20 +102,16 @@ Hermes 端同步規格：
 ## 目前已知待辦
 
 1. `data/news.json` 目前刻意維持空陣列，不保留 seed 假資料；正式文章必須由文章 API 草稿、驗證、審核後 append。
-2. `data/site.json` 目前使用 GitHub Pages 預覽網域；正式 AWS CloudFront URL 建成後要換成正式網域並重跑 build。
-3. Newsletter 表單還沒有接真實 email 服務。
-4. 新 GA4 property / 新 GTM container 建好後，要把 ID 寫入 `data/site.json` 再重跑 build。
-5. 中英切換仍是前端字串替換，長期建議改成 key-based i18n。
-6. 專題頁目前仍有手寫頁面，後續可改成完全資料驅動。
+2. Newsletter 表單還沒有接真實 email 服務。
+3. 中英切換仍是前端字串替換，長期建議改成 key-based i18n。
+4. 專題頁目前仍有手寫頁面，後續可改成完全資料驅動。
 
 ## 建議開發順序
 
-1. 先接正式網域與部署，更新 `data/site.json`。
-2. 接文章 API 的 draft / validate / approve 流程，並讓正式文章 append 到 `data/news.json`。
-3. 接 newsletter 服務，例如 Buttondown、MailerLite 或自建 API。
-4. 建立全新的 GA4 property 與 GTM container，將 ID 寫入 `data/site.json`。
-5. 把專題頁改成讀 `data/topics.json` 與 `data/news.json` 自動渲染。
-6. 依 `ARTICLE_GENERATION_API.md` 建立文章機器人的草稿、審核、發布流程。
+1. 接文章 API 的 draft / validate / approve 流程，並讓正式文章 append 到 `data/news.json`。
+2. 接 newsletter 服務，例如 Buttondown、MailerLite 或自建 API。
+3. 把專題頁改成讀 `data/topics.json` 與 `data/news.json` 自動渲染。
+4. 依 `ARTICLE_GENERATION_API.md` 建立文章機器人的草稿、審核、發布流程。
 
 ## 交接驗證
 
@@ -119,6 +119,8 @@ Hermes 端同步規格：
 
 ```bash
 npm run validate
+npm run build:static
+npm run validate:site
 git diff --check
 ```
 

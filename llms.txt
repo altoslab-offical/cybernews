@@ -3,13 +3,13 @@
 > AI 與金融新聞中文摘要、來源連結與 metadata。
 
 ## Core pages
-- [Home](https://altoslab-offical.github.io/cybernews/): AI and finance news summaries in Traditional Chinese
-- [Latest](https://altoslab-offical.github.io/cybernews/latest.html): newest AI, finance, crypto, policy, column, and research items
-- [AI News](https://altoslab-offical.github.io/cybernews/ai.html): models, agents, infrastructure, regulation, applications, and talent
-- [Finance](https://altoslab-offical.github.io/cybernews/finance.html): technology stocks, crypto, ETFs, and stablecoin policy summaries
-- [Research](https://altoslab-offical.github.io/cybernews/research.html): deeper research-style summaries and market structure notes
-- [Archive](https://altoslab-offical.github.io/cybernews/archive.html): searchable metadata index
-- [RSS](https://altoslab-offical.github.io/cybernews/rss.xml): latest feed
+- [Home](https://d2iwyj37fdufgt.cloudfront.net/): AI and finance news summaries in Traditional Chinese
+- [Latest](https://d2iwyj37fdufgt.cloudfront.net/latest.html): newest AI, finance, crypto, policy, column, and research items
+- [AI News](https://d2iwyj37fdufgt.cloudfront.net/ai.html): models, agents, infrastructure, regulation, applications, and talent
+- [Finance](https://d2iwyj37fdufgt.cloudfront.net/finance.html): technology stocks, crypto, ETFs, and stablecoin policy summaries
+- [Research](https://d2iwyj37fdufgt.cloudfront.net/research.html): deeper research-style summaries and market structure notes
+- [Archive](https://d2iwyj37fdufgt.cloudfront.net/archive.html): searchable metadata index
+- [RSS](https://d2iwyj37fdufgt.cloudfront.net/rss.xml): latest feed
 
 ## Content rules
 - CYBERNEWS stores metadata, Traditional Chinese summaries, why-it-matters notes, source links, and classification data.

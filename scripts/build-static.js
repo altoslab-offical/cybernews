@@ -12,7 +12,7 @@ const defaultLanguage = siteConfig.default_language || "zh-Hant";
 const gaId = process.env.GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || siteConfig.ga_measurement_id || "";
 const gtmId = process.env.GTM_ID || process.env.NEXT_PUBLIC_GTM_ID || siteConfig.gtm_id || "";
 const buildDate = new Date().toISOString();
-const assetVersion = "20260704-footer-social";
+const assetVersion = "20260704-analytics-lang";
 
 const verticalLabels = {
   ai: "AI 新聞",
@@ -416,7 +416,7 @@ const articleHtml = (items, item) => {
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Roboto+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../design-tokens.css?v=20260704-text-green" />
-    <link rel="stylesheet" href="../../styles.css?v=20260704-newsletter-page-hero3" />
+    <link rel="stylesheet" href="../../styles.css?v=20260704-analytics-lang" />
     ${analyticsHead()}
   </head>
   <body data-title-zh="${escapeHtml(title)}" data-title-en="${escapeHtml(item.title_original)} - ${escapeHtml(siteName)}" data-page="${item.content_type === "research" ? "research" : "article"}" data-vertical="${escapeHtml(item.vertical)}" data-content-type="${escapeHtml(item.content_type)}">
@@ -530,7 +530,7 @@ ${relatedMarkup(items, item)}
 
 ${footerMarkup()}
     </div>
-    <script src="../../script.js?v=20260704-newsletter-page-hero3"></script>
+    <script src="../../script.js?v=20260704-analytics-lang"></script>
   </body>
 </html>`;
 };
@@ -627,7 +627,6 @@ const writeLlms = (items) => {
     `- Latest: ${siteUrl}/latest.html`,
     `- Archive: ${siteUrl}/archive.html`,
     `- RSS: ${siteUrl}/rss.xml`,
-    `- Article generation API contract: ${siteUrl}/ARTICLE_GENERATION_API.md`,
     "",
     "## Article schema summary",
     "Each item in data/news.json must use vertical ai or finance; content_type news, column, or research; and one of the seven allowed subcategories. news routes to articles/<id>/, column routes to articles/<id>/, and research routes to research/<id>/.",

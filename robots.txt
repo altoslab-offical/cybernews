@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://altoslab-offical.github.io/cybernews/sitemap.xml
+Sitemap: https://d2iwyj37fdufgt.cloudfront.net/sitemap.xml

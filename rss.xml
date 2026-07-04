@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CYBERNEWS</title>
-    <link>https://altoslab-offical.github.io/cybernews/</link>
+    <link>https://d2iwyj37fdufgt.cloudfront.net/</link>
     <description>AI 與金融新聞中文摘要、來源連結與 metadata。</description>
     <language>zh-Hant</language>
-    <lastBuildDate>Sat, 04 Jul 2026 02:49:19 GMT</lastBuildDate>
-    <atom:link href="https://altoslab-offical.github.io/cybernews/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 04 Jul 2026 03:28:52 GMT</lastBuildDate>
+    <atom:link href="https://d2iwyj37fdufgt.cloudfront.net/rss.xml" rel="self" type="application/rss+xml" />
 
   </channel>
 </rss>
