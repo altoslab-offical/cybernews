@@ -12,6 +12,9 @@ const scriptBaseUrl = (() => {
 })();
 const dataAssetUrl = (filename) => new URL(`data/${filename}`, scriptBaseUrl).href;
 const rootAssetUrl = (filename) => new URL(filename, scriptBaseUrl).href;
+const previewParams = () => new URLSearchParams(window.location.search);
+const isDesignPreviewMode = () => previewParams().get("preview") === "design";
+const getNewsDataFilename = () => (isDesignPreviewMode() ? "design-preview-news.json" : "news.json");
 const isPlaceholderSourceUrl = (value) => {
   if (!value) {
     return false;
@@ -25,6 +28,9 @@ const isPlaceholderSourceUrl = (value) => {
 };
 const getSourceUrl = (item) => {
   const value = item?.canonical_url || item?.source_url || "";
+  if (item?.is_design_fixture || String(value).startsWith("design-fixture://")) {
+    return "";
+  }
   return isPlaceholderSourceUrl(value) ? "" : value;
 };
 const columnFilterOptions = [
@@ -426,8 +432,85 @@ const getImageStyle = (item) => {
 };
 
 const getStoryHref = (item) => {
+  if (isDesignPreviewMode()) {
+    const params = new URLSearchParams({
+      id: item?.id || "",
+      preview: "design",
+    });
+    return `./research.html?${params.toString()}`;
+  }
+
   const folder = item?.content_type === "research" ? "research" : "articles";
   return `./${folder}/${encodeURIComponent(item?.id || "")}/`;
+};
+
+const designFixtureBadgeMarkup = (item) =>
+  item?.is_design_fixture
+    ? `<span class="design-fixture-badge" data-i18n-zh="設計檢查假資料" data-i18n-en="Design fixture">設計檢查假資料</span>`
+    : "";
+
+const designFixtureNoticeMarkup = (item) =>
+  item?.is_design_fixture
+    ? `<p class="design-fixture-note" data-i18n-zh="${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}" data-i18n-en="${escapeHtml(item.preview_note_en || "Design-review fixture only. Not production news.")}">${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}</p>`
+    : "";
+
+const designFixtureKeypointMarkup = (item) =>
+  item?.is_design_fixture
+    ? `<li data-i18n-zh="${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}" data-i18n-en="${escapeHtml(item.preview_note_en || "Design-review fixture only. Not production news.")}">${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}</li>`
+    : "";
+
+const applyDesignPreviewMeta = () => {
+  if (!isDesignPreviewMode()) {
+    return;
+  }
+
+  document.documentElement.dataset.preview = "design";
+  document.body?.setAttribute("data-preview-mode", "design");
+
+  let robotsMeta = document.querySelector('meta[name="robots"]');
+  if (!robotsMeta) {
+    robotsMeta = document.createElement("meta");
+    robotsMeta.setAttribute("name", "robots");
+    document.head.append(robotsMeta);
+  }
+  robotsMeta.setAttribute("content", "noindex,nofollow,noarchive");
+};
+
+const injectDesignPreviewNotice = () => {
+  if (!isDesignPreviewMode() || document.querySelector(".design-preview-notice")) {
+    return;
+  }
+
+  const notice = document.createElement("aside");
+  notice.className = "design-preview-notice";
+  notice.setAttribute("aria-label", "Design preview notice");
+  notice.innerHTML = `
+    <strong data-i18n-zh="設計檢查模式" data-i18n-en="Design preview mode">設計檢查模式</strong>
+    <span data-i18n-zh="目前顯示的是假資料文章，只供設計師檢查版面與資訊密度。正式站仍由文章 API 提供資料。" data-i18n-en="This page is using fake fixture stories for designer layout review. Production content still comes from the article API.">目前顯示的是假資料文章，只供設計師檢查版面與資訊密度。正式站仍由文章 API 提供資料。</span>
+  `;
+
+  (document.querySelector(".site-shell") || document.body).prepend(notice);
+};
+
+const preserveDesignPreviewNavigation = () => {
+  if (!isDesignPreviewMode()) {
+    return;
+  }
+
+  document.querySelectorAll("a[href]").forEach((link) => {
+    const rawHref = link.getAttribute("href") || "";
+    if (!rawHref || rawHref.startsWith("#") || rawHref.startsWith("mailto:") || rawHref.startsWith("tel:")) {
+      return;
+    }
+
+    const target = new URL(rawHref, window.location.href);
+    if (target.origin !== window.location.origin || !target.pathname.endsWith(".html")) {
+      return;
+    }
+
+    target.searchParams.set("preview", "design");
+    link.setAttribute("href", target.href);
+  });
 };
 
 const getSymbols = (item) => [...(item?.tickers || []), ...(item?.coins || [])];
@@ -455,6 +538,7 @@ const storyCardMarkup = (item) => `
   <article class="directory-card">
     <a href="${getStoryHref(item)}">
       <div class="directory-card-image"${getImageStyle(item)}></div>
+      ${designFixtureBadgeMarkup(item)}
       <h2>${escapeHtml(item.title_zh)}</h2>
       <p>${escapeHtml(item.summary_zh)}</p>
     </a>
@@ -473,6 +557,7 @@ const feedItemMarkup = (item) => {
     <article class="directory-feed-item">
       <div class="directory-feed-meta">${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘<br />${escapeHtml(getMetaLine(item))}</div>
       <div>
+        ${designFixtureBadgeMarkup(item)}
         <h2><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h2>
         <p>${escapeHtml(item.summary_zh)}</p>
       </div>
@@ -577,8 +662,10 @@ const renderLeadStory = (item) => {
     <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
       <div class="lead-image" role="img" aria-label="${escapeHtml(item.title_original)}"${getImageStyle(item)}></div>
       <div class="story-meta">今日主線 / ${escapeHtml(getMetaLine(item))}</div>
+      ${designFixtureBadgeMarkup(item)}
       <h1>${escapeHtml(item.title_zh)}</h1>
       <p>${escapeHtml(item.summary_zh)}</p>
+      ${designFixtureNoticeMarkup(item)}
       ${whyMattersMarkup(item)}
       <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))}</div>
     </a>
@@ -600,6 +687,7 @@ const renderHeroStory = (element, item) => {
     <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
       <div class="${element.classList.contains("side-feature") ? "side-image" : "grid-image"}"${getImageStyle(item)}></div>
       <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
+      ${designFixtureBadgeMarkup(item)}
       <h2>${escapeHtml(item.title_zh)}</h2>
       <p>${escapeHtml(item.summary_zh)}</p>
       ${whyMattersMarkup(item)}
@@ -619,6 +707,7 @@ const homeRowMarkup = (title, href, items) => `
             <article class="region-article">
               <a href="${getStoryHref(item)}">
                 <div class="region-article-image"${getImageStyle(item)}></div>
+                ${designFixtureBadgeMarkup(item)}
                 <h3>${escapeHtml(item.title_zh)}</h3>
                 <p>${escapeHtml(getMetaLine(item))} / ${escapeHtml(item.source_name)}</p>
               </a>
@@ -687,6 +776,7 @@ const renderColumnStrip = (items) => {
           <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
             <div class="column-card-image"${getImageStyle(item)}></div>
             <div class="column-card-caption">
+              ${designFixtureBadgeMarkup(item)}
               <h3>${escapeHtml(item.subcategory)}</h3>
               <p>${escapeHtml(item.title_zh)}</p>
               <span>${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
@@ -739,6 +829,19 @@ const getLatestProfile = () => {
   return latestPageProfiles[type] || latestPageProfiles.all;
 };
 
+const setMetaContent = (selector, value) => {
+  const element = document.querySelector(selector);
+  if (element && value) {
+    element.setAttribute("content", value);
+  }
+};
+
+const currentShareUrlWithoutPreview = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("preview");
+  return url.href;
+};
+
 const applyLatestProfile = (lang = getActiveLanguage()) => {
   if (getCurrentPage() !== "latest") {
     return;
@@ -767,6 +870,12 @@ const applyLatestProfile = (lang = getActiveLanguage()) => {
   }
 
   document.title = profile.titleTag[lang];
+  setMetaContent('meta[name="description"]', profile.description[lang]);
+  setMetaContent('meta[property="og:title"]', profile.titleTag[lang]);
+  setMetaContent('meta[property="og:description"]', profile.description[lang]);
+  setMetaContent('meta[property="og:url"]', currentShareUrlWithoutPreview());
+  setMetaContent('meta[name="twitter:title"]', profile.titleTag[lang]);
+  setMetaContent('meta[name="twitter:description"]', profile.description[lang]);
 };
 
 const isChannelFiltered = () => {
@@ -847,8 +956,10 @@ const renderChannelLead = (items, hasAnyItems = true) => {
       <a href="${getStoryHref(lead)}" aria-label="${escapeHtml(lead.title_zh)}">
         <div class="channel-lead-image" role="img" aria-label="${escapeHtml(lead.title_original)}"${getImageStyle(lead)}></div>
         <div class="story-meta">${escapeHtml(getMetaLine(lead))}</div>
+        ${designFixtureBadgeMarkup(lead)}
         <h2>${escapeHtml(lead.title_zh)}</h2>
         <p>${escapeHtml(lead.summary_zh)}</p>
+        ${designFixtureNoticeMarkup(lead)}
         ${whyMattersMarkup(lead)}
         <div class="byline">來源：${escapeHtml(lead.source_name)} / ${escapeHtml(formatDateTime(lead.published_at))} / ${getReadingMinutes(lead)} 分鐘</div>
       </a>
@@ -860,6 +971,7 @@ const renderChannelLead = (items, hasAnyItems = true) => {
             <article class="channel-lead-side-item">
               <a href="${getStoryHref(item)}">
                 <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
+                ${designFixtureBadgeMarkup(item)}
                 <h3>${escapeHtml(item.title_zh)}</h3>
                 <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))}</div>
               </a>
@@ -909,6 +1021,7 @@ const channelLedgerMarkup = (item) => `
       <div class="channel-ledger-thumb"${getImageStyle(item)}></div>
       <div class="channel-ledger-body">
         <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
+        ${designFixtureBadgeMarkup(item)}
         <h3>${escapeHtml(item.title_zh)}</h3>
         <p>${escapeHtml(item.summary_zh)}</p>
         <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘</div>
@@ -1389,6 +1502,7 @@ const renderNewsletterPage = (items) => {
               ${itemDate ? `<time datetime="${escapeHtml(item.published_at)}">${escapeHtml(itemDate)}</time>` : ""}
             </div>
             <div>
+              ${designFixtureBadgeMarkup(item)}
               <h2><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h2>
               <p><strong>為什麼重要：</strong>${escapeHtml(item.why_matters_zh || item.summary_zh)}</p>
             </div>
@@ -1514,7 +1628,7 @@ const renderDetailPage = (items) => {
   const preferredItems = pageType === "research" ? items.filter((item) => item.content_type === "research") : items.filter((item) => item.content_type !== "research");
   const requestedItem = requestedId ? items.find((entry) => entry.id === requestedId) : null;
 
-  if (requestedItem && (requestedItem.content_type === "research") !== (pageType === "research")) {
+  if (!isDesignPreviewMode() && requestedItem && (requestedItem.content_type === "research") !== (pageType === "research")) {
     window.location.replace(getStoryHref(requestedItem));
     return;
   }
@@ -1542,7 +1656,7 @@ const renderDetailPage = (items) => {
     : `<span data-no-translate>${escapeHtml(item.title_original)}</span>`;
   const sourceActionMarkup = sourceUrl
     ? `<a class="directory-action" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">閱讀原文</a>`
-    : `<span class="directory-chip">來源待補</span>`;
+    : `<span class="directory-chip" data-i18n-zh="來源待補" data-i18n-en="Source pending">來源待補</span>`;
   const metadata = getMetadata(item);
   const publishedAt = formatDateTime(item.published_at);
   const readingMinutes = getReadingMinutes(item);
@@ -1580,8 +1694,10 @@ const renderDetailPage = (items) => {
             ${publishedAt ? `<time datetime="${escapeHtml(item.published_at)}">${escapeHtml(publishedAt)}</time>` : ""}
             <span>${readingMinutes} 分鐘閱讀</span>
           </div>
+          ${designFixtureBadgeMarkup(item)}
           <h1>${escapeHtml(item.title_zh)}</h1>
           <p class="article-dek">${escapeHtml(item.summary_zh)}</p>
+          ${designFixtureNoticeMarkup(item)}
           ${whyMattersMarkup(item)}
           <p class="article-original-title">Original: ${escapeHtml(item.title_original)}</p>
         </div>
@@ -1602,6 +1718,7 @@ const renderDetailPage = (items) => {
           <ul>
             <li>${escapeHtml(item.summary_zh)}</li>
             ${item.why_matters_zh ? `<li>為什麼重要：${escapeHtml(item.why_matters_zh)}</li>` : ""}
+            ${designFixtureKeypointMarkup(item)}
             <li>本頁只保存摘要、分類、來源與原文連結，不重刊全文，也不繞過 paywall。</li>
             <li>${metadata.length ? `${escapeHtml(metadata.join(" / "))} 僅作為 metadata 與查找線索。` : "未附股票或幣種代號。"}</li>
           </ul>
@@ -1656,8 +1773,11 @@ const renderDetailPage = (items) => {
 };
 
 const initializeNewsData = async () => {
+  applyDesignPreviewMeta();
+  injectDesignPreviewNotice();
+
   try {
-    const response = await fetch(dataAssetUrl("news.json"), { cache: "no-store" });
+    const response = await fetch(dataAssetUrl(getNewsDataFilename()), { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`Unable to load news data: ${response.status}`);
@@ -1673,6 +1793,8 @@ const initializeNewsData = async () => {
     renderTopicsPage(items, topics);
     renderDetailPage(items);
     renderNewsletterPage(items);
+    preserveDesignPreviewNavigation();
+    syncCurrentNavigation();
   } catch (error) {
     console.warn(error);
   }
@@ -2043,24 +2165,63 @@ document.querySelectorAll(".newsletter-band form, .newsletter-signup-form").forE
 
 setupMobileHeaderAutoHide();
 setupFloatingHeader();
+preserveDesignPreviewNavigation();
 syncCurrentNavigation();
 
+const copyLinkLabels = {
+  zh: { idle: "複製", success: "已複製", failed: "複製失敗", aria: "複製連結" },
+  en: { idle: "Copy", success: "Copied", failed: "Copy failed", aria: "Copy link" },
+};
+
+const writeClipboardText = async (value) => {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return true;
+  }
+
+  const helper = document.createElement("textarea");
+  helper.value = value;
+  helper.setAttribute("readonly", "");
+  helper.style.position = "fixed";
+  helper.style.left = "-9999px";
+  document.body.append(helper);
+  helper.select();
+  const didCopy = document.execCommand("copy");
+  helper.remove();
+  return didCopy;
+};
+
 document.querySelectorAll("[data-copy-link]").forEach((button) => {
+  const label = button.querySelector("span");
+  const icon = button.querySelector("i");
+
   button.addEventListener("click", async () => {
+    const lang = getActiveLanguage();
+    const labels = copyLinkLabels[lang] || copyLinkLabels.zh;
+    let copied = false;
+
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      copied = await writeClipboardText(window.location.href);
     } catch {
-      const helper = document.createElement("textarea");
-      helper.value = window.location.href;
-      document.body.append(helper);
-      helper.select();
-      document.execCommand("copy");
-      helper.remove();
+      copied = false;
     }
 
-    const icon = button.querySelector("i");
-    icon?.classList.replace("fa-link", "fa-check");
-    window.setTimeout(() => icon?.classList.replace("fa-check", "fa-link"), 1600);
+    if (label) {
+      label.textContent = copied ? labels.success : labels.failed;
+    }
+
+    button.setAttribute("aria-label", copied ? labels.success : labels.failed);
+    icon?.classList.replace("fa-link", copied ? "fa-check" : "fa-triangle-exclamation");
+
+    window.setTimeout(() => {
+      const restoreLabels = copyLinkLabels[getActiveLanguage()] || copyLinkLabels.zh;
+      if (label) {
+        label.textContent = restoreLabels.idle;
+      }
+      button.setAttribute("aria-label", restoreLabels.aria);
+      icon?.classList.replace("fa-check", "fa-link");
+      icon?.classList.replace("fa-triangle-exclamation", "fa-link");
+    }, 1600);
   });
 });
 

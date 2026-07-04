@@ -2,7 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
-const dataPath = path.join(rootDir, "data", "news.json");
+const dataFile = process.env.NEWS_DATA_FILE || "data/news.json";
+const dataPath = path.resolve(rootDir, dataFile);
 
 const allowedVerticals = new Set(["ai", "finance"]);
 const allowedContentTypes = new Set(["news", "column", "research"]);
@@ -53,7 +54,7 @@ const readItems = () => {
   try {
     return JSON.parse(fs.readFileSync(dataPath, "utf8"));
   } catch (error) {
-    throw new Error(`Unable to read data/news.json: ${error.message}`);
+    throw new Error(`Unable to read ${path.relative(rootDir, dataPath)}: ${error.message}`);
   }
 };
 
@@ -64,7 +65,7 @@ const ids = new Set();
 const strictSources = process.env.STRICT_SOURCES === "1";
 
 if (!Array.isArray(items)) {
-  errors.push("data/news.json must contain a JSON array.");
+  errors.push(`${path.relative(rootDir, dataPath)} must contain a JSON array.`);
 } else {
   items.forEach((item, index) => {
     const label = item && item.id ? item.id : `item[${index}]`;
@@ -135,4 +136,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${items.length} news items.`);
+console.log(`Validated ${items.length} news items from ${path.relative(rootDir, dataPath)}.`);

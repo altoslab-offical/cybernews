@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /*?preview=design
+Disallow: /*&preview=design
 
 Sitemap: https://d2iwyj37fdufgt.cloudfront.net/sitemap.xml

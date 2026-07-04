@@ -10,6 +10,7 @@ const gaId = process.env.GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_MEASURE
 const gtmId = process.env.GTM_ID || process.env.NEXT_PUBLIC_GTM_ID || siteConfig.gtm_id || "";
 const defaultDescription =
   siteConfig.description || "AI 與金融新聞中文摘要、來源連結與 metadata。";
+const shareImagePath = siteConfig.og_image || "assets/og-cybernews.jpg";
 
 const pages = [
   {
@@ -141,6 +142,12 @@ const escapeHtml = (value) =>
 const escapeScriptJson = (value) => JSON.stringify(value, null, 2).replace(/</g, "\\u003c");
 
 const absoluteUrl = (publicPath = "") => `${siteUrl}/${publicPath.replace(/^\/+/, "")}`;
+const toAbsoluteUrl = (value = "") => {
+  if (/^https?:\/\//i.test(value)) {
+    return value;
+  }
+  return absoluteUrl(value);
+};
 
 const analyticsHead = () => {
   const blocks = [];
@@ -214,16 +221,26 @@ const jsonLd = (page, url) => ({
 
 const metadataBlock = (page) => {
   const url = absoluteUrl(page.path);
+  const shareImageUrl = toAbsoluteUrl(shareImagePath);
   return `<!-- site-meta:start -->
     <link rel="canonical" href="${escapeHtml(url)}" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_TW" />
     <meta property="og:site_name" content="${escapeHtml(siteName)}" />
     <meta property="og:title" content="${escapeHtml(page.title)}" />
     <meta property="og:description" content="${escapeHtml(page.description)}" />
     <meta property="og:url" content="${escapeHtml(url)}" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="${escapeHtml(shareImageUrl)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(shareImageUrl)}" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${escapeHtml(`${siteName} share image`)}" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(page.title)}" />
     <meta name="twitter:description" content="${escapeHtml(page.description)}" />
+    <meta name="twitter:image" content="${escapeHtml(shareImageUrl)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(`${siteName} share image`)}" />
     <script type="application/ld+json" data-site-jsonld>${escapeScriptJson(jsonLd(page, url))}</script>
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     ${analyticsHead()}

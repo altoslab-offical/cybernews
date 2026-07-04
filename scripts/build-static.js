@@ -9,10 +9,11 @@ const siteName = siteConfig.site_name || "CYBERNEWS";
 const siteUrl = (process.env.SITE_URL || siteConfig.base_url || "https://cybernews.example").replace(/\/$/, "");
 const siteDescription = siteConfig.description || "AI 與金融新聞中文摘要、來源連結與 metadata。";
 const defaultLanguage = siteConfig.default_language || "zh-Hant";
+const shareImagePath = siteConfig.og_image || "assets/og-cybernews.jpg";
 const gaId = process.env.GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || siteConfig.ga_measurement_id || "";
 const gtmId = process.env.GTM_ID || process.env.NEXT_PUBLIC_GTM_ID || siteConfig.gtm_id || "";
 const buildDate = new Date().toISOString();
-const assetVersion = "20260704-analytics-lang";
+const assetVersion = "20260704-design-preview-v3";
 
 const verticalLabels = {
   ai: "AI 新聞",
@@ -111,6 +112,9 @@ const isPlaceholderSourceUrl = (value) => {
 };
 const sourceUrl = (item) => {
   const value = item.canonical_url || item.source_url || "";
+  if (item.is_design_fixture || String(value).startsWith("design-fixture://")) {
+    return "";
+  }
   return isPlaceholderSourceUrl(value) ? "" : value;
 };
 const byPublishedDesc = (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
@@ -127,6 +131,15 @@ const whyMattersMarkup = (item) =>
 
 const publicPathForItem = (item) => `${item.content_type === "research" ? "research" : "articles"}/${encodeURIComponent(item.id)}/`;
 const absoluteUrl = (publicPath) => `${siteUrl}/${publicPath.replace(/^\/+/, "")}`;
+const toAbsoluteUrl = (value = "") => {
+  if (/^https?:\/\//i.test(value)) {
+    return value;
+  }
+
+  return absoluteUrl(value);
+};
+const shareImageUrl = toAbsoluteUrl(shareImagePath);
+const imageUrlForItem = (item) => (item.image_url ? toAbsoluteUrl(item.image_url) : shareImageUrl);
 const nestedHref = (publicPath) => `../../${publicPath}`;
 
 const getDetailArchiveHref = (item) => `../../${item.vertical === "ai" ? "ai" : "finance"}.html?type=${encodeURIComponent(item.content_type)}`;
@@ -220,7 +233,7 @@ const imageStyle = (item) => {
     return "";
   }
 
-  return ` style="background-image: linear-gradient(0deg, rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.02)), url('${escapeHtml(item.image_url)}')"`;
+  return ` style="background-image: linear-gradient(0deg, rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.02)), url('${escapeHtml(imageUrlForItem(item))}')"`;
 };
 
 const relatedMarkup = (items, currentItem) => {
@@ -342,7 +355,7 @@ const jsonLdForItem = (item, url) => ({
   headline: item.title_zh,
   alternativeHeadline: item.title_original,
   description: item.summary_zh,
-  image: item.image_url ? [item.image_url] : undefined,
+  image: [imageUrlForItem(item)],
   datePublished: item.published_at,
   dateModified: item.fetched_at || item.published_at,
   inLanguage: "zh-Hant",
@@ -380,6 +393,7 @@ const articleHtml = (items, item) => {
   const description = item.summary_zh;
   const metadata = getMetadata(item);
   const source = sourceUrl(item);
+  const itemShareImage = imageUrlForItem(item);
   const sourceTitleMarkup = source
     ? `<a href="${escapeHtml(source)}" target="_blank" rel="noreferrer" data-no-translate>${escapeHtml(item.title_original)}</a>`
     : `<span data-no-translate>${escapeHtml(item.title_original)}</span>`;
@@ -402,11 +416,17 @@ const articleHtml = (items, item) => {
     <meta property="og:title" content="${escapeHtml(item.title_zh)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:url" content="${escapeHtml(url)}" />
-    ${item.image_url ? `<meta property="og:image" content="${escapeHtml(item.image_url)}" />` : ""}
+    <meta property="og:image" content="${escapeHtml(itemShareImage)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(itemShareImage)}" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${escapeHtml(item.title_zh)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(item.title_zh)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
-    ${item.image_url ? `<meta name="twitter:image" content="${escapeHtml(item.image_url)}" />` : ""}
+    <meta name="twitter:image" content="${escapeHtml(itemShareImage)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(item.title_zh)}" />
     <script type="application/ld+json">${escapeScriptJson(jsonLdForItem(item, url))}</script>
     <script type="application/ld+json">${escapeScriptJson(breadcrumbJsonLd(item, url))}</script>
     <link rel="icon" type="image/png" sizes="32x32" href="../../assets/fav.png?v=20260704" />
@@ -414,9 +434,9 @@ const articleHtml = (items, item) => {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Roboto+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../design-tokens.css?v=20260704-text-green" />
-    <link rel="stylesheet" href="../../styles.css?v=20260704-analytics-lang" />
+    <link rel="stylesheet" href="../../styles.css?v=${assetVersion}" />
     ${analyticsHead()}
   </head>
   <body data-title-zh="${escapeHtml(title)}" data-title-en="${escapeHtml(item.title_original)} - ${escapeHtml(siteName)}" data-page="${item.content_type === "research" ? "research" : "article"}" data-vertical="${escapeHtml(item.vertical)}" data-content-type="${escapeHtml(item.content_type)}">
@@ -436,8 +456,9 @@ ${headerMarkup()}
             <span>${escapeHtml(item.subcategory)}</span>
           </nav>
           <div class="article-share" aria-label="Article actions">
-            ${source ? `<a class="article-icon-action" href="${escapeHtml(source)}" target="_blank" rel="noreferrer" aria-label="Original source"><i class="fa-solid fa-link" aria-hidden="true"></i><span>原文</span></a>` : ""}
-            <a class="article-icon-action" href="../../newsletter.html" aria-label="Subscribe"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>訂閱</span></a>
+            <button class="article-icon-action" type="button" data-copy-link aria-label="Copy link"><i class="fa-solid fa-link" aria-hidden="true"></i><span data-i18n-zh="複製" data-i18n-en="Copy">複製</span></button>
+            ${source ? `<a class="article-icon-action" href="${escapeHtml(source)}" target="_blank" rel="noreferrer" aria-label="Original source"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i><span>原文</span></a>` : ""}
+            <a class="article-icon-action" href="../../newsletter.html" aria-label="Subscribe"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span data-i18n-zh="訂閱" data-i18n-en="Subscribe">訂閱</span></a>
           </div>
         </div>
 
@@ -462,7 +483,7 @@ ${headerMarkup()}
 
           <figure class="article-visual">
             <div class="article-visual-inner">
-              ${item.image_url ? `<img class="article-static-image" src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title_original)}" loading="eager" />` : `<div class="article-hero-image" role="img" aria-label="${escapeHtml(item.title_original)}"></div>`}
+              ${item.image_url ? `<img class="article-static-image" src="${escapeHtml(imageUrlForItem(item))}" alt="${escapeHtml(item.title_original)}" loading="eager" />` : `<div class="article-hero-image" role="img" aria-label="${escapeHtml(item.title_original)}"></div>`}
               <figcaption>影像用於主題示意；內文為 CYBERNEWS 中文整理稿，完整內容請回到原文來源。</figcaption>
             </div>
           </figure>
@@ -530,7 +551,7 @@ ${relatedMarkup(items, item)}
 
 ${footerMarkup()}
     </div>
-    <script src="../../script.js?v=20260704-analytics-lang"></script>
+    <script src="../../script.js?v=${assetVersion}"></script>
   </body>
 </html>`;
 };
@@ -658,6 +679,8 @@ const writeRobots = () => {
     path.join(rootDir, "robots.txt"),
     `User-agent: *
 Allow: /
+Disallow: /*?preview=design
+Disallow: /*&preview=design
 
 Sitemap: ${siteUrl}/sitemap.xml
 `,
