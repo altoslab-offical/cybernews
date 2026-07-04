@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "nvidia-supply-chain",
+    "title_zh": "Nvidia 供應鏈",
+    "title_en": "Nvidia Supply Chain",
+    "description_zh": "從 HBM 到先進封裝，追蹤 AI 伺服器瓶頸。",
+    "href": "./topic-nvidia-supply-chain.html",
+    "image_class": "column-image-three",
+    "tags": ["NVDA", "AI Chips"],
+    "match": {
+      "subcategories": ["算力與晶片", "科技股"],
+      "tickers": ["NVDA", "TSM"],
+      "coins": [],
+      "topics": ["AI chips", "HBM", "advanced packaging", "data center"]
+    }
+  },
+  {
+    "slug": "ai-regulation",
+    "title_zh": "AI 監管進展",
+    "title_en": "AI Regulation Tracker",
+    "description_zh": "歐盟、美國與亞洲政策如何改變模型發布節奏。",
+    "href": "./topic-ai-regulation.html",
+    "image_class": "column-image-two",
+    "tags": ["AI", "Policy"],
+    "match": {
+      "subcategories": ["監管與政策"],
+      "tickers": [],
+      "coins": [],
+      "topics": ["AI regulation", "foundation models", "industrial policy"]
+    }
+  },
+  {
+    "slug": "ai-capex",
+    "title_zh": "AI 資本開支",
+    "title_en": "AI Capex",
+    "description_zh": "追蹤雲端、資料中心、伺服器與模型部署成本如何改變科技公司資本配置。",
+    "href": "./ai.html?subcategory=AI%20%E8%B3%87%E6%9C%AC%E8%88%87%E9%9B%B2%E7%AB%AF",
+    "image_class": "column-image-one",
+    "tags": ["Cloud", "Capex"],
+    "match": {
+      "subcategories": ["AI 資本與雲端"],
+      "tickers": [],
+      "coins": [],
+      "topics": ["AI capex", "cloud", "data centers"]
+    }
+  },
+  {
+    "slug": "stablecoin-regulation",
+    "title_zh": "穩定幣監管",
+    "title_en": "Stablecoin Regulation",
+    "description_zh": "追蹤穩定幣立法、支付公司、交易所與發行人的合規變化。",
+    "href": "./crypto.html?subcategory=%E5%8A%A0%E5%AF%86%E8%88%87%E7%A9%A9%E5%AE%9A%E5%B9%A3",
+    "image_class": "column-image-six",
+    "tags": ["USDC", "Compliance"],
+    "match": {
+      "subcategories": [],
+      "tickers": ["COIN"],
+      "coins": ["USDC", "USDT"],
+      "topics": ["stablecoins", "crypto regulation", "payments"]
+    }
+  }
+]

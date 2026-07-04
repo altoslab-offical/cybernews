@@ -1,0 +1,32 @@
+# CYBERNEWS
+
+> AI 與金融新聞中文摘要、來源連結與 metadata。
+
+## Core pages
+- [Home](https://altoslab-offical.github.io/cybernews/): AI and finance news summaries in Traditional Chinese
+- [Latest](https://altoslab-offical.github.io/cybernews/latest.html): newest AI, finance, crypto, policy, column, and research items
+- [AI News](https://altoslab-offical.github.io/cybernews/ai.html): models, agents, infrastructure, regulation, applications, and talent
+- [Finance](https://altoslab-offical.github.io/cybernews/finance.html): technology stocks, crypto, ETFs, and stablecoin policy summaries
+- [Research](https://altoslab-offical.github.io/cybernews/research.html): deeper research-style summaries and market structure notes
+- [Archive](https://altoslab-offical.github.io/cybernews/archive.html): searchable metadata index
+- [RSS](https://altoslab-offical.github.io/cybernews/rss.xml): latest feed
+
+## Content rules
+- CYBERNEWS stores metadata, Traditional Chinese summaries, why-it-matters notes, source links, and classification data.
+- It does not republish full articles, bypass paywalls, provide investment advice, publish price targets, or issue trading signals.
+- Finance and research content should keep disclaimer_required true when market interpretation risk is material.
+
+## Latest articles
+- [AI 基礎建設競賽，正在把科技權力推向更多非西方市場](https://altoslab-offical.github.io/cybernews/research/ai-infrastructure-non-western-markets/): 從印度資料中心到中東主權雲，科技公司正在把算力、資料、能源與監管視為同一場全球競賽。 Tags: 算力與晶片, AI infrastructure, data centers, sovereign cloud, MSFT, GOOGL
+- [歐盟啟動新一輪 AI 基礎模型稽核](https://altoslab-offical.github.io/cybernews/articles/eu-foundation-model-audit/): 歐盟監管機構要求大型模型供應商補交訓練資料、風險測試與部署流程說明。 Tags: 監管與政策, AI regulation, foundation models, GOOGL
+- [Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注](https://altoslab-offical.github.io/cybernews/articles/nvda-guidance-datacenter-demand/): 市場焦點轉向先進封裝、HBM、伺服器機櫃與能源配置，但這不是買賣建議。 Tags: 科技股, earnings, AI chips, data center, U.S. stocks, NVDA
+- [Microsoft 與 OpenAI 雲端合約談判進入新階段](https://altoslab-offical.github.io/cybernews/articles/msft-openai-cloud-contract/): 談判重點包括模型部署、雲端成本、企業客戶收入分成與未來算力採購。 Tags: AI 資本與雲端, cloud, AI platforms, enterprise AI, MSFT
+- [Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點](https://altoslab-offical.github.io/cybernews/articles/bitcoin-etf-inflows-institutional/): 資產管理公司與上市公司持倉變化受到追蹤，但本文不做價格方向判斷。 Tags: 加密與穩定幣, Bitcoin ETF, institutional crypto, crypto, BTC
+- [Apple 的 AI 裝置週期，讓供應鏈重新估算 iPhone 需求](https://altoslab-offical.github.io/cybernews/articles/aapl-ai-device-cycle/): 供應鏈把焦點放在端側模型、記憶體配置與高階機型換機節奏。 Tags: 科技股, AI devices, iPhone, supply chain, U.S. stocks, AAPL
+- [穩定幣監管草案推進，交易所與支付公司開始調整合規流程](https://altoslab-offical.github.io/cybernews/articles/stablecoin-bill-compliance/): 監管焦點包括儲備揭露、發行人資格、跨境支付與交易所風險管理。 Tags: 加密與穩定幣, stablecoins, crypto regulation, payments, COIN, USDC
+- [Solana DeFi 活動回升，錢包與支付應用成為新觀察點](https://altoslab-offical.github.io/cybernews/articles/solana-defi-recovery/): 開發者關注交易成本、穩定幣使用與行動錢包體驗，仍需留意平台風險。 Tags: 加密與穩定幣, Solana, DeFi, payments, crypto, SOL
+- [AI Weekly：agent 工具開始從功能競賽走向工作流競賽](https://altoslab-offical.github.io/cybernews/articles/ai-weekly-agent-market-map/): 本週觀察重點從模型能力轉向產品落地：企業正在比較 agent 是否能穩定接住跨系統工作流。 Tags: AI 公司與產品, AI agents, workflow automation, enterprise AI, GOOGL
+- [Finance Brief：科技巨頭把 AI 支出寫進下一輪資本配置](https://altoslab-offical.github.io/cybernews/articles/finance-brief-big-tech-capex/): 雲端營收、AI 伺服器採購、折舊壓力與現金流安排，正在成為市場閱讀科技巨頭的新框架。 Tags: AI 資本與雲端, AI capex, cloud, U.S. stocks, MSFT, AMZN
+- [AI 晶片供應鏈調研：HBM 與先進封裝仍是交付瓶頸](https://altoslab-offical.github.io/cybernews/research/ai-chip-supply-chain-research/): 從 GPU、HBM、CoWoS 到伺服器機櫃，AI 基礎建設的限制正在從單一晶片擴大到整條供應鏈。 Tags: 算力與晶片, AI chips, HBM, advanced packaging, data center, NVDA
+- [Bitcoin ETF 調研：機構採用進入資金流與合規雙軌觀察期](https://altoslab-offical.github.io/cybernews/research/bitcoin-etf-institutional-research/): ETF 資金流、上市公司持倉、保管安排與監管節奏，是觀察機構採用的主要 metadata。 Tags: 加密與穩定幣, Bitcoin ETF, institutional crypto, compliance, COIN, BTC
+- [中國大學調整語言科系，把更多資源轉向 AI 與資料科學](https://altoslab-offical.github.io/cybernews/articles/ai-language-majors-china/): 多所大學開始停招或整併翻譯、外語與行銷類科系，顯示教育資源正快速轉向 AI 產業政策。 Tags: AI 應用與人才, AI education, higher education, industrial policy

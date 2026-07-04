@@ -1,0 +1,60 @@
+:root {
+  /* Brand */
+  --brand-name: "CYBERNEWS";
+
+  /* Color */
+  --color-ink: #000000;
+  --color-muted: #5f5f5f;
+  --color-subtle: rgb(0 0 0 / 0.8);
+  --color-line: #cacaca;
+  --color-soft: #f3f4f6;
+  --color-paper: #ffffff;
+  --color-brand: #1f1f20;
+  --color-brand-dark: #0f0f10;
+  --color-accent: #44FF3E;
+  --color-kicker: #11ce0b;
+  --color-ad: #fbfbfb;
+
+  /* Legacy aliases used by the current homepage CSS. */
+  --ink: var(--color-ink);
+  --muted: var(--color-muted);
+  --subtle: var(--color-subtle);
+  --line: var(--color-line);
+  --soft: var(--color-soft);
+  --paper: var(--color-paper);
+  --blue: var(--color-brand);
+  --blue-dark: var(--color-brand-dark);
+  --pink: var(--color-accent);
+  --kicker: var(--color-kicker);
+
+  /* Typography */
+  --font-display: "Archivo", "Noto Sans TC", "PingFang TC", sans-serif;
+  --font-body: "Noto Sans TC", "Archivo", "PingFang TC", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", "SFMono-Regular", "Lucida Console", monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Layout */
+  --page-max: 1320px;
+  --max: var(--page-max);
+  --full-bleed-left: calc(50% - 50vw);
+  --desktop-edge-gutter: max(40px, calc((100vw - var(--page-max)) / 2 + 40px));
+  --mobile-page-gutter: 22px;
+
+  /* Reusable section dimensions */
+  --masthead-logo-width: 343px;
+  --footer-logo-box-width: 220px;
+  --footer-logo-image-width: 70%;
+  --column-strip-height: 450px;
+  --column-card-width: 264px;
+  --column-card-height: 320px;
+  --column-card-featured-width: 300px;
+  --column-card-featured-height: 360px;
+  --column-title-size: 34px;
+
+  /* Motion */
+  --motion-fast: 150ms ease;
+  --motion-standard: 160ms ease;
+}

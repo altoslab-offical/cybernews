@@ -1,0 +1,8 @@
+{
+  "site_name": "CYBERNEWS",
+  "base_url": "https://altoslab-offical.github.io/cybernews",
+  "default_language": "zh-Hant",
+  "description": "AI 與金融新聞中文摘要、來源連結與 metadata。",
+  "ga_measurement_id": "",
+  "gtm_id": ""
+}
