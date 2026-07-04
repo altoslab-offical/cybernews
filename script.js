@@ -13,10 +13,13 @@ const scriptBaseUrl = (() => {
 const dataAssetUrl = (filename) => new URL(`data/${filename}`, scriptBaseUrl).href;
 const rootAssetUrl = (filename) => new URL(filename, scriptBaseUrl).href;
 const previewParams = () => new URLSearchParams(window.location.search);
-const isDesignPreviewMode = () => previewParams().get("preview") === "design";
+const isLocalPreviewHost = () => ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname) || window.location.protocol === "file:";
+const isDesignPreviewMode = () => isLocalPreviewHost() && previewParams().get("preview") === "design";
 const getNewsDataFilename = () => (isDesignPreviewMode() ? "design-preview-news.json" : "news.json");
 let activeNewsDataMode = isDesignPreviewMode() ? "design-preview" : "production";
 const isUsingDesignFixtures = () => activeNewsDataMode === "design-preview" || activeNewsDataMode === "design-fallback";
+const isExplicitDesignPreview = () => activeNewsDataMode === "design-preview";
+const isDesignFixtureItem = (item) => Boolean(item?.is_design_fixture);
 const isPlaceholderSourceUrl = (value) => {
   if (!value) {
     return false;
@@ -436,11 +439,13 @@ const getImageStyle = (item) => {
 };
 
 const getStoryHref = (item) => {
-  if (isUsingDesignFixtures() && item?.is_design_fixture) {
-    const params = new URLSearchParams({
-      id: item?.id || "",
-      preview: "design",
-    });
+  if (isUsingDesignFixtures() && isDesignFixtureItem(item)) {
+    const params = new URLSearchParams({ id: item?.id || "" });
+
+    if (isExplicitDesignPreview()) {
+      params.set("preview", "design");
+    }
+
     return `./research.html?${params.toString()}`;
   }
 
@@ -449,17 +454,17 @@ const getStoryHref = (item) => {
 };
 
 const designFixtureBadgeMarkup = (item) =>
-  item?.is_design_fixture
+  isExplicitDesignPreview() && isDesignFixtureItem(item)
     ? `<span class="design-fixture-badge" data-i18n-zh="設計檢查假資料" data-i18n-en="Design fixture">設計檢查假資料</span>`
     : "";
 
 const designFixtureNoticeMarkup = (item) =>
-  item?.is_design_fixture
+  isExplicitDesignPreview() && isDesignFixtureItem(item)
     ? `<p class="design-fixture-note" data-i18n-zh="${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}" data-i18n-en="${escapeHtml(item.preview_note_en || "Design-review fixture only. Not production news.")}">${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}</p>`
     : "";
 
 const designFixtureKeypointMarkup = (item) =>
-  item?.is_design_fixture
+  isExplicitDesignPreview() && isDesignFixtureItem(item)
     ? `<li data-i18n-zh="${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}" data-i18n-en="${escapeHtml(item.preview_note_en || "Design-review fixture only. Not production news.")}">${escapeHtml(item.preview_note_zh || "設計師檢查用假資料，非正式新聞。")}</li>`
     : "";
 
@@ -481,7 +486,7 @@ const applyDesignPreviewMeta = () => {
 };
 
 const injectDesignPreviewNotice = () => {
-  if (!isUsingDesignFixtures() || document.querySelector(".design-preview-notice")) {
+  if (!isExplicitDesignPreview() || document.querySelector(".design-preview-notice")) {
     return;
   }
 
@@ -528,6 +533,9 @@ const getMetadata = (item) => {
 const getMetaLine = (item) =>
   `${verticalLabels[item.vertical] || item.vertical} / ${contentTypeLabels[item.content_type] || item.content_type} / ${item.subcategory}`;
 
+const getDisplaySourceName = (item) =>
+  !isExplicitDesignPreview() && isDesignFixtureItem(item) ? "CYBERNEWS" : item?.source_name || "CYBERNEWS";
+
 const getReadingMinutes = (item) => {
   const text = [item.summary_zh, ...(Array.isArray(item.body_zh) ? item.body_zh : [])].filter(Boolean).join("");
   return Math.max(1, Math.round(text.length / 400));
@@ -549,7 +557,7 @@ const storyCardMarkup = (item) => `
     <div class="directory-card-foot">
       <span class="directory-mini-tag">${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
       <span class="directory-mini-tag">${escapeHtml(item.subcategory)}</span>
-      <span class="directory-mini-tag">${escapeHtml(item.source_name)}</span>
+      <span class="directory-mini-tag">${escapeHtml(getDisplaySourceName(item))}</span>
     </div>
   </article>
 `;
@@ -566,7 +574,7 @@ const feedItemMarkup = (item) => {
         <p>${escapeHtml(item.summary_zh)}</p>
       </div>
       <div class="directory-feed-tags">
-        <span>${escapeHtml(item.source_name)}</span>
+        <span>${escapeHtml(getDisplaySourceName(item))}</span>
         ${metadata.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}
       </div>
     </article>
@@ -671,7 +679,7 @@ const renderLeadStory = (item) => {
       <p>${escapeHtml(item.summary_zh)}</p>
       ${designFixtureNoticeMarkup(item)}
       ${whyMattersMarkup(item)}
-      <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))}</div>
+      <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
     </a>
   `;
 };
@@ -695,7 +703,7 @@ const renderHeroStory = (element, item) => {
       <h2>${escapeHtml(item.title_zh)}</h2>
       <p>${escapeHtml(item.summary_zh)}</p>
       ${whyMattersMarkup(item)}
-      <div class="byline">來源：${escapeHtml(item.source_name)}</div>
+      <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))}</div>
     </a>
   `;
 };
@@ -713,7 +721,7 @@ const homeRowMarkup = (title, href, items) => `
                 <div class="region-article-image"${getImageStyle(item)}></div>
                 ${designFixtureBadgeMarkup(item)}
                 <h3>${escapeHtml(item.title_zh)}</h3>
-                <p>${escapeHtml(getMetaLine(item))} / ${escapeHtml(item.source_name)}</p>
+                <p>${escapeHtml(getMetaLine(item))} / ${escapeHtml(getDisplaySourceName(item))}</p>
               </a>
             </article>
           `,
@@ -965,7 +973,7 @@ const renderChannelLead = (items, hasAnyItems = true) => {
         <p>${escapeHtml(lead.summary_zh)}</p>
         ${designFixtureNoticeMarkup(lead)}
         ${whyMattersMarkup(lead)}
-        <div class="byline">來源：${escapeHtml(lead.source_name)} / ${escapeHtml(formatDateTime(lead.published_at))} / ${getReadingMinutes(lead)} 分鐘</div>
+        <div class="byline">來源：${escapeHtml(getDisplaySourceName(lead))} / ${escapeHtml(formatDateTime(lead.published_at))} / ${getReadingMinutes(lead)} 分鐘</div>
       </a>
     </article>
     <div class="channel-lead-side">
@@ -977,7 +985,7 @@ const renderChannelLead = (items, hasAnyItems = true) => {
                 <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
                 ${designFixtureBadgeMarkup(item)}
                 <h3>${escapeHtml(item.title_zh)}</h3>
-                <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))}</div>
+                <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
               </a>
             </article>
           `,
@@ -1028,7 +1036,7 @@ const channelLedgerMarkup = (item) => `
         ${designFixtureBadgeMarkup(item)}
         <h3>${escapeHtml(item.title_zh)}</h3>
         <p>${escapeHtml(item.summary_zh)}</p>
-        <div class="byline">來源：${escapeHtml(item.source_name)} / ${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘</div>
+        <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘</div>
       </div>
     </a>
   </article>
@@ -1106,7 +1114,7 @@ const itemMatchesQuery = (item, query) => {
     item.vertical,
     item.content_type,
     item.subcategory,
-    item.source_name,
+    getDisplaySourceName(item),
     item.language,
     item.region,
     ...(item.companies || []),
@@ -1156,7 +1164,7 @@ const getArchiveFilteredItems = (items, form) => {
         return false;
       }
 
-      if (sourceName && item.source_name !== sourceName) {
+      if (sourceName && getDisplaySourceName(item) !== sourceName) {
         return false;
       }
 
@@ -1265,7 +1273,9 @@ const syncArchiveUrl = (form) => {
 const populateArchiveOptions = (form, items) => {
   form.querySelectorAll("[data-archive-options]").forEach((select) => {
     const field = select.dataset.archiveOptions;
-    const values = [...new Set(items.map((item) => item[field]).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), "zh-Hant"));
+    const values = [
+      ...new Set(items.map((item) => (field === "source_name" ? getDisplaySourceName(item) : item[field])).filter(Boolean)),
+    ].sort((a, b) => String(a).localeCompare(String(b), "zh-Hant"));
 
     select.innerHTML = `<option value="">全部</option>${values
       .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
@@ -1297,7 +1307,7 @@ const renderArchiveRows = (items, container) => {
             <p>${escapeHtml(formatDate(item.published_at))} / ${escapeHtml(formatDateTime(item.published_at))}</p>
           </div>
           <p>${escapeHtml(verticalLabels[item.vertical] || item.vertical)} / ${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}<br />${escapeHtml(item.subcategory)}</p>
-          <p>${escapeHtml(item.source_name)}<br />${escapeHtml(item.language)} / ${escapeHtml(item.region)}</p>
+          <p>${escapeHtml(getDisplaySourceName(item))}<br />${escapeHtml(item.language)} / ${escapeHtml(item.region)}</p>
           <p>${escapeHtml(getMetadata(item).join(" / ") || "No symbols")}</p>
         </article>
       `,
@@ -1496,7 +1506,7 @@ const renderNewsletterPage = (items) => {
       .map((item, index) => {
         const sourceUrl = getSourceUrl(item);
         const symbols = getSymbols(item);
-        const symbolLabel = symbols.length ? symbols.slice(0, 3).join(" / ") : item.source_name;
+        const symbolLabel = symbols.length ? symbols.slice(0, 3).join(" / ") : getDisplaySourceName(item);
         const itemDate = formatDate(item.published_at);
 
         return `
@@ -1546,7 +1556,7 @@ const articleRelatedMarkup = (items, currentItem) => {
                   <p>${escapeHtml(item.summary_zh)}</p>
                   <div class="article-related-tags" aria-label="Story metadata">
                     <span>${escapeHtml(item.subcategory)}</span>
-                    <span>${escapeHtml(item.source_name).toUpperCase()}</span>
+                    <span>${escapeHtml(getDisplaySourceName(item)).toUpperCase()}</span>
                   </div>
                 </a>
               </article>
@@ -1590,7 +1600,7 @@ const researchExtraMarkup = (item) => {
       <div class="research-panel-grid">
         <div>
           <span>主要資料來源</span>
-          <p>${escapeHtml(item.source_name)}${sourceUrl ? ` / ${escapeHtml(getReadableUrlHost(sourceUrl))}` : ""}</p>
+          <p>${escapeHtml(getDisplaySourceName(item))}${sourceUrl ? ` / ${escapeHtml(getReadableUrlHost(sourceUrl))}` : ""}</p>
         </div>
         <div>
           <span>追蹤 metadata</span>
@@ -1632,7 +1642,7 @@ const renderDetailPage = (items) => {
   const preferredItems = pageType === "research" ? items.filter((item) => item.content_type === "research") : items.filter((item) => item.content_type !== "research");
   const requestedItem = requestedId ? items.find((entry) => entry.id === requestedId) : null;
 
-  if (!isDesignPreviewMode() && requestedItem && (requestedItem.content_type === "research") !== (pageType === "research")) {
+  if (!isUsingDesignFixtures() && requestedItem && (requestedItem.content_type === "research") !== (pageType === "research")) {
     window.location.replace(getStoryHref(requestedItem));
     return;
   }
@@ -1694,7 +1704,7 @@ const renderDetailPage = (items) => {
           <div class="article-meta-line" aria-label="Article metadata">
             <span>${escapeHtml(verticalLabels[item.vertical] || item.vertical)} / ${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
             <span>${escapeHtml(item.subcategory)}</span>
-            <span>${escapeHtml(item.source_name)}</span>
+            <span>${escapeHtml(getDisplaySourceName(item))}</span>
             ${publishedAt ? `<time datetime="${escapeHtml(item.published_at)}">${escapeHtml(publishedAt)}</time>` : ""}
             <span>${readingMinutes} 分鐘閱讀</span>
           </div>
@@ -1738,7 +1748,7 @@ const renderDetailPage = (items) => {
             <li>
               <p class="article-source-title">
                 ${sourceTitleMarkup}
-                <span class="article-source-meta">· ${escapeHtml(item.source_name)} · ${escapeHtml(formatDate(item.published_at))}</span>
+                <span class="article-source-meta">· ${escapeHtml(getDisplaySourceName(item))} · ${escapeHtml(formatDate(item.published_at))}</span>
               </p>
               <p class="article-source-desc">${escapeHtml(item.summary_zh)}</p>
             </li>

@@ -13,7 +13,7 @@ const shareImagePath = siteConfig.og_image || "assets/og-cybernews.jpg";
 const gaId = process.env.GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || siteConfig.ga_measurement_id || "";
 const gtmId = process.env.GTM_ID || process.env.NEXT_PUBLIC_GTM_ID || siteConfig.gtm_id || "";
 let buildDate = "";
-const assetVersion = "20260704-design-preview-v6";
+const assetVersion = "20260704-public-fallback-v1";
 
 const verticalLabels = {
   ai: "AI 新聞",
