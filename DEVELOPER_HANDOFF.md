@@ -72,6 +72,10 @@ Hermes 端同步規格：
 - `summary_zh`：1 到 2 句中文事實摘要
 - `why_matters_zh`：1 到 2 句「為什麼重要」
 - `body_zh`：最多 3 段中文改寫整理
+- `locales.zh-Hant`：繁中前台顯示欄位
+- `locales.zh-Hans`：簡中前台顯示欄位
+- `locales.en`：英文前台顯示欄位
+- `sources_by_locale`：台灣、中國、其他地區對應來源名稱、地區與 URL
 - `source_url` / `canonical_url`：原始來源連結
 
 注意：`market` 不是合法 `content_type`。市場、ETF、資金流、加密市場等題材，依內容性質歸到 `news` 或 `research`。
@@ -103,7 +107,7 @@ Hermes 端同步規格：
 
 1. `data/news.json` 目前刻意維持空陣列，不保留 seed 假資料；正式文章必須由文章 API 草稿、驗證、審核後 append。
 2. Newsletter 表單還沒有接真實 email 服務。
-3. 中英切換仍是前端字串替換，長期建議改成 key-based i18n。
+3. 三語切換已支援文章內容、來源與主要動態版位；長期可再改成完整 key-based i18n。
 4. 專題頁目前仍有手寫頁面，後續可改成完全資料驅動。
 
 ## 建議開發順序

@@ -34,7 +34,7 @@
 - 前台會隱藏 `design-fixture://` source link，避免使用者誤以為有正式來源。
 - `preview=design` 或正式資料為空時的 fixture fallback 會自動加上 `noindex,nofollow,noarchive`。`robots.txt` 也封鎖 preview query。
 - 只有本機明確 `preview=design` 才會顯示設計檢查 banner、badge 與 fixture note；正式 CloudFront / GitHub Pages 不啟用這個 UI。
-- 正式 fallback 的 fixture 文章點擊會進入 `research.html?id=...` 的一般 detail shell，不得出現 `preview=design`、設計檢查 banner、badge、fixture note 或 `CYBERNEWS DESIGN FIXTURE` 來源字樣。
+- 正式 fallback 的 fixture 文章點擊會進入 `research.html?id=...` 的一般 detail shell，不得出現 `preview=design`、設計檢查 banner、badge、fixture note、`CYBERNEWS DESIGN FIXTURE` 來源字樣，或含 `DESIGN FIXTURE` 字樣的檢查圖。
 
 ## Current Fixture Mix
 
@@ -43,4 +43,6 @@
 - 專欄：2 篇
 - 調研：3 篇
 
-這批內容只用來檢查排版、資訊密度、分類狀態、分享按鈕、RWD 與中英文 UI。不可拿來發布、SEO 收錄、社群發文或正式內容驗收。
+這批內容只用來檢查排版、資訊密度、分類狀態、分享按鈕、RWD 與繁中/簡中/英文 UI。不可拿來發布、SEO 收錄、社群發文或正式內容驗收。
+
+每筆 fixture 也提供 `locales` 與 `sources_by_locale`，目的只是讓設計師檢查三語資訊密度；正式站仍需由文章 API 提供 reviewed production content。

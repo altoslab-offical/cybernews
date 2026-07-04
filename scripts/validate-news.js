@@ -7,6 +7,7 @@ const dataPath = path.resolve(rootDir, dataFile);
 
 const allowedVerticals = new Set(["ai", "finance"]);
 const allowedContentTypes = new Set(["news", "column", "research"]);
+const allowedLocales = ["zh-Hant", "zh-Hans", "en"];
 const allowedSubcategories = new Set([
   "算力與晶片",
   "AI 資本與雲端",
@@ -23,6 +24,7 @@ const requiredFields = [
   "title_original",
   "summary_zh",
   "why_matters_zh",
+  "body_zh",
   "vertical",
   "content_type",
   "subcategory",
@@ -41,9 +43,13 @@ const requiredFields = [
   "image_url",
   "is_original_research",
   "disclaimer_required",
+  "locales",
+  "sources_by_locale",
 ];
 
 const arrayFields = ["companies", "tickers", "coins", "topics", "authors"];
+const requiredLocaleFields = ["title", "summary", "why_matters", "body", "subcategory"];
+const requiredSourceFields = ["source_name", "region"];
 
 const isValidDate = (value) => {
   const date = new Date(value);
@@ -114,6 +120,54 @@ if (!Array.isArray(items)) {
         errors.push(`${label}: "${field}" must be an array.`);
       }
     });
+
+    if (!Array.isArray(item.body_zh) || item.body_zh.length === 0 || item.body_zh.length > 3) {
+      errors.push(`${label}: "body_zh" must contain 1 to 3 digest paragraphs.`);
+    }
+
+    if (!item.locales || typeof item.locales !== "object" || Array.isArray(item.locales)) {
+      errors.push(`${label}: "locales" must be an object keyed by zh-Hant, zh-Hans, and en.`);
+    } else {
+      allowedLocales.forEach((locale) => {
+        const localePayload = item.locales[locale];
+        if (!localePayload || typeof localePayload !== "object" || Array.isArray(localePayload)) {
+          errors.push(`${label}: missing locales.${locale}.`);
+          return;
+        }
+
+        requiredLocaleFields.forEach((field) => {
+          const value = localePayload[field];
+          if (field === "body") {
+            if (!Array.isArray(value) || value.length === 0 || value.length > 3 || value.some((paragraph) => typeof paragraph !== "string" || !paragraph.trim())) {
+              errors.push(`${label}: locales.${locale}.body must contain 1 to 3 non-empty paragraphs.`);
+            }
+            return;
+          }
+
+          if (typeof value !== "string" || !value.trim()) {
+            errors.push(`${label}: locales.${locale}.${field} must be a non-empty string.`);
+          }
+        });
+      });
+    }
+
+    if (!item.sources_by_locale || typeof item.sources_by_locale !== "object" || Array.isArray(item.sources_by_locale)) {
+      errors.push(`${label}: "sources_by_locale" must be an object keyed by zh-Hant, zh-Hans, and en.`);
+    } else {
+      allowedLocales.forEach((locale) => {
+        const sourcePayload = item.sources_by_locale[locale];
+        if (!sourcePayload || typeof sourcePayload !== "object" || Array.isArray(sourcePayload)) {
+          errors.push(`${label}: missing sources_by_locale.${locale}.`);
+          return;
+        }
+
+        requiredSourceFields.forEach((field) => {
+          if (typeof sourcePayload[field] !== "string" || !sourcePayload[field].trim()) {
+            errors.push(`${label}: sources_by_locale.${locale}.${field} must be a non-empty string.`);
+          }
+        });
+      });
+    }
 
     ["source_url", "canonical_url"].forEach((field) => {
       if (typeof item[field] === "string" && item[field].includes("example.com")) {

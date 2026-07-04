@@ -1,4 +1,4 @@
-# AI NEWS CENTER Article Generation API v1
+# CYBERNEWS Article Generation API v1.1
 
 更新日期：2026-07-04
 
@@ -16,9 +16,9 @@
 
 文章機器人必須完成三件事：
 
-1. 把外部來源整理成中文文章資料，不重刊全文。
+1. 把外部來源整理成繁中、簡中、英文三語文章資料，不重刊全文。
 2. 產出可直接進入 `data/news.json` 的 JSON item。
-3. 保留人工審核關卡，避免未審內容自動發布。
+3. 依訪客地區提供不同語系、來源名稱與地區標記，並保留人工審核關卡，避免未審內容自動發布。
 
 本文定義的 API 可以先用「檔案模式」實作，未來也可以搬成 HTTP endpoint。
 
@@ -28,7 +28,7 @@
 
 每篇內容都必須符合以下規則：
 
-- 只保存 metadata、中文摘要、分類、原文連結與必要的調研整理。
+- 只保存 metadata、三語摘要、分類、原文連結與必要的調研整理。
 - 不重刊全文。
 - 不繞 paywall。
 - 不把摘要寫成可替代原文的完整翻譯。
@@ -69,6 +69,32 @@
 ```
 
 每篇文章只能選一個 `subcategory`。次要主題放進 `topics`、`companies`、`tickers`、`coins`。
+
+### 2.3 語系與地區顯示規則
+
+正式前台支援三個 locale：
+
+```json
+["zh-Hant", "zh-Hans", "en"]
+```
+
+預設語系由 CloudFront / 前端依使用者地區決定：
+
+| 使用者地區 | 預設 locale | 前台顯示重點 |
+| --- | --- | --- |
+| Taiwan (`TW`) | `zh-Hant` | 繁體中文、台灣讀者語感、`sources_by_locale.zh-Hant` |
+| China (`CN`) | `zh-Hans` | 簡體中文、中國讀者語感、`sources_by_locale.zh-Hans` |
+| 其他地區 | `en` | 英文、全球讀者語感、`sources_by_locale.en` |
+
+使用者手動切換語言後，前端會以 `localStorage.cybernews-language` 保存偏好，優先於 IP 預設。
+
+每篇文章必須提供：
+
+- legacy 欄位：`title_zh`、`summary_zh`、`why_matters_zh`、`body_zh`，作為繁中預設與舊工具相容層。
+- `locales.zh-Hant`、`locales.zh-Hans`、`locales.en`：正式前台所有標題、摘要、內文、子分類顯示都從這裡取值。
+- `sources_by_locale.zh-Hant`、`sources_by_locale.zh-Hans`、`sources_by_locale.en`：同一篇文章在不同地區可顯示不同來源名稱、地區標籤與來源 URL。
+
+不要只提供繁中再期待前端機器翻譯。前端只做保底 fallback；正式文章必須由文章服務提供審過的三語內容。
 
 ## 3. 文章生成工作流
 
@@ -159,6 +185,67 @@ GET  /v1/articles/:id
     "第二段說明影響對象，例如企業客戶、平台商、供應鏈、監管機構或開發者。",
     "第三段說明後續可追蹤訊號，例如財報、監管文件、產品功能、供應鏈交付或 API 條款。"
   ],
+  "locales": {
+    "zh-Hant": {
+      "title": "企業 agent 工具競爭，正在從功能展示轉向工作流落地",
+      "summary": "企業採用 agent 工具時，焦點正從單次功能展示轉向權限、日誌、審批與跨系統整合。",
+      "why_matters": "這代表 agent 市場的競爭重點不只在模型能力，也在企業能否安全管理、稽核與重複使用這些工作流。",
+      "body": [
+        "第一段說明發生什麼事，保留來源事實，不加入未被支持的推論。",
+        "第二段說明影響對象，例如企業客戶、平台商、供應鏈、監管機構或開發者。",
+        "第三段說明後續可追蹤訊號，例如財報、監管文件、產品功能、供應鏈交付或 API 條款。"
+      ],
+      "subcategory": "AI 公司與產品",
+      "image_alt": "企業 agent 工具競爭，正在從功能展示轉向工作流落地",
+      "region": "台灣"
+    },
+    "zh-Hans": {
+      "title": "企业 agent 工具竞争，正在从功能展示转向工作流落地",
+      "summary": "企业采用 agent 工具时，焦点正从单次功能展示转向权限、日志、审批与跨系统整合。",
+      "why_matters": "这代表 agent 市场的竞争重点不只在模型能力，也在企业能否安全管理、稽核与重复使用这些工作流。",
+      "body": [
+        "第一段说明发生什么事，保留来源事实，不加入未被支持的推论。",
+        "第二段说明影响对象，例如企业客户、平台商、供应链、监管机构或开发者。",
+        "第三段说明后续可追踪信号，例如财报、监管文件、产品功能、供应链交付或 API 条款。"
+      ],
+      "subcategory": "AI 公司与产品",
+      "image_alt": "企业 agent 工具竞争，正在从功能展示转向工作流落地",
+      "region": "中国"
+    },
+    "en": {
+      "title": "Enterprise AI agents shift from feature demos to workflow adoption",
+      "summary": "Enterprise agent adoption is moving from one-off feature demos toward permissions, logs, approvals, and cross-system integration.",
+      "why_matters": "The agent market is competing not only on model capability, but also on whether companies can safely manage, audit, and reuse workflows.",
+      "body": [
+        "The first paragraph states what happened and preserves source facts without unsupported inference.",
+        "The second paragraph explains who is affected, such as enterprise customers, platforms, supply chains, regulators, or developers.",
+        "The third paragraph names the signals to track next, such as earnings, policy filings, product capabilities, supply-chain delivery, or API terms."
+      ],
+      "subcategory": "AI Companies and Products",
+      "image_alt": "Enterprise AI agents shift from feature demos to workflow adoption",
+      "region": "Global"
+    }
+  },
+  "sources_by_locale": {
+    "zh-Hant": {
+      "source_name": "Example Source 台灣整理",
+      "region": "Taiwan",
+      "source_url": "https://example-source.com/story",
+      "canonical_url": "https://example-source.com/story"
+    },
+    "zh-Hans": {
+      "source_name": "Example Source 简中整理",
+      "region": "China",
+      "source_url": "https://example-source.com/story",
+      "canonical_url": "https://example-source.com/story"
+    },
+    "en": {
+      "source_name": "Example Source Global",
+      "region": "Global",
+      "source_url": "https://example-source.com/story",
+      "canonical_url": "https://example-source.com/story"
+    }
+  },
   "vertical": "ai",
   "content_type": "news",
   "subcategory": "AI 公司與產品",
@@ -191,6 +278,7 @@ GET  /v1/articles/:id
   "title_original",
   "summary_zh",
   "why_matters_zh",
+  "body_zh",
   "vertical",
   "content_type",
   "subcategory",
@@ -208,11 +296,13 @@ GET  /v1/articles/:id
   "authors",
   "image_url",
   "is_original_research",
-  "disclaimer_required"
+  "disclaimer_required",
+  "locales",
+  "sources_by_locale"
 ]
 ```
 
-`body_zh` 目前不是驗證器硬性必填，但文章頁會使用它；文章機器人必須產出。
+`body_zh`、`locales`、`sources_by_locale` 都是硬性必填。`data/news.json` 可以是空陣列；一旦有正式文章，每篇都必須完整通過三語驗證。
 
 ### 5.2 欄位規格
 
@@ -224,6 +314,8 @@ GET  /v1/articles/:id
 | `summary_zh` | string | 1 到 2 句事實摘要。不可寫成評論或結論。 |
 | `why_matters_zh` | string | 1 到 2 句，回答讀者為什麼需要看。可講影響與機制，不可講漲跌方向或投資建議。 |
 | `body_zh` | array[string] | 1 到 3 段改寫整理，建議固定 3 段。不得複製原文完整句段。 |
+| `locales` | object | 必含 `zh-Hant`、`zh-Hans`、`en`。每個 locale 必含 `title`、`summary`、`why_matters`、`body`、`subcategory`，建議含 `image_alt`、`region`。 |
+| `sources_by_locale` | object | 必含 `zh-Hant`、`zh-Hans`、`en`。每個 locale 必含 `source_name`、`region`，建議含 `source_url`、`canonical_url`。前台來源與地區顯示從這裡取值。 |
 | `vertical` | enum | `ai` 或 `finance`。 |
 | `content_type` | enum | `news`、`column` 或 `research`。 |
 | `subcategory` | enum | 7 主題白名單擇一。 |

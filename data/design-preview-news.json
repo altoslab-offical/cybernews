@@ -45,7 +45,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "AI 基礎建設競賽，正在把科技權力推向更多非西方市場",
+        "summary": "從印度資料中心到中東主權雲，科技公司正在把算力、資料、能源與監管視為同一場全球競賽。",
+        "why_matters": "這則內容說明 AI 競爭已從模型能力延伸到資料中心、能源與資料主權，非西方市場正在成為部署與監管的新節點。",
+        "body": [
+          "這篇整理把 AI 基礎建設視為一組跨國競爭，而不是單一資料中心或雲端採購新聞。算力部署正在和電力取得、資料主權、在地監管與企業客戶需求綁在一起，讓更多非西方市場成為大型科技公司必須經營的節點。",
+          "印度、中東與部分亞洲市場的共同點，是政府與大型企業都希望把 AI 服務留在可控的資料與雲端環境內。對雲端平台而言，這代表資料中心位置、合作夥伴、能源合約與合規架構，都會影響模型服務能不能真正落地。",
+          "後續可追蹤的訊號包括新資料中心投資、主權雲合作、能源採購協議、GPU 供應分配，以及 Microsoft、Google、Amazon 等平台在各地的合資或在地化安排。這些訊號比單一模型發布更能反映 AI 權力版圖如何移動。"
+        ],
+        "subcategory": "算力與晶片",
+        "image_alt": "AI 基礎建設競賽，正在把科技權力推向更多非西方市場",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "AI 基础建设竞赛，正在把科技权力推向更多非西方市场",
+        "summary": "从印度资料中心到中东主权云，科技公司正在把算力、资料、能源与监管视为同一场全球竞赛。",
+        "why_matters": "这则内容说明 AI 竞争已从模型能力延伸到资料中心、能源与资料主权，非西方市场正在成为部署与监管的新节点。",
+        "body": [
+          "这篇整理把 AI 基础建设视为一组跨国竞争，而不是单一资料中心或云端采购新闻。算力部署正在和电力取得、资料主权、在地监管与企业客户需求绑在一起，让更多非西方市场成为大型科技公司必须经营的节点。",
+          "印度、中东与部分亚洲市场的共同点，是政府与大型企业都希望把 AI 服务留在可控的资料与云端环境内。对云端平台而言，这代表资料中心位置、合作伙伴、能源合约与合规架构，都会影响模型服务能不能真正落地。",
+          "后续可追踪的讯号包括新资料中心投资、主权云合作、能源采购协议、GPU 供应分配，以及 Microsoft、Google、Amazon 等平台在各地的合资或在地化安排。这些讯号比单一模型发布更能反映 AI 权力版图如何移动。"
+        ],
+        "subcategory": "算力与晶片",
+        "image_alt": "AI 基础建设竞赛，正在把科技权力推向更多非西方市场",
+        "region": "中国"
+      },
+      "en": {
+        "title": "AI infrastructure race pushes tech power into more non-Western markets",
+        "summary": "From data centers in India to sovereign cloud projects in the Middle East, AI infrastructure is tying compute, data, energy, and regulation into one global contest.",
+        "why_matters": "The AI race is no longer only about model quality. Data centers, energy access, and data sovereignty are becoming the deployment layer where non-Western markets gain leverage.",
+        "body": [
+          "The next phase of AI competition is being decided through infrastructure: where chips are installed, where data can move, and where power is available at predictable cost.",
+          "Governments and cloud operators outside the traditional U.S.-Europe axis are using sovereign cloud rules, data residency, and energy partnerships to negotiate a stronger position.",
+          "The key signals to track are data-center approvals, power contracts, export controls, and whether local rules let global model providers scale without losing compliance flexibility."
+        ],
+        "subcategory": "Chips and Compute",
+        "image_alt": "AI infrastructure race pushes tech power into more non-Western markets",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets",
+        "canonical_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets",
+        "canonical_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets",
+        "canonical_url": "design-fixture://cybernews/ai-infrastructure-non-western-markets"
+      }
+    }
   },
   {
     "id": "eu-foundation-model-audit",
@@ -90,7 +151,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "歐盟啟動新一輪 AI 基礎模型稽核",
+        "summary": "歐盟監管機構要求大型模型供應商補交訓練資料、風險測試與部署流程說明。",
+        "why_matters": "稽核要求把模型發布推向更可被檢查的流程，企業客戶也會更重視合規證明與風險測試。",
+        "body": [
+          "歐盟新一輪基礎模型稽核，重點不是只檢查模型是否已經上線，而是要求供應商說明訓練資料、風險測試、部署流程與事故回報機制。這讓大型模型的發布節奏更接近受監管產品，而不是純粹的軟體更新。",
+          "對 OpenAI、Anthropic、Google 等模型供應商而言，監管要求會增加文件、測試與內部治理成本。企業客戶也會更關心模型服務是否能提供合規證明，尤其是金融、醫療、政府與教育等高敏感場景。",
+          "接下來值得觀察的是稽核結果是否會影響模型在歐洲市場的功能開放、資料保存方式與 API 條款。若歐盟把這套流程制度化，其他市場也可能採用類似框架。"
+        ],
+        "subcategory": "監管與政策",
+        "image_alt": "歐盟啟動新一輪 AI 基礎模型稽核",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "欧盟启动新一轮 AI 基础模型稽核",
+        "summary": "欧盟监管机构要求大型模型供应商补交训练资料、风险测试与部署流程说明。",
+        "why_matters": "稽核要求把模型发布推向更可被检查的流程，企业客户也会更重视合规证明与风险测试。",
+        "body": [
+          "欧盟新一轮基础模型稽核，重点不是只检查模型是否已经上线，而是要求供应商说明训练资料、风险测试、部署流程与事故回报机制。这让大型模型的发布节奏更接近受监管产品，而不是纯粹的软体更新。",
+          "对 OpenAI、Anthropic、Google 等模型供应商而言，监管要求会增加文件、测试与内部治理成本。企业客户也会更关心模型服务是否能提供合规证明，尤其是金融、医疗、政府与教育等高敏感场景。",
+          "接下来值得观察的是稽核结果是否会影响模型在欧洲市场的功能开放、资料保存方式与 API 条款。若欧盟把这套流程制度化，其他市场也可能采用类似框架。"
+        ],
+        "subcategory": "监管与政策",
+        "image_alt": "欧盟启动新一轮 AI 基础模型稽核",
+        "region": "中国"
+      },
+      "en": {
+        "title": "EU opens a new audit round for foundation models",
+        "summary": "European regulators are asking major model providers for more detail on training data, risk tests, and deployment controls.",
+        "why_matters": "Audit pressure makes model releases more inspectable, and enterprise customers will treat compliance evidence and risk testing as part of the buying decision.",
+        "body": [
+          "The new audit round moves foundation-model supervision from broad principles into evidence requests around data, testing, and deployment process.",
+          "Model providers will need clearer documentation for enterprise buyers, especially in regulated sectors that cannot rely only on vendor promises.",
+          "Watch whether audit requirements slow release cycles, change product availability by region, or create a new market for compliance tooling."
+        ],
+        "subcategory": "Regulation and Policy",
+        "image_alt": "EU opens a new audit round for foundation models",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/eu-foundation-model-audit",
+        "canonical_url": "design-fixture://cybernews/eu-foundation-model-audit"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/eu-foundation-model-audit",
+        "canonical_url": "design-fixture://cybernews/eu-foundation-model-audit"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/eu-foundation-model-audit",
+        "canonical_url": "design-fixture://cybernews/eu-foundation-model-audit"
+      }
+    }
   },
   {
     "id": "ai-language-majors-china",
@@ -130,7 +252,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "中國大學調整語言科系，把更多資源轉向 AI 與資料科學",
+        "summary": "多所大學開始停招或整併翻譯、外語與行銷類科系，顯示教育資源正快速轉向 AI 產業政策。",
+        "why_matters": "科系調整反映 AI 人才需求正在改變教育資源配置，也提醒語言與人文能力會被重新嵌入資料與工具工作流。",
+        "body": [
+          "中國部分大學調整語言、翻譯與行銷等科系，反映高等教育資源正在往 AI、資料科學與工程能力集中。這不是單一學校的課程更新，而是產業政策、就業預期與校內資源重新排序的結果。",
+          "對學生與學校而言，科系調整意味著人文與語言能力不再被視為獨立賽道，而更常被要求與資料分析、模型工具或產業應用結合。外語、內容、商務與研究能力仍有需求，但呈現方式正在改變。",
+          "這類變化也提醒 AI 人才供給不只來自電腦科學系。未來的競爭可能落在跨領域課程、實習合作、工具使用能力與產業問題理解，而不是單純增加 AI 相關科系名稱。"
+        ],
+        "subcategory": "AI 應用與人才",
+        "image_alt": "中國大學調整語言科系，把更多資源轉向 AI 與資料科學",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "中国大学调整语言科系，把更多资源转向 AI 与资料科学",
+        "summary": "多所大学开始停招或整并翻译、外语与行销类科系，显示教育资源正快速转向 AI 产业政策。",
+        "why_matters": "科系调整反映 AI 人才需求正在改变教育资源配置，也提醒语言与人文能力会被重新嵌入资料与工具工作流。",
+        "body": [
+          "中国部分大学调整语言、翻译与行销等科系，反映高等教育资源正在往 AI、资料科学与工程能力集中。这不是单一学校的课程更新，而是产业政策、就业预期与校内资源重新排序的结果。",
+          "对学生与学校而言，科系调整意味着人文与语言能力不再被视为独立赛道，而更常被要求与资料分析、模型工具或产业应用结合。外语、内容、商务与研究能力仍有需求，但呈现方式正在改变。",
+          "这类变化也提醒 AI 人才供给不只来自电脑科学系。未来的竞争可能落在跨领域课程、实习合作、工具使用能力与产业问题理解，而不是单纯增加 AI 相关科系名称。"
+        ],
+        "subcategory": "AI 应用与人才",
+        "image_alt": "中国大学调整语言科系，把更多资源转向 AI 与资料科学",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Chinese universities are cutting language majors to make way for AI",
+        "summary": "Several Chinese universities are reducing or merging language, translation, and marketing programs as resources shift toward AI and data-science priorities.",
+        "why_matters": "The change shows how AI demand is reshaping education planning, while language and humanities skills are being re-embedded into data and workflow roles.",
+        "body": [
+          "University program changes are a lagging but useful indicator of where policy makers and employers expect demand to move over the next hiring cycle.",
+          "Rather than making language skills irrelevant, AI is changing where those skills live: prompt work, evaluation, localization, data labeling, and human review.",
+          "The next signals are enrollment plans, graduate hiring data, and whether new AI programs include enough communication, cultural, and domain expertise."
+        ],
+        "subcategory": "AI Adoption and Talent",
+        "image_alt": "Chinese universities are cutting language majors to make way for AI",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/ai-language-majors-china",
+        "canonical_url": "design-fixture://cybernews/ai-language-majors-china"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/ai-language-majors-china",
+        "canonical_url": "design-fixture://cybernews/ai-language-majors-china"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/ai-language-majors-china",
+        "canonical_url": "design-fixture://cybernews/ai-language-majors-china"
+      }
+    }
   },
   {
     "id": "msft-openai-cloud-contract",
@@ -175,7 +358,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Microsoft 與 OpenAI 雲端合約談判進入新階段",
+        "summary": "談判重點包括模型部署、雲端成本、企業客戶收入分成與未來算力採購。",
+        "why_matters": "雲端合約直接影響 AI 服務成本、部署速度與收入分成，是模型公司和雲端平台商業模式的關鍵接口。",
+        "body": [
+          "Microsoft 與 OpenAI 的雲端合作進入新一輪談判，核心問題在於模型部署規模、雲端成本、企業客戶收入分成，以及未來算力採購如何分配。這些條款會影響 AI 服務的毛利、速度與產品路線。",
+          "在企業 AI 市場裡，雲端基礎設施不只是後端成本，而是產品能力的一部分。模型延遲、資料區域、客戶合約與推論價格，都可能決定企業是否把工作流放到特定平台上。",
+          "市場接下來會看 Microsoft 是否能把 OpenAI 的模型需求轉化為 Azure 的長期收入，同時控制資本支出與供應鏈壓力。這是一則 AI 平台新聞，也是一則雲端商業模式新聞。"
+        ],
+        "subcategory": "AI 資本與雲端",
+        "image_alt": "Microsoft 與 OpenAI 雲端合約談判進入新階段",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Microsoft 与 OpenAI 云端合约谈判进入新阶段",
+        "summary": "谈判重点包括模型部署、云端成本、企业客户收入分成与未来算力采购。",
+        "why_matters": "云端合约直接影响 AI 服务成本、部署速度与收入分成，是模型公司和云端平台商业模式的关键接口。",
+        "body": [
+          "Microsoft 与 OpenAI 的云端合作进入新一轮谈判，核心问题在于模型部署规模、云端成本、企业客户收入分成，以及未来算力采购如何分配。这些条款会影响 AI 服务的毛利、速度与产品路线。",
+          "在企业 AI 市场里，云端基础设施不只是后端成本，而是产品能力的一部分。模型延迟、资料区域、客户合约与推论价格，都可能决定企业是否把工作流放到特定平台上。",
+          "市场接下来会看 Microsoft 是否能把 OpenAI 的模型需求转化为 Azure 的长期收入，同时控制资本支出与供应链压力。这是一则 AI 平台新闻，也是一则云端商业模式新闻。"
+        ],
+        "subcategory": "AI 资本与云端",
+        "image_alt": "Microsoft 与 OpenAI 云端合约谈判进入新阶段",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Microsoft and OpenAI enter a new phase of cloud contract talks",
+        "summary": "Cloud contract talks are centering on model deployment, cloud cost, enterprise revenue sharing, and future compute procurement.",
+        "why_matters": "Cloud contracts shape the cost, speed, and revenue model for AI services, making them a key interface between model companies and platform operators.",
+        "body": [
+          "The commercial relationship between Microsoft and OpenAI is increasingly about infrastructure economics, not only product access or investment structure.",
+          "Compute allocation, customer ownership, and revenue-share terms determine how quickly enterprise AI products can scale without margin pressure becoming the main constraint.",
+          "Watch for changes in Azure commitments, model-hosting options, enterprise bundle terms, and whether alternative cloud capacity becomes part of the negotiation."
+        ],
+        "subcategory": "AI Capital and Cloud",
+        "image_alt": "Microsoft and OpenAI enter a new phase of cloud contract talks",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/msft-openai-cloud-contract",
+        "canonical_url": "design-fixture://cybernews/msft-openai-cloud-contract"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/msft-openai-cloud-contract",
+        "canonical_url": "design-fixture://cybernews/msft-openai-cloud-contract"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/msft-openai-cloud-contract",
+        "canonical_url": "design-fixture://cybernews/msft-openai-cloud-contract"
+      }
+    }
   },
   {
     "id": "ai-weekly-agent-market-map",
@@ -221,7 +465,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "AI Weekly：agent 工具開始從功能競賽走向工作流競賽",
+        "summary": "本週觀察重點從模型能力轉向產品落地：企業正在比較 agent 是否能穩定接住跨系統工作流。",
+        "why_matters": "agent 市場正在從展示功能轉向可營運工作流，權限、日誌、審批與整合能力會成為企業採用門檻。",
+        "body": [
+          "本週 agent 工具的觀察焦點，從誰能展示最多功能，轉向誰能穩定完成跨系統工作流。企業不只在看模型能否回答問題，而是在看它能不能讀取資料、執行任務、回報狀態，並在錯誤時安全停下來。",
+          "這也讓產品競爭的重點變成權限設計、審批流程、日誌紀錄、工具整合與人機協作介面。單次 demo 很容易吸引注意，但真正能進入企業採購的 agent，需要能被管理、稽核與重複使用。",
+          "接下來可觀察的訊號，是平台是否推出更清楚的工作流模板、connector 生態、後台治理功能與成本監控。agent 市場的勝負可能不在模型本身，而在它能否成為可營運的工作層。"
+        ],
+        "subcategory": "AI 公司與產品",
+        "image_alt": "AI Weekly：agent 工具開始從功能競賽走向工作流競賽",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "AI Weekly：agent 工具开始从功能竞赛走向工作流竞赛",
+        "summary": "本周观察重点从模型能力转向产品落地：企业正在比较 agent 是否能稳定接住跨系统工作流。",
+        "why_matters": "agent 市场正在从展示功能转向可营运工作流，权限、日志、审批与整合能力会成为企业采用门槛。",
+        "body": [
+          "本周 agent 工具的观察焦点，从谁能展示最多功能，转向谁能稳定完成跨系统工作流。企业不只在看模型能否回答问题，而是在看它能不能读取资料、执行任务、回报状态，并在错误时安全停下来。",
+          "这也让产品竞争的重点变成权限设计、审批流程、日志纪录、工具整合与人机协作介面。单次 demo 很容易吸引注意，但真正能进入企业采购的 agent，需要能被管理、稽核与重复使用。",
+          "接下来可观察的讯号，是平台是否推出更清楚的工作流模板、connector 生态、后台治理功能与成本监控。agent 市场的胜负可能不在模型本身，而在它能否成为可营运的工作层。"
+        ],
+        "subcategory": "AI 公司与产品",
+        "image_alt": "AI Weekly：agent 工具开始从功能竞赛走向工作流竞赛",
+        "region": "中国"
+      },
+      "en": {
+        "title": "AI Weekly: agent tools shift from feature race to workflow race",
+        "summary": "This week’s agent market signal is moving from model capability toward execution: enterprises are comparing whether tools can carry cross-system workflows reliably.",
+        "why_matters": "Agent competition is shifting from demos to operable workflows, where permissions, logs, approvals, and integrations become adoption gates.",
+        "body": [
+          "Agent tools are leaving the feature-race phase. Buyers now ask whether a tool can run a repeatable workflow across SaaS systems, documents, approvals, and internal data.",
+          "This puts product architecture ahead of prompt quality alone. Audit logs, permission boundaries, rollback, and human checkpoints are becoming part of the core product.",
+          "The next market map should separate task assistants, workflow operators, developer agents, and enterprise automation layers instead of grouping all agents together."
+        ],
+        "subcategory": "AI Companies and Products",
+        "image_alt": "AI Weekly: agent tools shift from feature race to workflow race",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/ai-weekly-agent-market-map",
+        "canonical_url": "design-fixture://cybernews/ai-weekly-agent-market-map"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/ai-weekly-agent-market-map",
+        "canonical_url": "design-fixture://cybernews/ai-weekly-agent-market-map"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/ai-weekly-agent-market-map",
+        "canonical_url": "design-fixture://cybernews/ai-weekly-agent-market-map"
+      }
+    }
   },
   {
     "id": "ai-chip-supply-chain-research",
@@ -269,7 +574,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "AI 晶片供應鏈調研：HBM 與先進封裝仍是交付瓶頸",
+        "summary": "從 GPU、HBM、CoWoS 到伺服器機櫃，AI 基礎建設的限制正在從單一晶片擴大到整條供應鏈。",
+        "why_matters": "AI 供應限制不只在 GPU，HBM、封裝、機櫃和能源都會影響算力交付節奏。",
+        "body": [
+          "AI 晶片供應鏈的瓶頸已經不只是 GPU 本身。HBM 記憶體、先進封裝產能、伺服器組裝、機櫃供電與散熱配置，都會影響資料中心能否按時交付算力。",
+          "這代表產業分析需要從單一公司出貨量，延伸到整條供應鏈的節點。Nvidia、TSMC、SK Hynix 等公司分別站在加速器、封裝與記憶體位置，任何一個節點緊張，都可能推遲下游雲端與企業 AI 部署。",
+          "後續追蹤重點包括 HBM 產能擴張、CoWoS 或類似先進封裝排程、AI 伺服器 ODM 交付，以及大型雲端業者的資本支出節奏。這些資料能幫助判斷需求是真正被滿足，還是被供應限制延後。"
+        ],
+        "subcategory": "算力與晶片",
+        "image_alt": "AI 晶片供應鏈調研：HBM 與先進封裝仍是交付瓶頸",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "AI 晶片供应链调研：HBM 与先进封装仍是交付瓶颈",
+        "summary": "从 GPU、HBM、CoWoS 到伺服器机柜，AI 基础建设的限制正在从单一晶片扩大到整条供应链。",
+        "why_matters": "AI 供应限制不只在 GPU，HBM、封装、机柜和能源都会影响算力交付节奏。",
+        "body": [
+          "AI 晶片供应链的瓶颈已经不只是 GPU 本身。HBM 记忆体、先进封装产能、伺服器组装、机柜供电与散热配置，都会影响资料中心能否按时交付算力。",
+          "这代表产业分析需要从单一公司出货量，延伸到整条供应链的节点。Nvidia、TSMC、SK Hynix 等公司分别站在加速器、封装与记忆体位置，任何一个节点紧张，都可能推迟下游云端与企业 AI 部署。",
+          "后续追踪重点包括 HBM 产能扩张、CoWoS 或类似先进封装排程、AI 伺服器 ODM 交付，以及大型云端业者的资本支出节奏。这些资料能帮助判断需求是真正被满足，还是被供应限制延后。"
+        ],
+        "subcategory": "算力与晶片",
+        "image_alt": "AI 晶片供应链调研：HBM 与先进封装仍是交付瓶颈",
+        "region": "中国"
+      },
+      "en": {
+        "title": "AI chip supply-chain research: HBM and advanced packaging remain bottlenecks",
+        "summary": "AI infrastructure constraints are expanding from GPUs to the full chain of HBM, CoWoS, server racks, networking, and power delivery.",
+        "why_matters": "GPU availability is only one bottleneck. Memory, packaging, rack integration, and energy capacity all influence how quickly compute can be delivered.",
+        "body": [
+          "The chip supply chain is best understood as a delivery system rather than a single semiconductor market. A surplus in one layer does not solve bottlenecks elsewhere.",
+          "HBM supply, advanced packaging slots, networking components, and rack-level integration can each delay the conversion of chip orders into usable AI capacity.",
+          "Useful tracking signals include lead times, packaging capacity, supplier capex, power interconnect approvals, and whether cloud providers disclose capacity constraints."
+        ],
+        "subcategory": "Chips and Compute",
+        "image_alt": "AI chip supply-chain research: HBM and advanced packaging remain bottlenecks",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/ai-chip-supply-chain-research",
+        "canonical_url": "design-fixture://cybernews/ai-chip-supply-chain-research"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/ai-chip-supply-chain-research",
+        "canonical_url": "design-fixture://cybernews/ai-chip-supply-chain-research"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/ai-chip-supply-chain-research",
+        "canonical_url": "design-fixture://cybernews/ai-chip-supply-chain-research"
+      }
+    }
   },
   {
     "id": "nvda-guidance-datacenter-demand",
@@ -317,7 +683,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注",
+        "summary": "市場焦點轉向先進封裝、HBM、伺服器機櫃與能源配置，但這不是買賣建議。",
+        "why_matters": "這則新聞把資料中心需求和供應鏈瓶頸放在同一張圖上，方便追蹤 AI 基礎建設是否能按時交付。",
+        "body": [
+          "Nvidia 上修資料中心需求展望後，市場關注點從單季營收延伸到供應鏈能否跟上。AI 伺服器需求涉及 GPU、HBM、封裝、主機板、機櫃、網通與能源配置，不是單一零組件可以解釋。",
+          "對投資人與產業觀察者而言，重要的是區分需求強勁與交付能力。若先進封裝或 HBM 仍然緊張，訂單能見度可能提高，但實際出貨與收入認列仍取決於供應鏈節奏。",
+          "這篇內容只整理市場與供應鏈訊號，不構成買賣建議。後續可追蹤 NVDA、TSM 等相關 metadata，以及雲端客戶資本支出、伺服器交付期與資料中心能源安排。"
+        ],
+        "subcategory": "科技股",
+        "image_alt": "Nvidia 上修資料中心需求展望，AI 伺服器供應鏈再受關注",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Nvidia 上修资料中心需求展望，AI 伺服器供应链再受关注",
+        "summary": "市场焦点转向先进封装、HBM、伺服器机柜与能源配置，但这不是买卖建议。",
+        "why_matters": "这则新闻把资料中心需求和供应链瓶颈放在同一张图上，方便追踪 AI 基础建设是否能按时交付。",
+        "body": [
+          "Nvidia 上修资料中心需求展望后，市场关注点从单季营收延伸到供应链能否跟上。AI 伺服器需求涉及 GPU、HBM、封装、主机板、机柜、网通与能源配置，不是单一零组件可以解释。",
+          "对投资人与产业观察者而言，重要的是区分需求强劲与交付能力。若先进封装或 HBM 仍然紧张，订单能见度可能提高，但实际出货与收入认列仍取决于供应链节奏。",
+          "这篇内容只整理市场与供应链讯号，不构成买卖建议。后续可追踪 NVDA、TSM 等相关 metadata，以及云端客户资本支出、伺服器交付期与资料中心能源安排。"
+        ],
+        "subcategory": "科技股",
+        "image_alt": "Nvidia 上修资料中心需求展望，AI 伺服器供应链再受关注",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Nvidia lifts data center demand outlook as AI server supply chain stays tight",
+        "summary": "Market attention is shifting to advanced packaging, HBM, server racks, and power allocation as Nvidia’s data-center demand outlook remains strong. This is not trading advice.",
+        "why_matters": "The story links data-center demand with supply-chain bottlenecks, making it easier to track whether AI infrastructure can be delivered on time.",
+        "body": [
+          "Nvidia demand signals continue to pull attention beyond the GPU itself and into the suppliers that make AI servers usable at scale.",
+          "For finance readers, the useful question is not whether a single quarter is strong, but where capacity constraints could move revenue timing across the broader supply chain.",
+          "Track HBM availability, advanced packaging capacity, rack integration, power access, and customer concentration. None of these signals should be read as a trading recommendation."
+        ],
+        "subcategory": "Tech Stocks",
+        "image_alt": "Nvidia lifts data center demand outlook as AI server supply chain stays tight",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand",
+        "canonical_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand",
+        "canonical_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand",
+        "canonical_url": "design-fixture://cybernews/nvda-guidance-datacenter-demand"
+      }
+    }
   },
   {
     "id": "aapl-ai-device-cycle",
@@ -362,7 +789,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Apple 的 AI 裝置週期，讓供應鏈重新估算 iPhone 需求",
+        "summary": "供應鏈把焦點放在端側模型、記憶體配置與高階機型換機節奏。",
+        "why_matters": "Apple 的 AI 功能若改變換機節奏，會同步影響零組件、記憶體與高階機型供應鏈的需求假設。",
+        "body": [
+          "Apple 的 AI 裝置週期讓供應鏈重新評估 iPhone 需求，尤其是端側模型、記憶體配置與高階機型換機節奏。市場正在判斷 AI 功能是否足以推動使用者升級，而不只是延續過去的硬體更新週期。",
+          "供應鏈關注的不是單一功能發布，而是規格變化是否會影響零組件採購、庫存安排與高階機型占比。如果 AI 功能需要更高記憶體或更強晶片，相關供應商的排程和成本結構也會跟著調整。",
+          "這則新聞適合和 AAPL、iPhone 供應鏈、端側 AI 與高階機型需求一起追蹤。它仍屬於新聞與 metadata 整理，不代表對股價或銷售結果做方向判斷。"
+        ],
+        "subcategory": "科技股",
+        "image_alt": "Apple 的 AI 裝置週期，讓供應鏈重新估算 iPhone 需求",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Apple 的 AI 装置周期，让供应链重新估算 iPhone 需求",
+        "summary": "供应链把焦点放在端侧模型、记忆体配置与高阶机型换机节奏。",
+        "why_matters": "Apple 的 AI 功能若改变换机节奏，会同步影响零组件、记忆体与高阶机型供应链的需求假设。",
+        "body": [
+          "Apple 的 AI 装置周期让供应链重新评估 iPhone 需求，尤其是端侧模型、记忆体配置与高阶机型换机节奏。市场正在判断 AI 功能是否足以推动使用者升级，而不只是延续过去的硬体更新周期。",
+          "供应链关注的不是单一功能发布，而是规格变化是否会影响零组件采购、库存安排与高阶机型占比。如果 AI 功能需要更高记忆体或更强晶片，相关供应商的排程和成本结构也会跟着调整。",
+          "这则新闻适合和 AAPL、iPhone 供应链、端侧 AI 与高阶机型需求一起追踪。它仍属于新闻与 metadata 整理，不代表对股价或销售结果做方向判断。"
+        ],
+        "subcategory": "科技股",
+        "image_alt": "Apple 的 AI 装置周期，让供应链重新估算 iPhone 需求",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Apple's AI device cycle forces suppliers to revisit iPhone demand",
+        "summary": "Suppliers are watching on-device models, memory configuration, and high-end upgrade timing as Apple’s AI device cycle develops.",
+        "why_matters": "If Apple’s AI features change upgrade timing, component, memory, and high-end device demand assumptions may shift together.",
+        "body": [
+          "Apple’s AI cycle is being read through hardware assumptions: what needs more memory, which features require newer devices, and whether users see enough value to upgrade.",
+          "The supply-chain impact depends on whether AI becomes a reason to refresh high-end phones or remains a software feature with limited hardware pull.",
+          "Watch device mix, memory specifications, supplier guidance, and how Apple explains privacy and on-device processing to mainstream users."
+        ],
+        "subcategory": "Tech Stocks",
+        "image_alt": "Apple's AI device cycle forces suppliers to revisit iPhone demand",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/aapl-ai-device-cycle",
+        "canonical_url": "design-fixture://cybernews/aapl-ai-device-cycle"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/aapl-ai-device-cycle",
+        "canonical_url": "design-fixture://cybernews/aapl-ai-device-cycle"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/aapl-ai-device-cycle",
+        "canonical_url": "design-fixture://cybernews/aapl-ai-device-cycle"
+      }
+    }
   },
   {
     "id": "bitcoin-etf-inflows-institutional",
@@ -407,7 +895,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點",
+        "summary": "資產管理公司與上市公司持倉變化受到追蹤，但本文不做價格方向判斷。",
+        "why_matters": "ETF 流向是觀察機構通道參與度的重要 metadata，但不應被單獨解讀成價格方向訊號。",
+        "body": [
+          "Bitcoin ETF 資金流入回升，使市場重新討論機構配置。這類資料通常會被用來觀察資產管理公司、退休金、上市公司與財富管理渠道是否正在提高加密資產曝險。",
+          "不過資金流本身不等於價格預測。ETF 流入可能受到再平衡、短期交易、產品費率、宏觀風險偏好與監管消息影響，因此更適合作為機構採用的 metadata，而不是單一買賣訊號。",
+          "後續可追蹤 BTC、ETF 發行商、保管安排、上市公司持倉與每日資金流變化。本文只整理公開資訊脈絡，不提供投資建議或價格方向判斷。"
+        ],
+        "subcategory": "加密與穩定幣",
+        "image_alt": "Bitcoin ETF 資金流入回升，機構配置重新成為市場焦點",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Bitcoin ETF 资金流入回升，机构配置重新成为市场焦点",
+        "summary": "资产管理公司与上市公司持仓变化受到追踪，但本文不做价格方向判断。",
+        "why_matters": "ETF 流向是观察机构通道参与度的重要 metadata，但不应被单独解读成价格方向讯号。",
+        "body": [
+          "Bitcoin ETF 资金流入回升，使市场重新讨论机构配置。这类资料通常会被用来观察资产管理公司、退休金、上市公司与财富管理渠道是否正在提高加密资产曝险。",
+          "不过资金流本身不等于价格预测。ETF 流入可能受到再平衡、短期交易、产品费率、宏观风险偏好与监管消息影响，因此更适合作为机构采用的 metadata，而不是单一买卖讯号。",
+          "后续可追踪 BTC、ETF 发行商、保管安排、上市公司持仓与每日资金流变化。本文只整理公开资讯脉络，不提供投资建议或价格方向判断。"
+        ],
+        "subcategory": "加密与稳定币",
+        "image_alt": "Bitcoin ETF 资金流入回升，机构配置重新成为市场焦点",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Bitcoin ETF inflows rebound as institutional allocation returns to focus",
+        "summary": "Asset-manager flows and public-company holdings are being watched again, but this article does not make a price-direction call.",
+        "why_matters": "ETF flow data is useful metadata for institutional channel participation, but it should not be read alone as a price signal.",
+        "body": [
+          "Bitcoin ETF inflows are a cleaner institutional-access signal than many crypto-native metrics, but they still need context around custody, rebalancing, and macro conditions.",
+          "Public-company holdings add another layer, showing whether balance-sheet adoption is broadening or concentrated in a few visible names.",
+          "Track flows, issuer concentration, custody arrangements, and regulatory developments together. None of these indicators is a standalone price forecast."
+        ],
+        "subcategory": "Crypto and Stablecoins",
+        "image_alt": "Bitcoin ETF inflows rebound as institutional allocation returns to focus",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-inflows-institutional"
+      }
+    }
   },
   {
     "id": "stablecoin-bill-compliance",
@@ -455,7 +1004,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "穩定幣監管草案推進，交易所與支付公司開始調整合規流程",
+        "summary": "監管焦點包括儲備揭露、發行人資格、跨境支付與交易所風險管理。",
+        "why_matters": "穩定幣規則會影響發行人、交易所與支付公司的合規成本，也會改變鏈上支付與跨境結算的基礎設施。",
+        "body": [
+          "穩定幣監管草案推進後，交易所、支付公司與發行人開始調整合規流程。監管焦點主要落在儲備揭露、發行人資格、贖回機制、跨境支付與交易平台風險管理。",
+          "對 Coinbase、Circle 等業者來說，明確規則可能降低部分制度不確定性，但也會提高揭露、審計與營運門檻。穩定幣若要進一步進入支付與金融基礎設施，合規能力會變成產品競爭的一部分。",
+          "這則內容適合追蹤 USDC、USDT、交易所合規政策與支付應用場景。本文不評估任何代幣價格，只整理監管與產業流程變化。"
+        ],
+        "subcategory": "加密與穩定幣",
+        "image_alt": "穩定幣監管草案推進，交易所與支付公司開始調整合規流程",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "稳定币监管草案推进，交易所与支付公司开始调整合规流程",
+        "summary": "监管焦点包括储备揭露、发行人资格、跨境支付与交易所风险管理。",
+        "why_matters": "稳定币规则会影响发行人、交易所与支付公司的合规成本，也会改变链上支付与跨境结算的基础设施。",
+        "body": [
+          "稳定币监管草案推进后，交易所、支付公司与发行人开始调整合规流程。监管焦点主要落在储备揭露、发行人资格、赎回机制、跨境支付与交易平台风险管理。",
+          "对 Coinbase、Circle 等业者来说，明确规则可能降低部分制度不确定性，但也会提高揭露、审计与营运门槛。稳定币若要进一步进入支付与金融基础设施，合规能力会变成产品竞争的一部分。",
+          "这则内容适合追踪 USDC、USDT、交易所合规政策与支付应用场景。本文不评估任何代币价格，只整理监管与产业流程变化。"
+        ],
+        "subcategory": "加密与稳定币",
+        "image_alt": "稳定币监管草案推进，交易所与支付公司开始调整合规流程",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Stablecoin bill advances as exchanges and payment firms adjust compliance flows",
+        "summary": "Regulatory focus is moving through reserve disclosure, issuer eligibility, cross-border payments, and exchange risk controls.",
+        "why_matters": "Stablecoin rules affect issuer, exchange, and payment-company compliance costs while reshaping the infrastructure for on-chain payments and settlement.",
+        "body": [
+          "Stablecoin regulation is becoming an operating model question: who can issue, how reserves are reported, and how platforms monitor transfers and counterparties.",
+          "Payment companies and exchanges may need stronger compliance workflows before they can treat stablecoins as mainstream settlement infrastructure.",
+          "Watch reserve-reporting standards, licensing requirements, cross-border payment rules, and whether compliant issuers gain distribution advantages."
+        ],
+        "subcategory": "Crypto and Stablecoins",
+        "image_alt": "Stablecoin bill advances as exchanges and payment firms adjust compliance flows",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/stablecoin-bill-compliance",
+        "canonical_url": "design-fixture://cybernews/stablecoin-bill-compliance"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/stablecoin-bill-compliance",
+        "canonical_url": "design-fixture://cybernews/stablecoin-bill-compliance"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/stablecoin-bill-compliance",
+        "canonical_url": "design-fixture://cybernews/stablecoin-bill-compliance"
+      }
+    }
   },
   {
     "id": "solana-defi-recovery",
@@ -499,7 +1109,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Solana DeFi 活動回升，錢包與支付應用成為新觀察點",
+        "summary": "開發者關注交易成本、穩定幣使用與行動錢包體驗，仍需留意平台風險。",
+        "why_matters": "Solana 活動回升顯示低成本交易、穩定幣與錢包體驗仍是公鏈應用競爭的觀察點。",
+        "body": [
+          "Solana DeFi 活動回升，讓市場重新關注低成本交易、穩定幣使用與行動錢包體驗。這些訊號顯示公鏈競爭不只在總鎖倉價值，也在支付、消費應用與開發者工具能否形成日常使用場景。",
+          "錢包與支付應用成為觀察點，是因為它們更接近使用者入口。如果交易成本、確認速度與介面體驗足夠穩定，DeFi 活動才可能從高頻交易擴展到更廣泛的金融或消費流程。",
+          "仍需留意平台風險、鏈上安全、流動性集中與監管不確定性。本文只整理 SOL、USDC 與 Solana 生態相關 metadata，不構成交易訊號。"
+        ],
+        "subcategory": "加密與穩定幣",
+        "image_alt": "Solana DeFi 活動回升，錢包與支付應用成為新觀察點",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Solana DeFi 活动回升，钱包与支付应用成为新观察点",
+        "summary": "开发者关注交易成本、稳定币使用与行动钱包体验，仍需留意平台风险。",
+        "why_matters": "Solana 活动回升显示低成本交易、稳定币与钱包体验仍是公链应用竞争的观察点。",
+        "body": [
+          "Solana DeFi 活动回升，让市场重新关注低成本交易、稳定币使用与行动钱包体验。这些讯号显示公链竞争不只在总锁仓价值，也在支付、消费应用与开发者工具能否形成日常使用场景。",
+          "钱包与支付应用成为观察点，是因为它们更接近使用者入口。如果交易成本、确认速度与介面体验足够稳定，DeFi 活动才可能从高频交易扩展到更广泛的金融或消费流程。",
+          "仍需留意平台风险、链上安全、流动性集中与监管不确定性。本文只整理 SOL、USDC 与 Solana 生态相关 metadata，不构成交易讯号。"
+        ],
+        "subcategory": "加密与稳定币",
+        "image_alt": "Solana DeFi 活动回升，钱包与支付应用成为新观察点",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Solana DeFi activity rebounds as wallets and payment apps draw attention",
+        "summary": "Developers are watching transaction cost, stablecoin usage, and mobile wallet experience as Solana activity rebounds, while platform risk remains relevant.",
+        "why_matters": "Solana’s rebound shows that low-cost transactions, stablecoins, and wallet UX remain important competition points for public-chain applications.",
+        "body": [
+          "Solana activity is useful to watch because it tests whether low-cost networks can sustain consumer and payment use cases without relying only on speculative cycles.",
+          "Wallet quality, mobile flows, stablecoin liquidity, and developer tooling determine whether renewed activity can become repeatable product usage.",
+          "Track active addresses, stablecoin volume, app retention, outage history, and whether new payment experiences feel reliable to mainstream users."
+        ],
+        "subcategory": "Crypto and Stablecoins",
+        "image_alt": "Solana DeFi activity rebounds as wallets and payment apps draw attention",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/solana-defi-recovery",
+        "canonical_url": "design-fixture://cybernews/solana-defi-recovery"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/solana-defi-recovery",
+        "canonical_url": "design-fixture://cybernews/solana-defi-recovery"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/solana-defi-recovery",
+        "canonical_url": "design-fixture://cybernews/solana-defi-recovery"
+      }
+    }
   },
   {
     "id": "finance-brief-big-tech-capex",
@@ -549,7 +1220,68 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Finance Brief：科技巨頭把 AI 支出寫進下一輪資本配置",
+        "summary": "雲端營收、AI 伺服器採購、折舊壓力與現金流安排，正在成為市場閱讀科技巨頭的新框架。",
+        "why_matters": "AI 支出已成大型科技公司的資本配置問題，雲端收入、折舊與現金流會一起影響市場如何閱讀財報。",
+        "body": [
+          "科技巨頭的 AI 支出已經從短期專案變成資本配置問題。雲端營收、AI 伺服器採購、折舊壓力、資料中心租賃與現金流安排，正在形成市場閱讀大型科技公司的新框架。",
+          "Microsoft、Amazon、Google、Meta 的共同挑戰，是如何把高額 AI 投資轉化為可持續收入。若企業客戶採用速度跟不上基礎建設投入，市場會更關注折舊、毛利率與自由現金流壓力。",
+          "這篇專欄建議把 AI capex 視為長週期變數，而不是單季新聞。後續可搭配雲端成長率、資料中心支出、GPU 採購與管理層資本配置說法一起追蹤。"
+        ],
+        "subcategory": "AI 資本與雲端",
+        "image_alt": "Finance Brief：科技巨頭把 AI 支出寫進下一輪資本配置",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Finance Brief：科技巨头把 AI 支出写进下一轮资本配置",
+        "summary": "云端营收、AI 伺服器采购、折旧压力与现金流安排，正在成为市场阅读科技巨头的新框架。",
+        "why_matters": "AI 支出已成大型科技公司的资本配置问题，云端收入、折旧与现金流会一起影响市场如何阅读财报。",
+        "body": [
+          "科技巨头的 AI 支出已经从短期专案变成资本配置问题。云端营收、AI 伺服器采购、折旧压力、资料中心租赁与现金流安排，正在形成市场阅读大型科技公司的新框架。",
+          "Microsoft、Amazon、Google、Meta 的共同挑战，是如何把高额 AI 投资转化为可持续收入。若企业客户采用速度跟不上基础建设投入，市场会更关注折旧、毛利率与自由现金流压力。",
+          "这篇专栏建议把 AI capex 视为长周期变数，而不是单季新闻。后续可搭配云端成长率、资料中心支出、GPU 采购与管理层资本配置说法一起追踪。"
+        ],
+        "subcategory": "AI 资本与云端",
+        "image_alt": "Finance Brief：科技巨头把 AI 支出写进下一轮资本配置",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Finance Brief: Big Tech folds AI spending into the next capital-allocation cycle",
+        "summary": "Cloud revenue, AI server purchases, depreciation pressure, and cash-flow planning are becoming a new framework for reading large tech companies.",
+        "why_matters": "AI spending is now a capital-allocation question for major tech firms, where cloud revenue, depreciation, and cash flow shape how markets read earnings.",
+        "body": [
+          "Big Tech AI spending is no longer a side note in product strategy. It is becoming a capital plan with multi-year infrastructure commitments and depreciation effects.",
+          "Investors and operators are comparing whether AI capex converts into cloud growth, enterprise retention, or new product revenue quickly enough to justify the spend.",
+          "Track capex guidance, depreciation schedules, cloud margin commentary, AI product monetization, and whether management teams define ownership for cost discipline."
+        ],
+        "subcategory": "AI Capital and Cloud",
+        "image_alt": "Finance Brief: Big Tech folds AI spending into the next capital-allocation cycle",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/finance-brief-big-tech-capex",
+        "canonical_url": "design-fixture://cybernews/finance-brief-big-tech-capex"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/finance-brief-big-tech-capex",
+        "canonical_url": "design-fixture://cybernews/finance-brief-big-tech-capex"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/finance-brief-big-tech-capex",
+        "canonical_url": "design-fixture://cybernews/finance-brief-big-tech-capex"
+      }
+    }
   },
   {
     "id": "bitcoin-etf-institutional-research",
@@ -597,6 +1329,67 @@
     "is_design_fixture": true,
     "editorial_status": "design-preview-only",
     "preview_note_zh": "設計師檢查用假資料，非正式新聞，不可發布。正式資料會由文章 API 提供。",
-    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API."
+    "preview_note_en": "Design-review fixture only. Not production news and not publishable. Production data will come from the article API.",
+    "locales": {
+      "zh-Hant": {
+        "title": "Bitcoin ETF 調研：機構採用進入資金流與合規雙軌觀察期",
+        "summary": "ETF 資金流、上市公司持倉、保管安排與監管節奏，是觀察機構採用的主要 metadata。",
+        "why_matters": "機構採用需要同時看資金流、保管、上市公司持倉與監管架構，單一價格變動不足以代表完整趨勢。",
+        "body": [
+          "Bitcoin ETF 的機構採用已進入資金流與合規雙軌觀察期。資金流可以反映配置需求，保管安排、產品結構與監管節奏則決定更多機構能否把 BTC 納入正式投資流程。",
+          "上市公司持倉、ETF 發行商規模、保管服務商與交易所基礎設施，都是觀察採用程度的 metadata。單日流入或流出可能受到市場波動影響，較適合放進連續時間序列，而不是單獨解讀。",
+          "這份調研只整理公開訊號，不提供價格預測。後續可追蹤 BTC、COIN、ETF 發行商公告、保管政策與監管文件，判斷機構採用是否從產品熱度進一步走向流程常態化。"
+        ],
+        "subcategory": "加密與穩定幣",
+        "image_alt": "Bitcoin ETF 調研：機構採用進入資金流與合規雙軌觀察期",
+        "region": "台灣"
+      },
+      "zh-Hans": {
+        "title": "Bitcoin ETF 调研：机构采用进入资金流与合规双轨观察期",
+        "summary": "ETF 资金流、上市公司持仓、保管安排与监管节奏，是观察机构采用的主要 metadata。",
+        "why_matters": "机构采用需要同时看资金流、保管、上市公司持仓与监管架构，单一价格变动不足以代表完整趋势。",
+        "body": [
+          "Bitcoin ETF 的机构采用已进入资金流与合规双轨观察期。资金流可以反映配置需求，保管安排、产品结构与监管节奏则决定更多机构能否把 BTC 纳入正式投资流程。",
+          "上市公司持仓、ETF 发行商规模、保管服务商与交易所基础设施，都是观察采用程度的 metadata。单日流入或流出可能受到市场波动影响，较适合放进连续时间序列，而不是单独解读。",
+          "这份调研只整理公开讯号，不提供价格预测。后续可追踪 BTC、COIN、ETF 发行商公告、保管政策与监管文件，判断机构采用是否从产品热度进一步走向流程常态化。"
+        ],
+        "subcategory": "加密与稳定币",
+        "image_alt": "Bitcoin ETF 调研：机构采用进入资金流与合规双轨观察期",
+        "region": "中国"
+      },
+      "en": {
+        "title": "Bitcoin ETF research: institutional adoption enters a flow-and-compliance watch period",
+        "summary": "ETF flows, public-company holdings, custody arrangements, and regulatory timing are the main metadata for watching institutional adoption.",
+        "why_matters": "Institutional adoption requires reading flows, custody, balance-sheet holdings, and regulation together; one price move is not enough to define the trend.",
+        "body": [
+          "Bitcoin ETF adoption is best measured through a bundle of signals rather than a single headline flow number.",
+          "The most useful indicators include ETF net flows, issuer concentration, custody structure, public-company holdings, and whether compliance rules expand or narrow access.",
+          "This research format keeps the analysis at the metadata layer. It does not provide a price forecast or trading recommendation."
+        ],
+        "subcategory": "Crypto and Stablecoins",
+        "image_alt": "Bitcoin ETF research: institutional adoption enters a flow-and-compliance watch period",
+        "region": "Global"
+      }
+    },
+    "sources_by_locale": {
+      "zh-Hant": {
+        "source_name": "CYBERNEWS 台灣",
+        "region": "Taiwan",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-institutional-research",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-institutional-research"
+      },
+      "zh-Hans": {
+        "source_name": "CYBERNEWS 简中",
+        "region": "China",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-institutional-research",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-institutional-research"
+      },
+      "en": {
+        "source_name": "CYBERNEWS Global",
+        "region": "Global",
+        "source_url": "design-fixture://cybernews/bitcoin-etf-institutional-research",
+        "canonical_url": "design-fixture://cybernews/bitcoin-etf-institutional-research"
+      }
+    }
   }
 ]

@@ -32,7 +32,8 @@ const isPlaceholderSourceUrl = (value) => {
   }
 };
 const getSourceUrl = (item) => {
-  const value = item?.canonical_url || item?.source_url || "";
+  const source = typeof getLocalizedSourceProfile === "function" ? getLocalizedSourceProfile(item) : {};
+  const value = source.canonical_url || source.source_url || item?.canonical_url || item?.source_url || "";
   if (item?.is_design_fixture || String(value).startsWith("design-fixture://")) {
     return "";
   }
@@ -45,12 +46,256 @@ const columnFilterOptions = [
   { label: "調研", value: "research" },
 ];
 const languageStorageKey = "cybernews-language";
-const normalizeLanguage = (lang) => (lang === "en" ? "en" : "zh");
+const supportedLocales = ["zh-Hant", "zh-Hans", "en"];
+const localeLabels = {
+  "zh-Hant": "繁中",
+  "zh-Hans": "简中",
+  en: "EN",
+};
+const countryLocaleMap = {
+  CN: "zh-Hans",
+  TW: "zh-Hant",
+};
+const localeIntlMap = {
+  "zh-Hant": "zh-Hant-TW",
+  "zh-Hans": "zh-Hans-CN",
+  en: "en-US",
+};
+const localeFieldSuffixes = {
+  "zh-Hant": ["zh_hant", "zh"],
+  "zh-Hans": ["zh_hans", "zh_cn", "zh"],
+  en: ["en"],
+};
+let currentNewsItems = [];
+let currentTopics = [];
+
+const simplifiedCharacterMap = {
+  "與": "与",
+  "專": "专",
+  "欄": "栏",
+  "調": "调",
+  "研": "研",
+  "訊": "讯",
+  "聞": "闻",
+  "報": "报",
+  "體": "体",
+  "據": "据",
+  "雲": "云",
+  "端": "端",
+  "產": "产",
+  "業": "业",
+  "資": "资",
+  "料": "料",
+  "導": "导",
+  "覽": "览",
+  "連": "连",
+  "結": "结",
+  "讀": "读",
+  "檢": "检",
+  "查": "查",
+  "顯": "显",
+  "示": "示",
+  "測": "测",
+  "試": "试",
+  "標": "标",
+  "題": "题",
+  "關": "关",
+  "鍵": "键",
+  "篩": "筛",
+  "選": "选",
+  "歷": "历",
+  "史": "史",
+  "內": "内",
+  "容": "容",
+  "態": "态",
+  "頻": "频",
+  "錄": "录",
+  "議": "议",
+  "構": "构",
+  "機": "机",
+  "應": "应",
+  "用": "用",
+  "監": "监",
+  "管": "管",
+  "策": "策",
+  "說": "说",
+  "明": "明",
+  "發": "发",
+  "佈": "布",
+  "布": "布",
+  "風": "风",
+  "險": "险",
+  "雜": "杂",
+  "誌": "志",
+  "證": "证",
+  "權": "权",
+  "點": "点",
+  "雖": "虽",
+  "續": "续",
+  "經": "经",
+  "濟": "济",
+  "幣": "币",
+  "穩": "稳",
+  "幫": "帮",
+  "號": "号",
+  "別": "别",
+  "補": "补",
+  "單": "单",
+  "雙": "双",
+  "軌": "轨",
+  "觀": "观",
+  "察": "察",
+  "資": "资",
+  "臺": "台",
+  "灣": "湾",
+  "實": "实",
+  "線": "线",
+  "現": "现",
+  "場": "场",
+  "間": "间",
+  "後": "后",
+  "這": "这",
+  "裡": "里",
+  "則": "则",
+  "來": "来",
+  "時": "时",
+  "兩": "两",
+  "圖": "图",
+  "儀": "仪",
+  "寶": "宝",
+  "貝": "贝",
+  "參": "参",
+  "壓": "压",
+  "歲": "岁",
+  "黃": "黄",
+  "國": "国",
+  "團": "团",
+  "園": "园",
+  "處": "处",
+  "據": "据",
+  "礎": "础",
+  "設": "设",
+  "簡": "简",
+  "讓": "让",
+  "進": "进",
+  "與": "与",
+  "獻": "献",
+  "圍": "围",
+  "幾": "几",
+  "萬": "万",
+  "買": "买",
+  "賣": "卖",
+  "轉": "转",
+  "開": "开",
+  "轉": "转",
+  "換": "换",
+  "縮": "缩",
+  "寫": "写",
+  "復": "复",
+  "雜": "杂",
+  "層": "层",
+  "長": "长",
+  "嚴": "严",
+  "質": "质",
+  "佔": "占",
+  "併": "并",
+  "啟": "启",
+  "動": "动",
+  "劃": "划",
+  "輯": "辑",
+  "號": "号",
+  "據": "据",
+  "獨": "独",
+  "廣": "广",
+  "告": "告",
+  "響": "响",
+  "適": "适",
+  "隱": "隐",
+  "私": "私",
+  "絡": "络",
+  "複": "复",
+  "製": "制",
+  "敗": "败",
+  "頁": "页",
+  "總": "总",
+  "題": "题",
+  "種": "种",
+  "顧": "顾",
+  "識": "识",
+  "識": "识",
+  "繫": "系",
+  "網": "网",
+  "頁": "页",
+  "級": "级",
+  "對": "对",
+  "變": "变",
+  "從": "从",
+  "為": "为",
+  "務": "务",
+  "態": "态",
+  "軟": "软",
+  "體": "体",
+  "電": "电",
+  "腦": "脑",
+  "壓": "压",
+  "採": "采",
+  "購": "购",
+  "於": "于",
+  "們": "们",
+  "聯": "联",
+  "絡": "络",
+  "審": "审",
+  "批": "批",
+  "稽": "稽",
+  "核": "核",
+  "訓": "训",
+  "練": "练",
+  "釋": "释",
+  "放": "放",
+  "儲": "储",
+  "備": "备",
+  "區": "区",
+  "塊": "块",
+  "鏈": "链",
+  "錢": "钱",
+  "包": "包",
+  "價": "价",
+  "預": "预",
+  "測": "测",
+  "買": "买",
+  "賣": "卖",
+  "雜": "杂",
+};
+const toSimplifiedChinese = (value) =>
+  String(value ?? "").replace(/[\s\S]/g, (character) => simplifiedCharacterMap[character] || character);
+const normalizeLanguage = (lang) => {
+  const value = String(lang || "").trim();
+  if (["zh-Hans", "zh-CN", "zh_CN", "zh-hans", "cn", "zh-sg"].includes(value)) {
+    return "zh-Hans";
+  }
+  if (["en", "en-US", "en_GB", "en-us"].includes(value)) {
+    return "en";
+  }
+  return "zh-Hant";
+};
+const getCookieValue = (name) => {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/[.$?*|{}()[\]\\/+^]/g, "\\$&")}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+};
+const getLocaleFromCountry = (country) => countryLocaleMap[String(country || "").toUpperCase()] || "en";
+const setLocaleCookie = (locale) => {
+  try {
+    document.cookie = `cybernews-locale=${encodeURIComponent(normalizeLanguage(locale))}; Path=/; Max-Age=31536000; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
+  } catch {
+    // Locale cookie only helps CloudFront preserve the user's preference.
+  }
+};
 const getStoredLanguage = () => {
   try {
-    return normalizeLanguage(window.localStorage?.getItem(languageStorageKey));
+    const stored = window.localStorage?.getItem(languageStorageKey);
+    return stored ? normalizeLanguage(stored) : "";
   } catch {
-    return "zh";
+    return "";
   }
 };
 const storeLanguage = (lang) => {
@@ -59,6 +304,37 @@ const storeLanguage = (lang) => {
   } catch {
     // Language preference is a convenience; ignore storage failures.
   }
+};
+const detectDefaultLanguage = () => {
+  const urlLanguage = new URLSearchParams(window.location.search).get("lang");
+  if (urlLanguage) {
+    return normalizeLanguage(urlLanguage);
+  }
+
+  const stored = getStoredLanguage();
+  if (stored) {
+    return stored;
+  }
+
+  const cookieLocale = getCookieValue("cybernews-locale");
+  if (cookieLocale) {
+    return normalizeLanguage(cookieLocale);
+  }
+
+  const country = getCookieValue("cybernews-country");
+  if (country) {
+    return getLocaleFromCountry(country);
+  }
+
+  const browserLanguages = [navigator.language, ...(navigator.languages || [])].filter(Boolean);
+  const browserLanguage = browserLanguages.find((language) => /^zh/i.test(language)) || browserLanguages[0] || "";
+  if (/zh-(cn|sg)|hans/i.test(browserLanguage)) {
+    return "zh-Hans";
+  }
+  if (/zh-(tw|hk|mo)|hant/i.test(browserLanguage)) {
+    return "zh-Hant";
+  }
+  return "en";
 };
 
 const translations = [
@@ -105,6 +381,11 @@ const translations = [
   ["AI 新聞", "AI News"],
   ["金融", "Finance"],
   ["專題", "Topics"],
+  ["專題追蹤", "Topic Tracking"],
+  ["把多篇相關新聞收進同一個主題，方便追蹤事件脈絡。先保留已整理好的專題頁，其他查詢入口之後再開。", "Related stories are grouped into topics so readers can follow the context. Curated topic pages stay available first; more discovery paths will open later."],
+  ["追蹤模型、平台、監管、基礎建設與應用落地。這一區把原文新聞整理成中文摘要，保留來源與分類。", "Track models, platforms, regulation, infrastructure, and real-world adoption. This section turns original reporting into concise summaries with sources and categories."],
+  ["聚焦市場、公司、資產、政策與資金流向。科技股與加密資產在這裡作為金融子分類與 metadata，不再拆成獨立主頻道。", "Focus on markets, companies, assets, policy, and capital flows. Tech stocks and crypto are finance subcategories and metadata here, not separate main channels."],
+  ["子分類", "Subcategories"],
   ["專欄", "Columns"],
   ["調研", "Research"],
   ["搜尋", "Search"],
@@ -124,6 +405,7 @@ const translations = [
   ["AI 資本與雲端", "AI Capital and Cloud"],
   ["AI 公司與產品", "AI Companies and Products"],
   ["科技股", "Tech Stocks"],
+  ["加密", "Crypto"],
   ["加密與穩定幣", "Crypto and Stablecoins"],
   ["科技股與加密摘要", "Tech stocks and crypto summary"],
   ["監管與政策", "Regulation and Policy"],
@@ -145,6 +427,18 @@ const translations = [
   ["訂閱調研摘要。", "Subscribe to research summaries."],
   ["每週整理 AI、金融與調研內容，保留來源、metadata 與免責說明。", "Weekly AI, finance, and research summaries with sources, metadata, and disclaimers."],
   ["請到信箱點確認連結完成訂閱", "Check your inbox and click the confirmation link to finish subscribing."],
+  ["每日 Brief 範例", "Daily Brief Sample"],
+  ["載入最新摘要中", "Loading latest summaries"],
+  ["系統正在讀取文章資料。", "Reading article data."],
+  ["閱讀所有最新內容", "Read all latest stories"],
+  ["訂閱前常見問題", "Questions before subscribing"],
+  ["這是投資建議嗎？", "Is this investment advice?"],
+  ["不是。CYBERNEWS Brief 只整理公開新聞、來源與 metadata，不提供價格預測、買賣訊號或個別投資建議。", "No. CYBERNEWS Brief organizes public news, sources, and metadata only. It does not provide price forecasts, trading signals, or individual investment advice."],
+  ["會重刊付費全文嗎？", "Will it republish paid full articles?"],
+  ["不會。每篇內容只保留中文摘要、脈絡、分類與原始來源連結，讀者需要完整內容時應回到原文。", "No. Each item keeps only a summary, context, taxonomy, and original source link. Readers should return to the original source for the full article."],
+  ["多久會收到一次？", "How often will it arrive?"],
+  ["以每日一封為目標；如果當天沒有足夠重要且可追溯來源的內容，CYBERNEWS 會降低頻率。", "The target is once per day. If there are not enough important, traceable stories that day, CYBERNEWS will reduce frequency."],
+  ["只追蹤可回到來源的重點。", "Only track signals that lead back to sources."],
   ["隱私權政策", "privacy policy"],
   ["公開資訊", "Public info"],
   ["只整理公開資訊，不做投資建議。", "Public information only, not investment advice."],
@@ -227,8 +521,27 @@ const normalizedTranslations = translations.map(([first, second]) => {
 });
 
 const textMaps = {
-  zh: new Map(normalizedTranslations.map(({ zh, en }) => [en, zh])),
-  en: new Map(normalizedTranslations.map(({ zh, en }) => [zh, en])),
+  "zh-Hant": new Map(
+    normalizedTranslations.flatMap(({ zh, en }) => [
+      [en, zh],
+      [toSimplifiedChinese(zh), zh],
+    ]),
+  ),
+  "zh-Hans": new Map(
+    normalizedTranslations.flatMap(({ zh, en }) => {
+      const zhHans = toSimplifiedChinese(zh);
+      return [
+        [en, zhHans],
+        [zh, zhHans],
+      ];
+    }),
+  ),
+  en: new Map(
+    normalizedTranslations.flatMap(({ zh, en }) => [
+      [zh, en],
+      [toSimplifiedChinese(zh), en],
+    ]),
+  ),
 };
 
 const getColumnFilterValues = (item) => {
@@ -266,7 +579,10 @@ const applyColumnFilter = (filter = "all") => {
 };
 
 const placeholders = {
-  zh: {
+  "zh-Hant": {
+    "you@example.com": "you@example.com",
+  },
+  "zh-Hans": {
     "you@example.com": "you@example.com",
   },
   en: {
@@ -327,10 +643,32 @@ const verticalLabels = {
   finance: "金融",
 };
 
+const contentTypeLocaleLabels = {
+  news: { "zh-Hant": "新聞", "zh-Hans": "新闻", en: "News" },
+  column: { "zh-Hant": "專欄", "zh-Hans": "专栏", en: "Column" },
+  research: { "zh-Hant": "調研", "zh-Hans": "调研", en: "Research" },
+};
+
+const verticalLocaleLabels = {
+  ai: { "zh-Hant": "AI 新聞", "zh-Hans": "AI 新闻", en: "AI News" },
+  finance: { "zh-Hant": "金融", "zh-Hans": "金融", en: "Finance" },
+};
+
+const defaultSourceNames = {
+  "zh-Hant": "CYBERNEWS 台灣",
+  "zh-Hans": "CYBERNEWS 简中",
+  en: "CYBERNEWS Global",
+};
+
 const emptyContentCopy = {
-  zh: {
+  "zh-Hant": {
     title: "正式內容資料尚未接入",
     description: "這個版位會在文章 API 提供正式資料後自動顯示內容；目前不顯示測試文章。",
+    meta: "待接入",
+  },
+  "zh-Hans": {
+    title: "正式内容资料尚未接入",
+    description: "这个版位会在文章 API 提供正式资料后自动显示内容；目前不显示测试文章。",
     meta: "待接入",
   },
   en: {
@@ -342,31 +680,34 @@ const emptyContentCopy = {
 
 const latestPageProfiles = {
   all: {
-    kicker: { zh: "CYBERNEWS Latest", en: "CYBERNEWS Latest" },
-    title: { zh: "最新消息", en: "Latest" },
+    kicker: { "zh-Hant": "CYBERNEWS Latest", "zh-Hans": "CYBERNEWS Latest", en: "CYBERNEWS Latest" },
+    title: { "zh-Hant": "最新消息", "zh-Hans": "最新消息", en: "Latest" },
     description: {
-      zh: "跨 AI 新聞與金融兩大主頻道整理最新摘要。每則保留來源、內容型態、時間與可追溯原文，不做投資建議。",
+      "zh-Hant": "跨 AI 新聞與金融兩大主頻道整理最新摘要。每則保留來源、內容型態、時間與可追溯原文，不做投資建議。",
+      "zh-Hans": "跨 AI 新闻与金融两大主频道整理最新摘要。每则保留来源、内容型态、时间与可追溯原文，不做投资建议。",
       en: "Latest AI and finance summaries with source links, content type, timestamps, and traceable originals. No investment advice.",
     },
-    titleTag: { zh: "最新消息 - CYBERNEWS", en: "Latest - CYBERNEWS" },
+    titleTag: { "zh-Hant": "最新消息 - CYBERNEWS", "zh-Hans": "最新消息 - CYBERNEWS", en: "Latest - CYBERNEWS" },
   },
   column: {
-    kicker: { zh: "CYBERNEWS Columns", en: "CYBERNEWS Columns" },
-    title: { zh: "專欄", en: "Columns" },
+    kicker: { "zh-Hant": "CYBERNEWS Columns", "zh-Hans": "CYBERNEWS Columns", en: "CYBERNEWS Columns" },
+    title: { "zh-Hant": "專欄", "zh-Hans": "专栏", en: "Columns" },
     description: {
-      zh: "收錄 CYBERNEWS 的觀點專欄、週報與市場脈絡整理，協助讀者理解 AI 與金融訊號背後的判斷框架。",
+      "zh-Hant": "收錄 CYBERNEWS 的觀點專欄、週報與市場脈絡整理，協助讀者理解 AI 與金融訊號背後的判斷框架。",
+      "zh-Hans": "收录 CYBERNEWS 的观点专栏、周报与市场脉络整理，协助读者理解 AI 与金融讯号背后的判断框架。",
       en: "CYBERNEWS columns, weekly notes, and market context for understanding the reasoning behind AI and finance signals.",
     },
-    titleTag: { zh: "專欄 - CYBERNEWS", en: "Columns - CYBERNEWS" },
+    titleTag: { "zh-Hant": "專欄 - CYBERNEWS", "zh-Hans": "专栏 - CYBERNEWS", en: "Columns - CYBERNEWS" },
   },
   research: {
-    kicker: { zh: "CYBERNEWS Research", en: "CYBERNEWS Research" },
-    title: { zh: "調研", en: "Research" },
+    kicker: { "zh-Hant": "CYBERNEWS Research", "zh-Hans": "CYBERNEWS Research", en: "CYBERNEWS Research" },
+    title: { "zh-Hant": "調研", "zh-Hans": "调研", en: "Research" },
     description: {
-      zh: "整理較長篇的調研摘要、資料線索與可回溯來源，讓正式研究內容接入後能被讀者快速追蹤。",
+      "zh-Hant": "整理較長篇的調研摘要、資料線索與可回溯來源，讓正式研究內容接入後能被讀者快速追蹤。",
+      "zh-Hans": "整理较长篇的调研摘要、资料线索与可回溯来源，让正式研究内容接入后能被读者快速追踪。",
       en: "Longer research briefs, data trails, and traceable sources so readers can follow production research once it is connected.",
     },
-    titleTag: { zh: "調研 - CYBERNEWS", en: "Research - CYBERNEWS" },
+    titleTag: { "zh-Hant": "調研 - CYBERNEWS", "zh-Hans": "调研 - CYBERNEWS", en: "Research - CYBERNEWS" },
   },
 };
 
@@ -404,7 +745,7 @@ const formatDateTime = (value) => {
     return "";
   }
 
-  return new Intl.DateTimeFormat("zh-Hant-TW", {
+  return new Intl.DateTimeFormat(localeIntlMap[getActiveLanguage()] || "en-US", {
     month: "numeric",
     day: "numeric",
     hour: "2-digit",
@@ -419,7 +760,7 @@ const formatDate = (value) => {
     return "";
   }
 
-  return new Intl.DateTimeFormat("zh-Hant-TW", {
+  return new Intl.DateTimeFormat(localeIntlMap[getActiveLanguage()] || "en-US", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -430,12 +771,103 @@ const getSelectedOptionText = (field) => field?.selectedOptions?.[0]?.textConten
 
 const byPublishedDesc = (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
 
+const getLocaleCopy = (copy, locale = getActiveLanguage()) => {
+  if (!copy || typeof copy !== "object") {
+    return copy || "";
+  }
+
+  const normalized = normalizeLanguage(locale);
+  if (copy[normalized]) {
+    return copy[normalized];
+  }
+
+  if (normalized === "zh-Hans") {
+    return toSimplifiedChinese(copy["zh-Hant"] || copy.zh || copy.en || "");
+  }
+
+  if (normalized === "zh-Hant") {
+    return copy["zh-Hant"] || copy.zh || copy.en || "";
+  }
+
+  return copy.en || copy["zh-Hant"] || copy.zh || "";
+};
+
+const getNestedLocaleValue = (item, key, locale = getActiveLanguage()) => {
+  const normalized = normalizeLanguage(locale);
+  const locales = item?.locales || item?.translations || {};
+  const localeData = locales[normalized] || (normalized === "zh-Hant" ? locales.zh : null) || {};
+  const directValue = localeData?.[key];
+
+  if (directValue !== undefined && directValue !== null && directValue !== "") {
+    return directValue;
+  }
+
+  for (const suffix of localeFieldSuffixes[normalized] || []) {
+    const field = `${key}_${suffix}`;
+    if (item?.[field] !== undefined && item?.[field] !== null && item?.[field] !== "") {
+      return normalized === "zh-Hans" && suffix === "zh" ? toSimplifiedChinese(item[field]) : item[field];
+    }
+  }
+
+  if (normalized === "en" && key === "title" && item?.title_original) {
+    return item.title_original;
+  }
+
+  const legacyFieldMap = {
+    title: "title_zh",
+    summary: "summary_zh",
+    why_matters: "why_matters_zh",
+    body: "body_zh",
+    subcategory: "subcategory",
+  };
+  const legacyValue = item?.[legacyFieldMap[key]];
+
+  if (normalized === "zh-Hans") {
+    return Array.isArray(legacyValue) ? legacyValue.map(toSimplifiedChinese) : toSimplifiedChinese(legacyValue || "");
+  }
+
+  return legacyValue || "";
+};
+
+const getArticleTitle = (item, locale = getActiveLanguage()) => getNestedLocaleValue(item, "title", locale) || item?.title_original || item?.id || "";
+const getArticleSummary = (item, locale = getActiveLanguage()) => getNestedLocaleValue(item, "summary", locale);
+const getArticleWhy = (item, locale = getActiveLanguage()) => getNestedLocaleValue(item, "why_matters", locale);
+const getArticleBody = (item, locale = getActiveLanguage()) => {
+  const value = getNestedLocaleValue(item, "body", locale);
+  return Array.isArray(value) ? value.filter(Boolean) : value ? [value] : [];
+};
+const getArticleSubcategory = (item, locale = getActiveLanguage()) => getNestedLocaleValue(item, "subcategory", locale) || item?.subcategory || "";
+const getImageAlt = (item, locale = getActiveLanguage()) => getNestedLocaleValue(item, "image_alt", locale) || getArticleTitle(item, locale);
+const getVerticalLabel = (vertical, locale = getActiveLanguage()) => getLocaleCopy(verticalLocaleLabels[vertical], locale) || vertical;
+const getContentTypeLabel = (type, locale = getActiveLanguage()) => getLocaleCopy(contentTypeLocaleLabels[type], locale) || type;
+
+const getLocalizedSourceProfile = (item, locale = getActiveLanguage()) => {
+  const normalized = normalizeLanguage(locale);
+  const sources = item?.sources_by_locale || item?.source_profiles || {};
+  const localeSource = sources[normalized] || (normalized === "zh-Hant" ? sources.zh : null) || {};
+
+  return {
+    name:
+      localeSource.source_name ||
+      localeSource.name ||
+      item?.locales?.[normalized]?.source_name ||
+      (!isExplicitDesignPreview() && isDesignFixtureItem(item) ? defaultSourceNames[normalized] : item?.source_name) ||
+      defaultSourceNames[normalized] ||
+      "CYBERNEWS",
+    source_url: localeSource.source_url || localeSource.url || item?.source_url || "",
+    canonical_url: localeSource.canonical_url || localeSource.canonical || item?.canonical_url || "",
+    region: localeSource.region || item?.locales?.[normalized]?.region || item?.region || "",
+  };
+};
+
 const getImageStyle = (item) => {
-  if (!item?.image_url) {
+  const imageUrl = !isExplicitDesignPreview() && isDesignFixtureItem(item) ? "./assets/og-cybernews.jpg" : item?.image_url;
+
+  if (!imageUrl) {
     return "";
   }
 
-  return ` style="background-image: linear-gradient(0deg, rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.02)), url('${escapeHtml(item.image_url)}')"`;
+  return ` style="background-image: linear-gradient(0deg, rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.02)), url('${escapeHtml(imageUrl)}')"`;
 };
 
 const getStoryHref = (item) => {
@@ -531,19 +963,22 @@ const getMetadata = (item) => {
 };
 
 const getMetaLine = (item) =>
-  `${verticalLabels[item.vertical] || item.vertical} / ${contentTypeLabels[item.content_type] || item.content_type} / ${item.subcategory}`;
+  `${getVerticalLabel(item.vertical)} / ${getContentTypeLabel(item.content_type)} / ${getArticleSubcategory(item)}`;
 
 const getDisplaySourceName = (item) =>
-  !isExplicitDesignPreview() && isDesignFixtureItem(item) ? "CYBERNEWS" : item?.source_name || "CYBERNEWS";
+  getLocalizedSourceProfile(item).name;
 
 const getReadingMinutes = (item) => {
-  const text = [item.summary_zh, ...(Array.isArray(item.body_zh) ? item.body_zh : [])].filter(Boolean).join("");
+  const text = [getArticleSummary(item), ...getArticleBody(item)].filter(Boolean).join(" ");
+  if (getActiveLanguage() === "en") {
+    return Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 220));
+  }
   return Math.max(1, Math.round(text.length / 400));
 };
 
 const whyMattersMarkup = (item) =>
-  item?.why_matters_zh
-    ? `<p class="why-matters"><strong>為什麼重要</strong>${escapeHtml(item.why_matters_zh)}</p>`
+  getArticleWhy(item)
+    ? `<p class="why-matters"><strong>${escapeHtml(getLocaleCopy({ "zh-Hant": "為什麼重要", "zh-Hans": "为什么重要", en: "Why it matters" }))}</strong>${escapeHtml(getArticleWhy(item))}</p>`
     : "";
 
 const storyCardMarkup = (item) => `
@@ -551,12 +986,12 @@ const storyCardMarkup = (item) => `
     <a href="${getStoryHref(item)}">
       <div class="directory-card-image"${getImageStyle(item)}></div>
       ${designFixtureBadgeMarkup(item)}
-      <h2>${escapeHtml(item.title_zh)}</h2>
-      <p>${escapeHtml(item.summary_zh)}</p>
+      <h2>${escapeHtml(getArticleTitle(item))}</h2>
+      <p>${escapeHtml(getArticleSummary(item))}</p>
     </a>
     <div class="directory-card-foot">
-      <span class="directory-mini-tag">${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
-      <span class="directory-mini-tag">${escapeHtml(item.subcategory)}</span>
+      <span class="directory-mini-tag">${escapeHtml(getContentTypeLabel(item.content_type))}</span>
+      <span class="directory-mini-tag">${escapeHtml(getArticleSubcategory(item))}</span>
       <span class="directory-mini-tag">${escapeHtml(getDisplaySourceName(item))}</span>
     </div>
   </article>
@@ -567,11 +1002,11 @@ const feedItemMarkup = (item) => {
 
   return `
     <article class="directory-feed-item">
-      <div class="directory-feed-meta">${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘<br />${escapeHtml(getMetaLine(item))}</div>
+      <div class="directory-feed-meta">${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} ${escapeHtml(getLocaleCopy({ "zh-Hant": "分鐘", "zh-Hans": "分钟", en: "min read" }))}<br />${escapeHtml(getMetaLine(item))}</div>
       <div>
         ${designFixtureBadgeMarkup(item)}
-        <h2><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h2>
-        <p>${escapeHtml(item.summary_zh)}</p>
+        <h2><a href="${getStoryHref(item)}">${escapeHtml(getArticleTitle(item))}</a></h2>
+        <p>${escapeHtml(getArticleSummary(item))}</p>
       </div>
       <div class="directory-feed-tags">
         <span>${escapeHtml(getDisplaySourceName(item))}</span>
@@ -648,7 +1083,7 @@ const renderHomeRail = (items) => {
         .map(
           (item) => `
             <article class="pick-item">
-              <h3><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h3>
+              <h3><a href="${getStoryHref(item)}">${escapeHtml(getArticleTitle(item))}</a></h3>
               <p>${escapeHtml(formatDateTime(item.published_at))} / ${escapeHtml(getMetaLine(item))}</p>
             </article>
           `,
@@ -671,15 +1106,15 @@ const renderLeadStory = (item) => {
   }
 
   lead.innerHTML = `
-    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
-      <div class="lead-image" role="img" aria-label="${escapeHtml(item.title_original)}"${getImageStyle(item)}></div>
-      <div class="story-meta">今日主線 / ${escapeHtml(getMetaLine(item))}</div>
+    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(getArticleTitle(item))}">
+      <div class="lead-image" role="img" aria-label="${escapeHtml(getImageAlt(item))}"${getImageStyle(item)}></div>
+      <div class="story-meta">${escapeHtml(getLocaleCopy({ "zh-Hant": "今日主線", "zh-Hans": "今日主线", en: "Top Story" }))} / ${escapeHtml(getMetaLine(item))}</div>
       ${designFixtureBadgeMarkup(item)}
-      <h1>${escapeHtml(item.title_zh)}</h1>
-      <p>${escapeHtml(item.summary_zh)}</p>
+      <h1>${escapeHtml(getArticleTitle(item))}</h1>
+      <p>${escapeHtml(getArticleSummary(item))}</p>
       ${designFixtureNoticeMarkup(item)}
       ${whyMattersMarkup(item)}
-      <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
+      <div class="byline">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
     </a>
   `;
 };
@@ -696,14 +1131,14 @@ const renderHeroStory = (element, item) => {
 
   element.hidden = false;
   element.innerHTML = `
-    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
+    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(getArticleTitle(item))}">
       <div class="${element.classList.contains("side-feature") ? "side-image" : "grid-image"}"${getImageStyle(item)}></div>
       <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
       ${designFixtureBadgeMarkup(item)}
-      <h2>${escapeHtml(item.title_zh)}</h2>
-      <p>${escapeHtml(item.summary_zh)}</p>
+      <h2>${escapeHtml(getArticleTitle(item))}</h2>
+      <p>${escapeHtml(getArticleSummary(item))}</p>
       ${whyMattersMarkup(item)}
-      <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))}</div>
+      <div class="byline">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}：${escapeHtml(getDisplaySourceName(item))}</div>
     </a>
   `;
 };
@@ -720,7 +1155,7 @@ const homeRowMarkup = (title, href, items) => `
               <a href="${getStoryHref(item)}">
                 <div class="region-article-image"${getImageStyle(item)}></div>
                 ${designFixtureBadgeMarkup(item)}
-                <h3>${escapeHtml(item.title_zh)}</h3>
+                <h3>${escapeHtml(getArticleTitle(item))}</h3>
                 <p>${escapeHtml(getMetaLine(item))} / ${escapeHtml(getDisplaySourceName(item))}</p>
               </a>
             </article>
@@ -744,10 +1179,10 @@ const renderHomeRows = (items) => {
   const researchItems = items.filter((item) => item.content_type === "research");
 
   const rows = [
-    ["AI 新聞", "./ai.html", aiItems],
-    ["金融", "./finance.html", financeItems],
-    ["專欄", "./latest.html?type=column", columnItems],
-    ["調研", "./latest.html?type=research", researchItems],
+    [getVerticalLabel("ai"), "./ai.html", aiItems],
+    [getVerticalLabel("finance"), "./finance.html", financeItems],
+    [getContentTypeLabel("column"), "./latest.html?type=column", columnItems],
+    [getContentTypeLabel("research"), "./latest.html?type=research", researchItems],
   ].filter(([, , rowItems]) => rowItems.length);
 
   list.innerHTML = rows.length
@@ -762,12 +1197,19 @@ const renderColumnStrip = (items) => {
   const featuredItems = items.filter((item) => ["column", "research"].includes(item.content_type));
 
   if (title) {
-    title.textContent = "專欄與調研";
+    title.textContent = getLocaleCopy({ "zh-Hant": "專欄與調研", "zh-Hans": "专栏与调研", en: "Columns and Research" });
   }
 
   columnFilterOptions.forEach(({ label, value }, index) => {
     if (controls[index]) {
-      controls[index].textContent = label;
+      controls[index].textContent =
+        value === "all"
+          ? getLocaleCopy({ "zh-Hant": "全部", "zh-Hans": "全部", en: "All" })
+          : value === "research"
+            ? getContentTypeLabel("research")
+            : value === "finance"
+              ? getVerticalLabel("finance")
+              : label;
       controls[index].dataset.columnFilter = value;
     }
   });
@@ -785,13 +1227,13 @@ const renderColumnStrip = (items) => {
     .map(
       (item, index) => `
         <article class="column-card${index === 2 ? " column-card-featured" : ""}" data-column-filter-values="${escapeHtml(getColumnFilterValues(item))}">
-          <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
+          <a href="${getStoryHref(item)}" aria-label="${escapeHtml(getArticleTitle(item))}">
             <div class="column-card-image"${getImageStyle(item)}></div>
             <div class="column-card-caption">
               ${designFixtureBadgeMarkup(item)}
-              <h3>${escapeHtml(item.subcategory)}</h3>
-              <p>${escapeHtml(item.title_zh)}</p>
-              <span>${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
+              <h3>${escapeHtml(getArticleSubcategory(item))}</h3>
+              <p>${escapeHtml(getArticleTitle(item))}</p>
+              <span>${escapeHtml(getContentTypeLabel(item.content_type))}</span>
             </div>
           </a>
         </article>
@@ -815,7 +1257,9 @@ const renderHomePage = (items) => {
   renderHomeRail(heroItems);
   renderLeadStory(lead);
   renderHeroStory(document.querySelector(".side-feature"), heroItems[0]);
-  document.querySelector(".signup-card h2")?.replaceChildren(document.createTextNode("每天整理 AI 與金融新聞摘要。"));
+  document
+    .querySelector(".signup-card h2")
+    ?.replaceChildren(document.createTextNode(getLocaleCopy({ "zh-Hant": "每天整理 AI 與金融新聞摘要。", "zh-Hans": "每天整理 AI 与金融新闻摘要。", en: "Daily AI and finance news summaries." })));
   document.querySelectorAll(".grid-story").forEach((element, index) => {
     renderHeroStory(element, gridItems[index]);
   });
@@ -834,7 +1278,7 @@ const getCurrentPage = () => {
   return filename.replace(".html", "") || "index";
 };
 
-const getActiveLanguage = () => (document.documentElement.lang === "en" ? "en" : "zh");
+const getActiveLanguage = () => normalizeLanguage(document.documentElement.lang || detectDefaultLanguage());
 
 const getLatestProfile = () => {
   const type = new URLSearchParams(window.location.search).get("type");
@@ -851,7 +1295,18 @@ const setMetaContent = (selector, value) => {
 const currentShareUrlWithoutPreview = () => {
   const url = new URL(window.location.href);
   url.searchParams.delete("preview");
+  url.searchParams.delete("lang");
   return url.href;
+};
+
+const removeLocaleQueryParam = () => {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("lang") || !window.history?.replaceState) {
+    return;
+  }
+
+  url.searchParams.delete("lang");
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 };
 
 const applyLatestProfile = (lang = getActiveLanguage()) => {
@@ -865,29 +1320,32 @@ const applyLatestProfile = (lang = getActiveLanguage()) => {
   const description = document.querySelector(".channel-hero-grid > p");
 
   if (kicker) {
-    kicker.textContent = profile.kicker[lang];
+    kicker.textContent = getLocaleCopy(profile.kicker, lang);
   }
 
   if (title) {
-    title.textContent = profile.title[lang];
+    title.textContent = getLocaleCopy(profile.title, lang);
   }
 
   if (description) {
-    description.textContent = profile.description[lang];
+    description.textContent = getLocaleCopy(profile.description, lang);
   }
 
   if (document.body) {
-    document.body.dataset.titleZh = profile.titleTag.zh;
-    document.body.dataset.titleEn = profile.titleTag.en;
+    document.body.dataset.titleZh = getLocaleCopy(profile.titleTag, "zh-Hant");
+    document.body.dataset.titleZhHans = getLocaleCopy(profile.titleTag, "zh-Hans");
+    document.body.dataset.titleEn = getLocaleCopy(profile.titleTag, "en");
   }
 
-  document.title = profile.titleTag[lang];
-  setMetaContent('meta[name="description"]', profile.description[lang]);
-  setMetaContent('meta[property="og:title"]', profile.titleTag[lang]);
-  setMetaContent('meta[property="og:description"]', profile.description[lang]);
+  const titleTag = getLocaleCopy(profile.titleTag, lang);
+  const descriptionCopy = getLocaleCopy(profile.description, lang);
+  document.title = titleTag;
+  setMetaContent('meta[name="description"]', descriptionCopy);
+  setMetaContent('meta[property="og:title"]', titleTag);
+  setMetaContent('meta[property="og:description"]', descriptionCopy);
   setMetaContent('meta[property="og:url"]', currentShareUrlWithoutPreview());
-  setMetaContent('meta[name="twitter:title"]', profile.titleTag[lang]);
-  setMetaContent('meta[name="twitter:description"]', profile.description[lang]);
+  setMetaContent('meta[name="twitter:title"]', titleTag);
+  setMetaContent('meta[name="twitter:description"]', descriptionCopy);
 };
 
 const isChannelFiltered = () => {
@@ -952,8 +1410,8 @@ const renderChannelLead = (items, hasAnyItems = true) => {
     container.innerHTML = hasAnyItems
       ? `
         <div class="channel-empty">
-          <h2>沒有符合條件的內容</h2>
-          <p>請換一個子分類或內容型態，或稍後再查看更多內容。</p>
+          <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "沒有符合條件的內容", "zh-Hans": "没有符合条件的内容", en: "No matching content" }))}</h2>
+          <p>${escapeHtml(getLocaleCopy({ "zh-Hant": "請換一個子分類或內容型態，或稍後再查看更多內容。", "zh-Hans": "请换一个子分类或内容型态，或稍后再查看更多内容。", en: "Try another subcategory or content type, or check back later." }))}</p>
         </div>
       `
       : emptyContentMarkup();
@@ -965,15 +1423,15 @@ const renderChannelLead = (items, hasAnyItems = true) => {
 
   container.innerHTML = `
     <article class="channel-lead-main">
-      <a href="${getStoryHref(lead)}" aria-label="${escapeHtml(lead.title_zh)}">
-        <div class="channel-lead-image" role="img" aria-label="${escapeHtml(lead.title_original)}"${getImageStyle(lead)}></div>
+      <a href="${getStoryHref(lead)}" aria-label="${escapeHtml(getArticleTitle(lead))}">
+        <div class="channel-lead-image" role="img" aria-label="${escapeHtml(getImageAlt(lead))}"${getImageStyle(lead)}></div>
         <div class="story-meta">${escapeHtml(getMetaLine(lead))}</div>
         ${designFixtureBadgeMarkup(lead)}
-        <h2>${escapeHtml(lead.title_zh)}</h2>
-        <p>${escapeHtml(lead.summary_zh)}</p>
+        <h2>${escapeHtml(getArticleTitle(lead))}</h2>
+        <p>${escapeHtml(getArticleSummary(lead))}</p>
         ${designFixtureNoticeMarkup(lead)}
         ${whyMattersMarkup(lead)}
-        <div class="byline">來源：${escapeHtml(getDisplaySourceName(lead))} / ${escapeHtml(formatDateTime(lead.published_at))} / ${getReadingMinutes(lead)} 分鐘</div>
+        <div class="byline">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}：${escapeHtml(getDisplaySourceName(lead))} / ${escapeHtml(formatDateTime(lead.published_at))} / ${getReadingMinutes(lead)} ${escapeHtml(getLocaleCopy({ "zh-Hant": "分鐘", "zh-Hans": "分钟", en: "min read" }))}</div>
       </a>
     </article>
     <div class="channel-lead-side">
@@ -984,8 +1442,8 @@ const renderChannelLead = (items, hasAnyItems = true) => {
               <a href="${getStoryHref(item)}">
                 <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
                 ${designFixtureBadgeMarkup(item)}
-                <h3>${escapeHtml(item.title_zh)}</h3>
-                <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
+                <h3>${escapeHtml(getArticleTitle(item))}</h3>
+                <div class="byline">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))}</div>
               </a>
             </article>
           `,
@@ -1007,12 +1465,12 @@ const renderChannelRows = (channelItems, page) => {
 
   if (page === "latest") {
     rows = [
-      ["AI 新聞", "./ai.html", channelItems.filter((item) => item.vertical === "ai")],
-      ["金融", "./finance.html", channelItems.filter((item) => item.vertical === "finance")],
+      [getVerticalLabel("ai"), "./ai.html", channelItems.filter((item) => item.vertical === "ai")],
+      [getVerticalLabel("finance"), "./finance.html", channelItems.filter((item) => item.vertical === "finance")],
     ];
   } else {
     rows = ["news", "column", "research"].map((type) => [
-      contentTypeLabels[type],
+      getContentTypeLabel(type),
       `./${page}.html?type=${type}`,
       channelItems.filter((item) => item.content_type === type),
     ]);
@@ -1029,14 +1487,14 @@ const renderChannelRows = (channelItems, page) => {
 
 const channelLedgerMarkup = (item) => `
   <article class="channel-ledger-item">
-    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
+    <a href="${getStoryHref(item)}" aria-label="${escapeHtml(getArticleTitle(item))}">
       <div class="channel-ledger-thumb"${getImageStyle(item)}></div>
       <div class="channel-ledger-body">
         <div class="story-meta">${escapeHtml(getMetaLine(item))}</div>
         ${designFixtureBadgeMarkup(item)}
-        <h3>${escapeHtml(item.title_zh)}</h3>
-        <p>${escapeHtml(item.summary_zh)}</p>
-        <div class="byline">來源：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} 分鐘</div>
+        <h3>${escapeHtml(getArticleTitle(item))}</h3>
+        <p>${escapeHtml(getArticleSummary(item))}</p>
+        <div class="byline">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}：${escapeHtml(getDisplaySourceName(item))} / ${escapeHtml(formatDateTime(item.published_at))} / ${getReadingMinutes(item)} ${escapeHtml(getLocaleCopy({ "zh-Hant": "分鐘", "zh-Hans": "分钟", en: "min read" }))}</div>
       </div>
     </a>
   </article>
@@ -1090,7 +1548,7 @@ const renderDirectoryPage = (items) => {
       feed.innerHTML = feedItems.length
         ? feedItems.map(channelLedgerMarkup).join("")
         : items.length
-          ? `<p class="directory-feed-note">以上就是目前符合條件的全部內容。</p>`
+          ? `<p class="directory-feed-note">${escapeHtml(getLocaleCopy({ "zh-Hant": "以上就是目前符合條件的全部內容。", "zh-Hans": "以上就是目前符合条件的全部内容。", en: "That's all the matching content for now." }))}</p>`
           : emptyContentMarkup();
     }
     return;
@@ -1108,12 +1566,19 @@ const itemMatchesQuery = (item, query) => {
   }
 
   const haystack = [
-    item.title_zh,
+    getArticleTitle(item, "zh-Hant"),
+    getArticleTitle(item, "zh-Hans"),
+    getArticleTitle(item, "en"),
     item.title_original,
-    item.summary_zh,
+    getArticleSummary(item, "zh-Hant"),
+    getArticleSummary(item, "zh-Hans"),
+    getArticleSummary(item, "en"),
     item.vertical,
     item.content_type,
     item.subcategory,
+    getArticleSubcategory(item, "zh-Hant"),
+    getArticleSubcategory(item, "zh-Hans"),
+    getArticleSubcategory(item, "en"),
     getDisplaySourceName(item),
     item.language,
     item.region,
@@ -1187,7 +1652,7 @@ const getArchiveActiveFilters = (form) =>
 
       const value = field.tagName === "SELECT" ? getSelectedOptionText(field) : field.value;
       return {
-        label: archiveSummaryLabels[fieldName] || fieldName,
+        label: getLocaleCopy({ "zh-Hant": archiveSummaryLabels[fieldName] || fieldName, "zh-Hans": toSimplifiedChinese(archiveSummaryLabels[fieldName] || fieldName), en: fieldName.replace("_", " ") }),
         value,
       };
     })
@@ -1213,10 +1678,10 @@ const renderArchiveSummary = (items, form, results) => {
     ? `<div class="archive-summary-chips">${activeFilters
         .map((filter) => `<span class="archive-summary-chip">${escapeHtml(filter.label)}：${escapeHtml(filter.value)}</span>`)
         .join("")}</div>`
-    : `<p class="archive-summary-empty">目前顯示全部內容。</p>`;
+    : `<p class="archive-summary-empty">${escapeHtml(getLocaleCopy({ "zh-Hant": "目前顯示全部內容。", "zh-Hans": "目前显示全部内容。", en: "Showing all content." }))}</p>`;
 
   summary.innerHTML = `
-    <div class="archive-summary-count">${items.length} 筆結果</div>
+    <div class="archive-summary-count">${items.length} ${escapeHtml(getLocaleCopy({ "zh-Hant": "筆結果", "zh-Hans": "笔结果", en: "results" }))}</div>
     ${filterMarkup}
   `;
 };
@@ -1246,7 +1711,7 @@ const updateArchiveFilterToggle = (form) => {
   const isExpanded = form.classList.contains("is-expanded");
 
   toggle.setAttribute("aria-expanded", String(isExpanded));
-  toggle.innerHTML = `<span>篩選${activeCount ? ` (${activeCount})` : ""}</span><span aria-hidden="true">${isExpanded ? "收合" : "展開"}</span>`;
+  toggle.innerHTML = `<span>${escapeHtml(getLocaleCopy({ "zh-Hant": "篩選", "zh-Hans": "筛选", en: "Filters" }))}${activeCount ? ` (${activeCount})` : ""}</span><span aria-hidden="true">${escapeHtml(isExpanded ? getLocaleCopy({ "zh-Hant": "收合", "zh-Hans": "收合", en: "Collapse" }) : getLocaleCopy({ "zh-Hant": "展開", "zh-Hans": "展开", en: "Expand" }))}</span>`;
 };
 
 const syncArchiveUrl = (form) => {
@@ -1273,12 +1738,27 @@ const syncArchiveUrl = (form) => {
 const populateArchiveOptions = (form, items) => {
   form.querySelectorAll("[data-archive-options]").forEach((select) => {
     const field = select.dataset.archiveOptions;
-    const values = [
-      ...new Set(items.map((item) => (field === "source_name" ? getDisplaySourceName(item) : item[field])).filter(Boolean)),
-    ].sort((a, b) => String(a).localeCompare(String(b), "zh-Hant"));
+    const valueToLabel = (item) => {
+      if (field === "source_name") {
+        return [getDisplaySourceName(item), getDisplaySourceName(item)];
+      }
+      if (field === "vertical") {
+        return [item.vertical, getVerticalLabel(item.vertical)];
+      }
+      if (field === "content_type") {
+        return [item.content_type, getContentTypeLabel(item.content_type)];
+      }
+      if (field === "subcategory") {
+        return [item.subcategory, getArticleSubcategory(item)];
+      }
+      return [item[field], item[field]];
+    };
+    const values = [...new Map(items.map(valueToLabel).filter(([value]) => Boolean(value))).entries()].sort((a, b) =>
+      String(a[1]).localeCompare(String(b[1]), localeIntlMap[getActiveLanguage()] || "en-US"),
+    );
 
-    select.innerHTML = `<option value="">全部</option>${values
-      .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+    select.innerHTML = `<option value="">${escapeHtml(getLocaleCopy({ "zh-Hant": "全部", "zh-Hans": "全部", en: "All" }))}</option>${values
+      .map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`)
       .join("")}`;
   });
 };
@@ -1286,15 +1766,15 @@ const populateArchiveOptions = (form, items) => {
 const renderArchiveRows = (items, container) => {
   const header = `
     <div class="directory-table-row header">
-      <span>標題</span>
-      <span>主頻道 / 型態</span>
-      <span>來源</span>
+      <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "標題", "zh-Hans": "标题", en: "Title" }))}</span>
+      <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "主頻道 / 型態", "zh-Hans": "主频道 / 型态", en: "Vertical / Type" }))}</span>
+      <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "來源", "zh-Hans": "来源", en: "Source" }))}</span>
       <span>Metadata</span>
     </div>
   `;
 
   if (!items.length) {
-    container.innerHTML = `${header}<article class="directory-table-row"><div><h2>沒有符合條件的內容</h2><p>請放寬日期、分類或關鍵字。</p></div><p></p><p></p><p></p></article>`;
+    container.innerHTML = `${header}<article class="directory-table-row"><div><h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "沒有符合條件的內容", "zh-Hans": "没有符合条件的内容", en: "No matching content" }))}</h2><p>${escapeHtml(getLocaleCopy({ "zh-Hant": "請放寬日期、分類或關鍵字。", "zh-Hans": "请放宽日期、分类或关键字。", en: "Loosen the date, category, or keyword filter." }))}</p></div><p></p><p></p><p></p></article>`;
     return;
   }
 
@@ -1303,11 +1783,11 @@ const renderArchiveRows = (items, container) => {
       (item) => `
         <article class="directory-table-row">
           <div>
-            <h2><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h2>
+            <h2><a href="${getStoryHref(item)}">${escapeHtml(getArticleTitle(item))}</a></h2>
             <p>${escapeHtml(formatDate(item.published_at))} / ${escapeHtml(formatDateTime(item.published_at))}</p>
           </div>
-          <p>${escapeHtml(verticalLabels[item.vertical] || item.vertical)} / ${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}<br />${escapeHtml(item.subcategory)}</p>
-          <p>${escapeHtml(getDisplaySourceName(item))}<br />${escapeHtml(item.language)} / ${escapeHtml(item.region)}</p>
+          <p>${escapeHtml(getVerticalLabel(item.vertical))} / ${escapeHtml(getContentTypeLabel(item.content_type))}<br />${escapeHtml(getArticleSubcategory(item))}</p>
+          <p>${escapeHtml(getDisplaySourceName(item))}<br />${escapeHtml(item.language)} / ${escapeHtml(getLocalizedSourceProfile(item).region || item.region)}</p>
           <p>${escapeHtml(getMetadata(item).join(" / ") || "No symbols")}</p>
         </article>
       `,
@@ -1393,7 +1873,7 @@ const getDetailArchiveHref = (item) => `./${item.vertical === "ai" ? "ai" : "fin
 const detailDefinitionMarkup = (label, value) => `
   <div>
     <dt>${escapeHtml(label)}</dt>
-    <dd>${value ? escapeHtml(value) : "未提供"}</dd>
+    <dd>${value ? escapeHtml(value) : escapeHtml(getLocaleCopy({ "zh-Hant": "未提供", "zh-Hans": "未提供", en: "Not provided" }))}</dd>
   </div>
 `;
 
@@ -1457,16 +1937,26 @@ const renderTopicsPage = (items, topics = []) => {
     .map((topic) => {
       const matches = getTopicMatches(items, topic);
       const latest = matches[0];
-      const updated = latest ? formatDate(latest.published_at) : "尚未更新";
+      const updated = latest ? formatDate(latest.published_at) : getLocaleCopy({ "zh-Hant": "尚未更新", "zh-Hans": "尚未更新", en: "Not updated" });
       const tags = topic.tags?.length ? topic.tags : [topic.slug];
+      const title = getLocaleCopy({
+        "zh-Hant": topic.title_zh,
+        "zh-Hans": topic.title_zh_hans || toSimplifiedChinese(topic.title_zh),
+        en: topic.title_en || topic.title_zh,
+      });
+      const description = getLocaleCopy({
+        "zh-Hant": topic.description_zh,
+        "zh-Hans": topic.description_zh_hans || toSimplifiedChinese(topic.description_zh),
+        en: topic.description_en || topic.description_zh,
+      });
 
       return `
         <article class="directory-card">
-          <a href="${escapeHtml(topic.href || "./topics.html")}" aria-label="${escapeHtml(topic.title_zh)}">
+          <a href="${escapeHtml(topic.href || "./topics.html")}" aria-label="${escapeHtml(title)}">
             <div class="directory-card-image ${escapeHtml(topic.image_class || "column-image-one")}"></div>
-            <h2>${escapeHtml(topic.title_zh)}</h2>
-            <p>${escapeHtml(topic.description_zh)}</p>
-            <p class="directory-card-note">${matches.length} 則追蹤 · 最後更新 ${escapeHtml(updated)}</p>
+            <h2>${escapeHtml(title)}</h2>
+            <p>${escapeHtml(description)}</p>
+            <p class="directory-card-note">${matches.length} ${escapeHtml(getLocaleCopy({ "zh-Hant": "則追蹤", "zh-Hans": "则追踪", en: "tracked items" }))} · ${escapeHtml(getLocaleCopy({ "zh-Hant": "最後更新", "zh-Hans": "最后更新", en: "Last updated" }))} ${escapeHtml(updated)}</p>
           </a>
           <div class="directory-card-foot">
             ${tags.map((tag) => `<span class="directory-mini-tag">${escapeHtml(tag)}</span>`).join("")}
@@ -1485,7 +1975,7 @@ const renderNewsletterPage = (items) => {
   }
 
   const sampleItems = [...items]
-    .sort((a, b) => Number(Boolean(b.why_matters_zh)) - Number(Boolean(a.why_matters_zh)) || byPublishedDesc(a, b))
+    .sort((a, b) => Number(Boolean(getArticleWhy(b))) - Number(Boolean(getArticleWhy(a))) || byPublishedDesc(a, b))
     .slice(0, 3);
 
   if (!sampleItems.length) {
@@ -1493,7 +1983,7 @@ const renderNewsletterPage = (items) => {
       <article class="directory-feed-item newsletter-sample-empty">
         <div class="directory-feed-meta">Empty</div>
         <div>
-          <h2>目前沒有可顯示的簡報範例。</h2>
+          <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "目前沒有可顯示的簡報範例。", "zh-Hans": "目前没有可显示的简报范例。", en: "No briefing samples are available yet." }))}</h2>
         </div>
         <div class="directory-feed-tags"></div>
       </article>
@@ -1508,6 +1998,7 @@ const renderNewsletterPage = (items) => {
         const symbols = getSymbols(item);
         const symbolLabel = symbols.length ? symbols.slice(0, 3).join(" / ") : getDisplaySourceName(item);
         const itemDate = formatDate(item.published_at);
+        const whySeparator = getActiveLanguage() === "en" ? ": " : "：";
 
         return `
           <article class="directory-feed-item newsletter-sample-item">
@@ -1517,13 +2008,13 @@ const renderNewsletterPage = (items) => {
             </div>
             <div>
               ${designFixtureBadgeMarkup(item)}
-              <h2><a href="${getStoryHref(item)}">${escapeHtml(item.title_zh)}</a></h2>
-              <p><strong>為什麼重要：</strong>${escapeHtml(item.why_matters_zh || item.summary_zh)}</p>
+              <h2><a href="${getStoryHref(item)}">${escapeHtml(getArticleTitle(item))}</a></h2>
+              <p><strong>${escapeHtml(getLocaleCopy({ "zh-Hant": "為什麼重要", "zh-Hans": "为什么重要", en: "Why it matters" }))}${whySeparator}</strong>${escapeHtml(getArticleWhy(item) || getArticleSummary(item))}</p>
             </div>
             <div class="directory-feed-tags">
-              <span>${escapeHtml(item.subcategory)}</span>
+              <span>${escapeHtml(getArticleSubcategory(item))}</span>
               <span>${escapeHtml(symbolLabel)}</span>
-              ${sourceUrl ? `<a class="directory-mini-tag newsletter-source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">原文 ↗</a>` : ""}
+              ${sourceUrl ? `<a class="directory-mini-tag newsletter-source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(getLocaleCopy({ "zh-Hant": "原文 ↗", "zh-Hans": "原文 ↗", en: "Original ↗" }))}</a>` : ""}
             </div>
           </article>
         `;
@@ -1543,19 +2034,19 @@ const articleRelatedMarkup = (items, currentItem) => {
     <section class="article-related" aria-label="Recommended articles">
       <div class="article-related-head">
         <span>Related</span>
-        <h2>延伸閱讀</h2>
+        <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "延伸閱讀", "zh-Hans": "延伸阅读", en: "Related Reads" }))}</h2>
       </div>
       <div class="article-related-grid">
         ${relatedItems
           .map(
             (item) => `
               <article class="article-related-card">
-                <a href="${getStoryHref(item)}" aria-label="${escapeHtml(item.title_zh)}">
-                  <div class="article-related-image" role="img" aria-label="${escapeHtml(item.title_original)}"${getImageStyle(item)}></div>
-                  <h3>${escapeHtml(item.title_zh)}</h3>
-                  <p>${escapeHtml(item.summary_zh)}</p>
+                <a href="${getStoryHref(item)}" aria-label="${escapeHtml(getArticleTitle(item))}">
+                  <div class="article-related-image" role="img" aria-label="${escapeHtml(getImageAlt(item))}"${getImageStyle(item)}></div>
+                  <h3>${escapeHtml(getArticleTitle(item))}</h3>
+                  <p>${escapeHtml(getArticleSummary(item))}</p>
                   <div class="article-related-tags" aria-label="Story metadata">
-                    <span>${escapeHtml(item.subcategory)}</span>
+                    <span>${escapeHtml(getArticleSubcategory(item))}</span>
                     <span>${escapeHtml(getDisplaySourceName(item)).toUpperCase()}</span>
                   </div>
                 </a>
@@ -1569,17 +2060,25 @@ const articleRelatedMarkup = (items, currentItem) => {
 };
 
 const articleBodyMarkup = (item) => {
-  const paragraphs = Array.isArray(item.body_zh) ? item.body_zh.filter(Boolean) : [];
+  const paragraphs = getArticleBody(item);
   const body = paragraphs.length
     ? paragraphs
     : [
-        `${item.summary_zh} 這篇內容目前只有摘要資料，後續可由編輯補上完整中文整理稿。`,
-        `CYBERNEWS 會保留主頻道、內容型態、來源、原文連結與 metadata，方便讀者回到原始來源確認完整脈絡。`,
+        getLocaleCopy({
+          "zh-Hant": `${getArticleSummary(item)} 這篇內容目前只有摘要資料，後續可由編輯補上完整整理稿。`,
+          "zh-Hans": `${getArticleSummary(item)} 这篇内容目前只有摘要资料，后续可由编辑补上完整整理稿。`,
+          en: `${getArticleSummary(item)} This item currently has summary data only; editors can add the full digest later.`,
+        }),
+        getLocaleCopy({
+          "zh-Hant": "CYBERNEWS 會保留主頻道、內容型態、來源、原文連結與 metadata，方便讀者回到原始來源確認完整脈絡。",
+          "zh-Hans": "CYBERNEWS 会保留主频道、内容型态、来源、原文链接与 metadata，方便读者回到原始来源确认完整脉络。",
+          en: "CYBERNEWS keeps the vertical, content type, source, original link, and metadata so readers can verify the full context at the original source.",
+        }),
       ];
 
   return `
     <section class="article-body-copy" aria-label="Article body">
-      <span>內文整理</span>
+      <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "內文整理", "zh-Hans": "内文整理", en: "Article Digest" }))}</span>
       ${body.map((paragraph, index) => `<p class="${index === 0 ? "article-drop" : ""}">${escapeHtml(paragraph)}</p>`).join("")}
     </section>
   `;
@@ -1595,20 +2094,24 @@ const researchExtraMarkup = (item) => {
 
   return `
     <section class="research-panel" aria-label="Research details">
-      <h2>核心問題</h2>
-      <p>這份調研聚焦「${escapeHtml(item.subcategory)}」如何影響 ${escapeHtml(verticalLabels[item.vertical] || item.vertical)} 的產業、市場與資料追蹤方式。</p>
+      <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "核心問題", "zh-Hans": "核心问题", en: "Core Question" }))}</h2>
+      <p>${escapeHtml(getLocaleCopy({
+        "zh-Hant": `這份調研聚焦「${getArticleSubcategory(item)}」如何影響 ${getVerticalLabel(item.vertical)} 的產業、市場與資料追蹤方式。`,
+        "zh-Hans": `这份调研聚焦「${getArticleSubcategory(item)}」如何影响 ${getVerticalLabel(item.vertical)} 的产业、市场与资料追踪方式。`,
+        en: `This research focuses on how ${getArticleSubcategory(item)} changes the industry, market, and data-tracking context for ${getVerticalLabel(item.vertical)}.`,
+      }))}</p>
       <div class="research-panel-grid">
         <div>
-          <span>主要資料來源</span>
+          <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "主要資料來源", "zh-Hans": "主要资料来源", en: "Primary Sources" }))}</span>
           <p>${escapeHtml(getDisplaySourceName(item))}${sourceUrl ? ` / ${escapeHtml(getReadableUrlHost(sourceUrl))}` : ""}</p>
         </div>
         <div>
-          <span>追蹤 metadata</span>
-          <p>${escapeHtml(symbols || joinList(item.topics) || item.subcategory)}</p>
+          <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "追蹤 metadata", "zh-Hans": "追踪 metadata", en: "Tracking metadata" }))}</span>
+          <p>${escapeHtml(symbols || joinList(item.topics) || getArticleSubcategory(item))}</p>
         </div>
         <div>
-          <span>調研屬性</span>
-          <p>${item.is_original_research ? "CYBERNEWS 原創整理" : "多來源摘要整理"}</p>
+          <span>${escapeHtml(getLocaleCopy({ "zh-Hant": "調研屬性", "zh-Hans": "调研属性", en: "Research Type" }))}</span>
+          <p>${escapeHtml(item.is_original_research ? getLocaleCopy({ "zh-Hant": "CYBERNEWS 原創整理", "zh-Hans": "CYBERNEWS 原创整理", en: "CYBERNEWS original synthesis" }) : getLocaleCopy({ "zh-Hant": "多來源摘要整理", "zh-Hans": "多来源摘要整理", en: "Multi-source summary" }))}</p>
         </div>
       </div>
     </section>
@@ -1622,8 +2125,12 @@ const disclaimerMarkup = (item) => {
 
   return `
     <section class="article-disclaimer" aria-label="Disclaimer">
-      <h2>免責說明</h2>
-      <p>本文只整理公開來源、中文摘要與 metadata，不構成投資建議、價格預測、買賣訊號或法律意見。股票代號與幣種代號僅供查找與分類。</p>
+      <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "免責說明", "zh-Hans": "免责声明", en: "Disclaimer" }))}</h2>
+      <p>${escapeHtml(getLocaleCopy({
+        "zh-Hant": "本文只整理公開來源、摘要與 metadata，不構成投資建議、價格預測、買賣訊號或法律意見。股票代號與幣種代號僅供查找與分類。",
+        "zh-Hans": "本文只整理公开来源、摘要与 metadata，不构成投资建议、价格预测、买卖信号或法律意见。股票代号与币种代号仅供查找与分类。",
+        en: "This page summarizes public sources and metadata only. It is not investment advice, price prediction, trading signal, or legal advice. Tickers and crypto symbols are for lookup and categorization.",
+      }))}</p>
     </section>
   `;
 };
@@ -1653,10 +2160,10 @@ const renderDetailPage = (items) => {
     shell.innerHTML = `
       <header class="article-hero">
         <div class="article-heading">
-          <h1>找不到內容</h1>
-          <p class="article-dek">請回到首頁重新選擇一篇內容。</p>
+          <h1>${escapeHtml(getLocaleCopy({ "zh-Hant": "找不到內容", "zh-Hans": "找不到内容", en: "Content not found" }))}</h1>
+          <p class="article-dek">${escapeHtml(getLocaleCopy({ "zh-Hant": "請回到首頁重新選擇一篇內容。", "zh-Hans": "请回到首页重新选择一篇内容。", en: "Please return home and pick another story." }))}</p>
           <div class="article-cta-row">
-            <a class="directory-action" href="./index.html">回到首頁</a>
+            <a class="directory-action" href="./index.html">${escapeHtml(getLocaleCopy({ "zh-Hant": "回到首頁", "zh-Hans": "回到首页", en: "Back Home" }))}</a>
           </div>
         </div>
       </header>
@@ -1665,35 +2172,44 @@ const renderDetailPage = (items) => {
   }
 
   const sourceUrl = getSourceUrl(item);
+  const articleTitle = getArticleTitle(item);
+  const articleSummary = getArticleSummary(item);
+  const detailLabelSeparator = getActiveLanguage() === "en" ? ": " : "：";
+  const originalTitle = item.title_original || articleTitle;
   const sourceTitleMarkup = sourceUrl
-    ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer" data-no-translate>${escapeHtml(item.title_original)}</a>`
-    : `<span data-no-translate>${escapeHtml(item.title_original)}</span>`;
+    ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer" data-no-translate>${escapeHtml(originalTitle)}</a>`
+    : `<span data-no-translate>${escapeHtml(originalTitle)}</span>`;
   const sourceActionMarkup = sourceUrl
-    ? `<a class="directory-action" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">閱讀原文</a>`
-    : `<span class="directory-chip" data-i18n-zh="來源待補" data-i18n-en="Source pending">來源待補</span>`;
+    ? `<a class="directory-action" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(getLocaleCopy({ "zh-Hant": "閱讀原文", "zh-Hans": "阅读原文", en: "Read original" }))}</a>`
+    : `<span class="directory-chip">${escapeHtml(getLocaleCopy({ "zh-Hant": "來源待補", "zh-Hans": "来源待补", en: "Source pending" }))}</span>`;
   const metadata = getMetadata(item);
   const publishedAt = formatDateTime(item.published_at);
   const readingMinutes = getReadingMinutes(item);
   const breadcrumb = document.querySelector(".article-breadcrumb");
   const metaDescription = document.querySelector('meta[name="description"]');
 
-  document.body.dataset.titleZh = `${item.title_zh} - CYBERNEWS`;
-  document.body.dataset.titleEn = `${item.title_original} - CYBERNEWS`;
-  document.title = document.body.dataset.titleZh;
+  document.body.dataset.titleZh = `${getArticleTitle(item, "zh-Hant")} - CYBERNEWS`;
+  document.body.dataset.titleZhHans = `${getArticleTitle(item, "zh-Hans")} - CYBERNEWS`;
+  document.body.dataset.titleEn = `${getArticleTitle(item, "en")} - CYBERNEWS`;
+  document.title = `${articleTitle} - CYBERNEWS`;
 
   if (metaDescription) {
-    metaDescription.setAttribute("content", item.summary_zh);
+    metaDescription.setAttribute("content", articleSummary);
   }
+  setMetaContent('meta[property="og:title"]', articleTitle);
+  setMetaContent('meta[property="og:description"]', articleSummary);
+  setMetaContent('meta[name="twitter:title"]', articleTitle);
+  setMetaContent('meta[name="twitter:description"]', articleSummary);
 
   if (breadcrumb) {
     breadcrumb.innerHTML = `
       <a href="./index.html">CYBERNEWS</a>
       <span aria-hidden="true">/</span>
-      <a href="${item.vertical === "ai" ? "./ai.html" : "./finance.html"}">${escapeHtml(verticalLabels[item.vertical] || item.vertical)}</a>
+      <a href="${item.vertical === "ai" ? "./ai.html" : "./finance.html"}">${escapeHtml(getVerticalLabel(item.vertical))}</a>
       <span aria-hidden="true">/</span>
-      <a href="${getDetailArchiveHref(item)}">${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</a>
+      <a href="${getDetailArchiveHref(item)}">${escapeHtml(getContentTypeLabel(item.content_type))}</a>
       <span aria-hidden="true">/</span>
-      <span>${escapeHtml(item.subcategory)}</span>
+      <span>${escapeHtml(getArticleSubcategory(item))}</span>
     `;
   }
 
@@ -1702,39 +2218,47 @@ const renderDetailPage = (items) => {
       <div class="article-hero-grid">
         <div class="article-heading">
           <div class="article-meta-line" aria-label="Article metadata">
-            <span>${escapeHtml(verticalLabels[item.vertical] || item.vertical)} / ${escapeHtml(contentTypeLabels[item.content_type] || item.content_type)}</span>
-            <span>${escapeHtml(item.subcategory)}</span>
+            <span>${escapeHtml(getVerticalLabel(item.vertical))} / ${escapeHtml(getContentTypeLabel(item.content_type))}</span>
+            <span>${escapeHtml(getArticleSubcategory(item))}</span>
             <span>${escapeHtml(getDisplaySourceName(item))}</span>
             ${publishedAt ? `<time datetime="${escapeHtml(item.published_at)}">${escapeHtml(publishedAt)}</time>` : ""}
-            <span>${readingMinutes} 分鐘閱讀</span>
+            <span>${readingMinutes} ${escapeHtml(getLocaleCopy({ "zh-Hant": "分鐘閱讀", "zh-Hans": "分钟阅读", en: "min read" }))}</span>
           </div>
           ${designFixtureBadgeMarkup(item)}
-          <h1>${escapeHtml(item.title_zh)}</h1>
-          <p class="article-dek">${escapeHtml(item.summary_zh)}</p>
+          <h1>${escapeHtml(articleTitle)}</h1>
+          <p class="article-dek">${escapeHtml(articleSummary)}</p>
           ${designFixtureNoticeMarkup(item)}
           ${whyMattersMarkup(item)}
-          <p class="article-original-title">Original: ${escapeHtml(item.title_original)}</p>
+          <p class="article-original-title">${escapeHtml(getLocaleCopy({ "zh-Hant": "原文標題", "zh-Hans": "原文标题", en: "Original" }))}: ${escapeHtml(originalTitle)}</p>
         </div>
       </div>
     </header>
 
     <figure class="article-visual">
       <div class="article-visual-inner">
-        <div class="article-hero-image" role="img" aria-label="${escapeHtml(item.title_original)}"${getImageStyle(item)}></div>
-        <figcaption>影像用於主題示意；內文為 CYBERNEWS 中文整理稿，完整內容請回到原文來源。</figcaption>
+        <div class="article-hero-image" role="img" aria-label="${escapeHtml(getImageAlt(item))}"${getImageStyle(item)}></div>
+        <figcaption>${escapeHtml(getLocaleCopy({
+          "zh-Hant": "影像用於主題示意；內文為 CYBERNEWS 整理稿，完整內容請回到原文來源。",
+          "zh-Hans": "影像用于主题示意；内文为 CYBERNEWS 整理稿，完整内容请回到原文来源。",
+          en: "Image for topic context. CYBERNEWS provides a digest; read the original source for full context.",
+        }))}</figcaption>
       </div>
     </figure>
 
     <div class="article-body-shell">
       <div class="article-content">
         <section class="article-keypoints" aria-label="Summary">
-          <h2>中文摘要</h2>
+          <h2>${escapeHtml(getLocaleCopy({ "zh-Hant": "摘要", "zh-Hans": "摘要", en: "Summary" }))}</h2>
           <ul>
-            <li>${escapeHtml(item.summary_zh)}</li>
-            ${item.why_matters_zh ? `<li>為什麼重要：${escapeHtml(item.why_matters_zh)}</li>` : ""}
+            <li>${escapeHtml(articleSummary)}</li>
+            ${getArticleWhy(item) ? `<li>${escapeHtml(getLocaleCopy({ "zh-Hant": "為什麼重要", "zh-Hans": "为什么重要", en: "Why it matters" }))}${detailLabelSeparator}${escapeHtml(getArticleWhy(item))}</li>` : ""}
             ${designFixtureKeypointMarkup(item)}
-            <li>本頁只保存摘要、分類、來源與原文連結，不重刊全文，也不繞過 paywall。</li>
-            <li>${metadata.length ? `${escapeHtml(metadata.join(" / "))} 僅作為 metadata 與查找線索。` : "未附股票或幣種代號。"}</li>
+            <li>${escapeHtml(getLocaleCopy({
+              "zh-Hant": "本頁只保存摘要、分類、來源與原文連結，不重刊全文，也不繞過 paywall。",
+              "zh-Hans": "本页只保存摘要、分类、来源与原文链接，不重刊全文，也不绕过 paywall。",
+              en: "This page keeps the summary, taxonomy, source, and original link only. It does not republish the full article or bypass paywalls.",
+            }))}</li>
+            <li>${metadata.length ? `${escapeHtml(metadata.join(" / "))} ${escapeHtml(getLocaleCopy({ "zh-Hant": "僅作為 metadata 與查找線索。", "zh-Hans": "仅作为 metadata 与查找线索。", en: "is metadata for lookup only." }))}` : escapeHtml(getLocaleCopy({ "zh-Hant": "未附股票或幣種代號。", "zh-Hans": "未附股票或币种代号。", en: "No ticker or crypto symbol attached." }))}</li>
           </ul>
         </section>
 
@@ -1750,13 +2274,13 @@ const renderDetailPage = (items) => {
                 ${sourceTitleMarkup}
                 <span class="article-source-meta">· ${escapeHtml(getDisplaySourceName(item))} · ${escapeHtml(formatDate(item.published_at))}</span>
               </p>
-              <p class="article-source-desc">${escapeHtml(item.summary_zh)}</p>
+              <p class="article-source-desc">${escapeHtml(articleSummary)}</p>
             </li>
           </ul>
           <div class="article-cta-row">
             ${sourceActionMarkup}
-            <a class="directory-chip" href="./topics.html">加入專題追蹤</a>
-            <a class="directory-chip" href="${getDetailArchiveHref(item)}">更多同類內容</a>
+            <a class="directory-chip" href="./topics.html">${escapeHtml(getLocaleCopy({ "zh-Hant": "加入專題追蹤", "zh-Hans": "加入专题追踪", en: "Follow this topic" }))}</a>
+            <a class="directory-chip" href="${getDetailArchiveHref(item)}">${escapeHtml(getLocaleCopy({ "zh-Hant": "更多同類內容", "zh-Hans": "更多同类内容", en: "More like this" }))}</a>
           </div>
         </section>
 
@@ -1765,18 +2289,18 @@ const renderDetailPage = (items) => {
         <footer class="article-info-footer" aria-label="Article metadata">
           <span class="article-info-label">Metadata</span>
           <dl class="article-info-list">
-            ${detailDefinitionMarkup("主頻道", verticalLabels[item.vertical] || item.vertical)}
-            ${detailDefinitionMarkup("內容型態", contentTypeLabels[item.content_type] || item.content_type)}
-            ${detailDefinitionMarkup("子分類", item.subcategory)}
-            ${detailDefinitionMarkup("發布時間", formatDateTime(item.published_at))}
-            ${detailDefinitionMarkup("抓取時間", formatDateTime(item.fetched_at))}
-            ${detailDefinitionMarkup("語言 / 地區", `${item.language} / ${item.region}`)}
-            ${detailDefinitionMarkup("作者", joinList(item.authors))}
-            ${detailDefinitionMarkup("公司", joinList(item.companies))}
-            ${detailDefinitionMarkup("股票代號", joinList(item.tickers))}
-            ${detailDefinitionMarkup("幣種代號", joinList(item.coins))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "主頻道", "zh-Hans": "主频道", en: "Vertical" }), getVerticalLabel(item.vertical))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "內容型態", "zh-Hans": "内容型态", en: "Content Type" }), getContentTypeLabel(item.content_type))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "子分類", "zh-Hans": "子分类", en: "Subcategory" }), getArticleSubcategory(item))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "發布時間", "zh-Hans": "发布时间", en: "Published" }), formatDateTime(item.published_at))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "抓取時間", "zh-Hans": "抓取时间", en: "Fetched" }), formatDateTime(item.fetched_at))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "語言 / 地區", "zh-Hans": "语言 / 地区", en: "Language / Region" }), `${item.language} / ${getLocalizedSourceProfile(item).region || item.region}`)}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "作者", "zh-Hans": "作者", en: "Authors" }), joinList(item.authors))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "公司", "zh-Hans": "公司", en: "Companies" }), joinList(item.companies))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "股票代號", "zh-Hans": "股票代号", en: "Tickers" }), joinList(item.tickers))}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "幣種代號", "zh-Hans": "币种代号", en: "Coins" }), joinList(item.coins))}
             ${detailDefinitionMarkup("Topics", joinList(item.topics))}
-            ${detailDefinitionMarkup("資料屬性", item.is_original_research ? "原創調研" : "新聞摘要")}
+            ${detailDefinitionMarkup(getLocaleCopy({ "zh-Hant": "資料屬性", "zh-Hans": "资料属性", en: "Data Type" }), item.is_original_research ? getLocaleCopy({ "zh-Hant": "原創調研", "zh-Hans": "原创调研", en: "Original research" }) : getLocaleCopy({ "zh-Hant": "新聞摘要", "zh-Hans": "新闻摘要", en: "News summary" }))}
           </dl>
         </footer>
       </div>
@@ -1825,12 +2349,9 @@ const initializeNewsData = async () => {
     const topicsResponse = await fetch(dataAssetUrl("topics.json"), { cache: "no-store" }).catch(() => null);
     const topics = topicsResponse?.ok ? await topicsResponse.json() : [];
 
-    renderHomePage(items);
-    renderDirectoryPage(items);
-    renderArchivePage(items);
-    renderTopicsPage(items, topics);
-    renderDetailPage(items);
-    renderNewsletterPage(items);
+    currentNewsItems = Array.isArray(items) ? items : [];
+    currentTopics = Array.isArray(topics) ? topics : [];
+    renderSiteContent();
     preserveDesignPreviewNavigation();
     syncCurrentNavigation();
   } catch (error) {
@@ -1838,7 +2359,16 @@ const initializeNewsData = async () => {
   }
 };
 
-const getTranslatedText = (text, lang) => textMaps[lang].get(text) || text;
+const renderSiteContent = () => {
+  renderHomePage(currentNewsItems);
+  renderDirectoryPage(currentNewsItems);
+  renderArchivePage(currentNewsItems);
+  renderTopicsPage(currentNewsItems, currentTopics);
+  renderDetailPage(currentNewsItems);
+  renderNewsletterPage(currentNewsItems);
+};
+
+const getTranslatedText = (text, lang) => textMaps[lang]?.get(text) || text;
 
 function translateTextNode(node, lang) {
   const value = node.nodeValue;
@@ -1855,33 +2385,41 @@ function translateTextNode(node, lang) {
 }
 
 function translateAnnotatedContent(lang) {
-  const textKey = lang === "zh" ? "i18nZh" : "i18nEn";
-  const placeholderKey = lang === "zh" ? "placeholderZh" : "placeholderEn";
+  const isEnglish = lang === "en";
+  const textKey = isEnglish ? "i18nEn" : "i18nZh";
+  const placeholderKey = isEnglish ? "placeholderEn" : "placeholderZh";
 
   document.querySelectorAll("[data-i18n-zh][data-i18n-en]").forEach((element) => {
-    const translated = element.dataset[textKey];
+    const translated = lang === "zh-Hans" ? toSimplifiedChinese(element.dataset[textKey]) : element.dataset[textKey];
     if (translated) {
       element.textContent = translated;
     }
   });
 
   document.querySelectorAll("[data-placeholder-zh][data-placeholder-en]").forEach((element) => {
-    const translated = element.dataset[placeholderKey];
+    const translated = lang === "zh-Hans" ? toSimplifiedChinese(element.dataset[placeholderKey]) : element.dataset[placeholderKey];
     if (translated) {
       element.setAttribute("placeholder", translated);
     }
   });
 }
 
-function translatePage(lang) {
+function translatePage(lang, { persist = true, rerender = true } = {}) {
   lang = normalizeLanguage(lang);
-  storeLanguage(lang);
-  document.documentElement.lang = lang === "zh" ? "zh-Hant" : "en";
+  if (persist) {
+    storeLanguage(lang);
+  }
+  setLocaleCookie(lang);
+  document.documentElement.lang = lang;
+  document.body?.setAttribute("data-locale", lang);
+  if (rerender) {
+    renderSiteContent();
+  }
   applyLatestProfile(lang);
 
-  const titleKey = lang === "zh" ? "titleZh" : "titleEn";
+  const titleKey = lang === "zh-Hans" ? "titleZhHans" : lang === "en" ? "titleEn" : "titleZh";
   const annotatedTitle = document.body?.dataset[titleKey];
-  document.title = annotatedTitle || (lang === "zh" ? textMaps.zh.get("CYBERNEWS - Global Technology Signals") : "CYBERNEWS - Global Technology Signals");
+  document.title = annotatedTitle || getTranslatedText("CYBERNEWS - Global Technology Signals", lang) || "CYBERNEWS - Global Technology Signals";
 
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -1905,7 +2443,7 @@ function translatePage(lang) {
 
   document.querySelectorAll("input[placeholder]").forEach((input) => {
     const current = input.getAttribute("placeholder");
-    input.setAttribute("placeholder", placeholders[lang][current] || current);
+    input.setAttribute("placeholder", placeholders[lang]?.[current] || current);
   });
 
   languageOptions.forEach((button) => {
@@ -1915,13 +2453,14 @@ function translatePage(lang) {
   });
 
   if (languageCurrent) {
-    languageCurrent.textContent = lang === "zh" ? "中文" : "EN";
+    languageCurrent.textContent = localeLabels[lang] || "EN";
   }
 
   if (languageSwitcher && languageTrigger) {
     languageSwitcher.classList.remove("open");
     languageTrigger.setAttribute("aria-expanded", "false");
   }
+  removeLocaleQueryParam();
 }
 
 languageTrigger?.addEventListener("click", () => {
@@ -1931,7 +2470,7 @@ languageTrigger?.addEventListener("click", () => {
 
 languageOptions.forEach((button) => {
   button.addEventListener("click", () => {
-    translatePage(button.dataset.lang || "zh");
+    translatePage(button.dataset.lang || "zh-Hant", { persist: true, rerender: true });
   });
 });
 
@@ -2192,10 +2731,11 @@ document.querySelectorAll(".newsletter-band form, .newsletter-signup-form").forE
       return;
     }
 
-    const successMessage =
-      document.documentElement.lang === "en"
-        ? "Check your inbox and click the confirmation link to finish subscribing."
-        : "請到信箱點確認連結完成訂閱";
+    const successMessage = getLocaleCopy({
+      "zh-Hant": "請到信箱點確認連結完成訂閱",
+      "zh-Hans": "请到信箱点击确认链接完成订阅",
+      en: "Check your inbox and click the confirmation link to finish subscribing.",
+    });
 
     form.innerHTML = `<p class="newsletter-thanks">${escapeHtml(successMessage)}</p>`;
   });
@@ -2207,7 +2747,8 @@ preserveDesignPreviewNavigation();
 syncCurrentNavigation();
 
 const copyLinkLabels = {
-  zh: { idle: "複製", success: "已複製", failed: "複製失敗", aria: "複製連結" },
+  "zh-Hant": { idle: "複製", success: "已複製", failed: "複製失敗", aria: "複製連結" },
+  "zh-Hans": { idle: "复制", success: "已复制", failed: "复制失败", aria: "复制链接" },
   en: { idle: "Copy", success: "Copied", failed: "Copy failed", aria: "Copy link" },
 };
 
@@ -2235,7 +2776,7 @@ document.querySelectorAll("[data-copy-link]").forEach((button) => {
 
   button.addEventListener("click", async () => {
     const lang = getActiveLanguage();
-    const labels = copyLinkLabels[lang] || copyLinkLabels.zh;
+    const labels = copyLinkLabels[lang] || copyLinkLabels["zh-Hant"];
     let copied = false;
 
     try {
@@ -2252,7 +2793,7 @@ document.querySelectorAll("[data-copy-link]").forEach((button) => {
     icon?.classList.replace("fa-link", copied ? "fa-check" : "fa-triangle-exclamation");
 
     window.setTimeout(() => {
-      const restoreLabels = copyLinkLabels[getActiveLanguage()] || copyLinkLabels.zh;
+      const restoreLabels = copyLinkLabels[getActiveLanguage()] || copyLinkLabels["zh-Hant"];
       if (label) {
         label.textContent = restoreLabels.idle;
       }
@@ -2285,8 +2826,13 @@ document.querySelectorAll(".popular-strip .column-years button").forEach((button
   });
 });
 
+const initialLanguage = detectDefaultLanguage();
+const initialLanguageFromUrl = new URLSearchParams(window.location.search).has("lang");
+document.documentElement.lang = initialLanguage;
+document.body?.setAttribute("data-locale", initialLanguage);
+
 initializeNewsData().finally(() => {
   applyColumnFilter(document.querySelector(".popular-strip .column-years button.active")?.dataset.columnFilter || "all");
   syncColumnCaptionVisibility();
-  translatePage(getStoredLanguage());
+  translatePage(initialLanguage, { persist: initialLanguageFromUrl, rerender: false });
 });

@@ -6,13 +6,30 @@
     "description_zh": "從 HBM 到先進封裝，追蹤 AI 伺服器瓶頸。",
     "href": "./topic-nvidia-supply-chain.html",
     "image_class": "column-image-three",
-    "tags": ["NVDA", "AI Chips"],
+    "tags": [
+      "NVDA",
+      "AI Chips"
+    ],
     "match": {
-      "subcategories": ["算力與晶片", "科技股"],
-      "tickers": ["NVDA", "TSM"],
+      "subcategories": [
+        "算力與晶片",
+        "科技股"
+      ],
+      "tickers": [
+        "NVDA",
+        "TSM"
+      ],
       "coins": [],
-      "topics": ["AI chips", "HBM", "advanced packaging", "data center"]
-    }
+      "topics": [
+        "AI chips",
+        "HBM",
+        "advanced packaging",
+        "data center"
+      ]
+    },
+    "description_en": "Track AI server bottlenecks from HBM to advanced packaging.",
+    "description_zh_hans": "从 HBM 到先进封装，追踪 AI 伺服器瓶颈。",
+    "title_zh_hans": "Nvidia 供应链"
   },
   {
     "slug": "ai-regulation",
@@ -21,13 +38,25 @@
     "description_zh": "歐盟、美國與亞洲政策如何改變模型發布節奏。",
     "href": "./topic-ai-regulation.html",
     "image_class": "column-image-two",
-    "tags": ["AI", "Policy"],
+    "tags": [
+      "AI",
+      "Policy"
+    ],
     "match": {
-      "subcategories": ["監管與政策"],
+      "subcategories": [
+        "監管與政策"
+      ],
       "tickers": [],
       "coins": [],
-      "topics": ["AI regulation", "foundation models", "industrial policy"]
-    }
+      "topics": [
+        "AI regulation",
+        "foundation models",
+        "industrial policy"
+      ]
+    },
+    "description_en": "How policy in the EU, United States, and Asia is changing model release cycles.",
+    "description_zh_hans": "欧盟、美国与亚洲政策如何改变模型发布节奏。",
+    "title_zh_hans": "AI 监管进展"
   },
   {
     "slug": "ai-capex",
@@ -36,13 +65,25 @@
     "description_zh": "追蹤雲端、資料中心、伺服器與模型部署成本如何改變科技公司資本配置。",
     "href": "./ai.html?subcategory=AI%20%E8%B3%87%E6%9C%AC%E8%88%87%E9%9B%B2%E7%AB%AF",
     "image_class": "column-image-one",
-    "tags": ["Cloud", "Capex"],
+    "tags": [
+      "Cloud",
+      "Capex"
+    ],
     "match": {
-      "subcategories": ["AI 資本與雲端"],
+      "subcategories": [
+        "AI 資本與雲端"
+      ],
       "tickers": [],
       "coins": [],
-      "topics": ["AI capex", "cloud", "data centers"]
-    }
+      "topics": [
+        "AI capex",
+        "cloud",
+        "data centers"
+      ]
+    },
+    "description_en": "Track how cloud, data centers, servers, and model deployment costs are changing tech-company capital allocation.",
+    "description_zh_hans": "追踪云端、资料中心、伺服器与模型部署成本如何改变科技公司资本配置。",
+    "title_zh_hans": "AI 资本开支"
   },
   {
     "slug": "stablecoin-regulation",
@@ -51,12 +92,27 @@
     "description_zh": "追蹤穩定幣立法、支付公司、交易所與發行人的合規變化。",
     "href": "./crypto.html?subcategory=%E5%8A%A0%E5%AF%86%E8%88%87%E7%A9%A9%E5%AE%9A%E5%B9%A3",
     "image_class": "column-image-six",
-    "tags": ["USDC", "Compliance"],
+    "tags": [
+      "USDC",
+      "Compliance"
+    ],
     "match": {
       "subcategories": [],
-      "tickers": ["COIN"],
-      "coins": ["USDC", "USDT"],
-      "topics": ["stablecoins", "crypto regulation", "payments"]
-    }
+      "tickers": [
+        "COIN"
+      ],
+      "coins": [
+        "USDC",
+        "USDT"
+      ],
+      "topics": [
+        "stablecoins",
+        "crypto regulation",
+        "payments"
+      ]
+    },
+    "description_en": "Track stablecoin legislation, payment companies, exchanges, and issuer compliance changes.",
+    "description_zh_hans": "追踪稳定币立法、支付公司、交易所与发行人的合规变化。",
+    "title_zh_hans": "稳定币监管"
   }
 ]
