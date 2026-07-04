@@ -15,6 +15,8 @@ const rootAssetUrl = (filename) => new URL(filename, scriptBaseUrl).href;
 const previewParams = () => new URLSearchParams(window.location.search);
 const isDesignPreviewMode = () => previewParams().get("preview") === "design";
 const getNewsDataFilename = () => (isDesignPreviewMode() ? "design-preview-news.json" : "news.json");
+let activeNewsDataMode = isDesignPreviewMode() ? "design-preview" : "production";
+const isUsingDesignFixtures = () => activeNewsDataMode === "design-preview" || activeNewsDataMode === "design-fallback";
 const isPlaceholderSourceUrl = (value) => {
   if (!value) {
     return false;
@@ -432,7 +434,7 @@ const getImageStyle = (item) => {
 };
 
 const getStoryHref = (item) => {
-  if (isDesignPreviewMode()) {
+  if (isUsingDesignFixtures() && item?.is_design_fixture) {
     const params = new URLSearchParams({
       id: item?.id || "",
       preview: "design",
@@ -460,12 +462,12 @@ const designFixtureKeypointMarkup = (item) =>
     : "";
 
 const applyDesignPreviewMeta = () => {
-  if (!isDesignPreviewMode()) {
+  if (!isUsingDesignFixtures()) {
     return;
   }
 
-  document.documentElement.dataset.preview = "design";
-  document.body?.setAttribute("data-preview-mode", "design");
+  document.documentElement.dataset.preview = activeNewsDataMode;
+  document.body?.setAttribute("data-preview-mode", activeNewsDataMode);
 
   let robotsMeta = document.querySelector('meta[name="robots"]');
   if (!robotsMeta) {
@@ -477,7 +479,7 @@ const applyDesignPreviewMeta = () => {
 };
 
 const injectDesignPreviewNotice = () => {
-  if (!isDesignPreviewMode() || document.querySelector(".design-preview-notice")) {
+  if (!isUsingDesignFixtures() || document.querySelector(".design-preview-notice")) {
     return;
   }
 
@@ -1773,17 +1775,34 @@ const renderDetailPage = (items) => {
 };
 
 const initializeNewsData = async () => {
-  applyDesignPreviewMeta();
-  injectDesignPreviewNotice();
-
   try {
-    const response = await fetch(dataAssetUrl(getNewsDataFilename()), { cache: "no-store" });
+    activeNewsDataMode = isDesignPreviewMode() ? "design-preview" : "production";
+    applyDesignPreviewMeta();
+    injectDesignPreviewNotice();
 
-    if (!response.ok) {
-      throw new Error(`Unable to load news data: ${response.status}`);
+    const loadNewsItems = async (filename) => {
+      const response = await fetch(dataAssetUrl(filename), { cache: "no-store" });
+
+      if (!response.ok) {
+        throw new Error(`Unable to load ${filename}: ${response.status}`);
+      }
+
+      return response.json();
+    };
+
+    let items = await loadNewsItems(getNewsDataFilename());
+
+    if (!isDesignPreviewMode() && Array.isArray(items) && items.length === 0) {
+      const fixtureItems = await loadNewsItems("design-preview-news.json");
+
+      if (Array.isArray(fixtureItems) && fixtureItems.length) {
+        activeNewsDataMode = "design-fallback";
+        items = fixtureItems;
+        applyDesignPreviewMeta();
+        injectDesignPreviewNotice();
+      }
     }
 
-    const items = await response.json();
     const topicsResponse = await fetch(dataAssetUrl("topics.json"), { cache: "no-store" }).catch(() => null);
     const topics = topicsResponse?.ok ? await topicsResponse.json() : [];
 

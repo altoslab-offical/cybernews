@@ -1,6 +1,6 @@
 # CYBERNEWS Design Preview Notes
 
-這份文件給設計師與後續 session 檢查版型用。`preview=design` 只載入假資料文章，正式站不會顯示這批內容。
+這份文件給設計師與後續 session 檢查版型用。正式資料尚未接入時，站點會自動以設計檢查假資料填充首頁與分類頁；正式 `data/news.json` 一旦有資料，就會停止 fallback。
 
 ## Preview URLs
 
@@ -30,7 +30,8 @@
   - `preview_note_en`
   - `source_url` / `canonical_url` 使用 `design-fixture://...`
 - 前台會隱藏 `design-fixture://` source link，避免使用者誤以為有正式來源。
-- `preview=design` 會自動加上 `noindex,nofollow,noarchive`，`robots.txt` 也封鎖 preview query。
+- `preview=design` 或正式資料為空時的 fixture fallback 會自動加上 `noindex,nofollow,noarchive`。`robots.txt` 也封鎖 preview query。
+- fixture 文章點擊會進入 `research.html?id=...&preview=design` 的設計檢查 detail shell，避免連到尚未生成的正式文章 URL。
 
 ## Current Fixture Mix
 
